@@ -92,7 +92,7 @@ formatter configuration is present in the repository).
 ```powershell
 npm install
 
-# Terminal 1 — start the IPO proxy (needs Node 18+)
+# Terminal 1 — start the StockSense proxy (needs Node 18+)
 npm run server
 
 # Terminal 2 — start the React app
@@ -113,7 +113,7 @@ GEMINI_MODELS=gemini-2.5-flash
 
 | Symptom | Likely cause / fix |
 |---|---|
-| "Could not reach the IPO proxy server." | Proxy not running — run `npm run server`. |
+| "Could not reach the StockSense proxy server." | Proxy not running — run `npm run server`. |
 | AI analysis returns 503 | No AI provider active — set a provider's API key AND models. |
 | Empty IPO list / `source: "error"` | Upstream InvestorGain fetch failed (IPO data is fetched live, not persisted). |
 | Trending stocks fail | NSE may challenge the request; the service retries with a cookie handshake. |

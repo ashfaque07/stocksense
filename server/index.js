@@ -12,6 +12,6 @@ import { router } from './routes/router.js'
 const server = http.createServer(router)
 
 server.listen(PORT, () => {
-  console.log(`IPO proxy running at http://localhost:${PORT}/api/ipos`)
+  console.log(`StockSense proxy running at http://localhost:${PORT}/api/ipos`)
   console.log(`Source: InvestorGain Live IPO GMP (report ${REPORT_ID})`)
 })

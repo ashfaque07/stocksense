@@ -1,4 +1,4 @@
-// API client for the IPO proxy server.
+// API client for the StockSense proxy server.
 
 export async function fetchIpos() {
   const res = await fetch('/api/ipos')

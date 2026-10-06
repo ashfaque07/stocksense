@@ -30,7 +30,7 @@ export function useIpos() {
       setSource(data.source || '')
       if (data.source === 'error') setError(data.error || 'Failed to load IPOs.')
     } catch (e) {
-      setError('Could not reach the IPO proxy server. Run "npm run server".')
+      setError('Could not reach the StockSense proxy server. Run "npm run server".')
     } finally {
       setLoading(false)
     }
