@@ -2,6 +2,7 @@
 // AI streaming/caching helper and yields markdown text tokens as they arrive.
 
 import { streamCompletion, isAiConfigured } from './analysisService.js'
+import { getModelFallbacks } from '../config/index.js'
 import {
   TRENDING_BEST_PICK_SYSTEM_PROMPT,
   trendingBestPickUserPrompt,
@@ -69,11 +70,38 @@ export async function* streamTrendingAnalysis(type, stocks, model) {
   yield* streamCompletion(buildMessages(type, fresh), cacheKey(type, fresh), model, { ttl: BEST_PICK_CACHE_TTL_MS })
 }
 
+// Overall budget for the refresh-time AI flagging. `streamCompletion` retries
+// across models with its own per-request idle timeout, so without an outer cap
+// a slow/hung provider could block the trending refresh (and the HTTP response
+// the browser is waiting on) for minutes. The flagging is best-effort, so we
+// bound the whole thing and fall back to "no new flags" when it's exceeded.
+const RECOMMEND_TIMEOUT_MS = Number(process.env.TRENDING_RECOMMEND_TIMEOUT_MS) || 20000
+
 // Ask the AI to pick the best `limit` stocks from the trending list and return
 // their symbols. Used at refresh time to flag `aiRecommended` stocks. Returns
 // an array of uppercase symbols (a subset of the provided list); on any failure
-// it returns an empty array so the refresh never breaks.
+// or if the overall time budget is exceeded it returns an empty array so the
+// refresh never breaks or hangs.
 export async function recommendBestSymbols(type, stocks, limit = 3) {
+  // The primary model is the one still in-flight when the budget is exceeded
+  // (its per-request idle timeout is longer than this outer budget, so a fallback
+  // hasn't kicked in yet). Name it so the log points at the actual culprit.
+  const stuckModel = getModelFallbacks(undefined)[0]?.model || 'none configured'
+  return Promise.race([
+    recommendBestSymbolsInner(type, stocks, limit),
+    new Promise((resolve) =>
+      setTimeout(() => {
+        console.error(
+          `[trending] AI recommendation timed out after ${RECOMMEND_TIMEOUT_MS}ms ` +
+            `(type=${type}, model: ${stuckModel}); skipping flags`
+        )
+        resolve([])
+      }, RECOMMEND_TIMEOUT_MS)
+    )
+  ])
+}
+
+async function recommendBestSymbolsInner(type, stocks, limit = 3) {
   const live = availableStocks(stocks)
   if (!isAiConfigured() || !live.length) return []
 

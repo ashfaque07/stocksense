@@ -398,6 +398,7 @@ h1 {
   box-shadow: 0 6px 16px -6px rgba(99, 102, 241, 0.7);
 }
 .trending-meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.trend-actions { display: inline-flex; align-items: center; gap: 12px; }
 .trending-time { color: var(--text-faint); font-size: 12px; }
 .market-status { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; }
 .market-status .market-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
@@ -431,6 +432,16 @@ h1 {
   letter-spacing: 0.03em; font-weight: 700;
 }
 .trending-details dd { margin: 0; font-size: 14px; font-weight: 600; }
+.trending-details dd.trending-reason {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
 .trending-details-head {
   margin: 0 0 8px; font-size: 13px; color: var(--text-dim);
   text-transform: uppercase; letter-spacing: 0.03em;
@@ -471,6 +482,16 @@ h1 {
   color: var(--text-dim); max-width: 220px; white-space: normal;
   font-size: 12px; line-height: 1.35;
 }
+.trending-table .reason .reason-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
 .trending-table tr.stale td { opacity: 0.6; }
 .trending-table tr.stale:hover { background: rgba(148, 163, 184, 0.06); }
 .stale-badge {
@@ -497,6 +518,10 @@ h1 {
   .trending-details dt { font-size: 10px; }
   .trending-details dd { font-size: 13px; }
   .trending-details div:last-child { grid-column: 1 / -1; }
+
+  .trend-actions { width: 100%; }
+  .trend-actions .trend-ai-btn,
+  .trend-actions .trend-refresh { flex: 1 1 0; }
 
   .modal { padding: 10px; }
   .modal-body { max-height: 92vh; padding: 18px 16px; }

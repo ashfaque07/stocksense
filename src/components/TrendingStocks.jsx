@@ -167,16 +167,18 @@ export default function TrendingStocks() {
           {dayStartedAt && <span className="trending-time">Day start {fmtTime(dayStartedAt)}</span>}
           {updatedAt && <span className="trending-time">Updated {fmtTime(updatedAt)}</span>}
           {timestamp && <span className="trending-time">NSE {timestamp}</span>}
-          <button
-            className="trend-ai-btn"
-            onClick={() => analyzeBest(type, stocks)}
-            disabled={analyzing || loading || !stocks.length}
-          >
-            {analyzing ? 'Analyzing…' : `${ICONS.ai} AI Best Pick`}
-          </button>
-          <button className="trend-refresh" onClick={reload} disabled={loading || refreshing}>
-            {refreshing ? 'Refreshing…' : '↻ Refresh'}
-          </button>
+          <div className="trend-actions">
+            <button
+              className="trend-ai-btn"
+              onClick={() => analyzeBest(type, stocks)}
+              disabled={analyzing || loading || !stocks.length}
+            >
+              {analyzing ? 'Analyzing…' : `${ICONS.ai} AI Best Pick`}
+            </button>
+            <button className="trend-refresh" onClick={reload} disabled={loading || refreshing}>
+              {refreshing ? 'Refreshing…' : '↻ Refresh'}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -250,7 +252,7 @@ export default function TrendingStocks() {
                       <td>{fmtCount(s.volume)}</td>
                       <td>{fmtCompact(s.turnover)}</td>
                       <td className="ta-left reason" title={reason ? (exDate ? `${reason} · Ex-date: ${exDate}` : reason) : 'No reason found'}>
-                        {reason || '—'}
+                        <span className="reason-text">{reason || '—'}</span>
                       </td>
                       <td className="muted">{fmtTime(s.createdAt)}</td>
                       <td className="muted">{fmtTime(s.modifiedAt)}</td>

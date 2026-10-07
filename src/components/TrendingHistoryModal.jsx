@@ -84,7 +84,12 @@ export default function TrendingHistoryModal({ stock, onClose }) {
         </div>
         <div>
           <dt>Reason (Trending)</dt>
-          <dd>{reason ? (exDate ? `${reason} · Ex-date: ${exDate}` : reason) : '—'}</dd>
+          <dd
+            className="trending-reason"
+            title={reason ? (exDate ? `${reason} · Ex-date: ${exDate}` : reason) : ''}
+          >
+            {reason ? (exDate ? `${reason} · Ex-date: ${exDate}` : reason) : '—'}
+          </dd>
         </div>
       </dl>
 

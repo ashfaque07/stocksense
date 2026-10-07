@@ -150,12 +150,14 @@ export function trendingBestPickUserPrompt(listLabel, facts) {
 
 export function trendingBestSymbolsSystemPrompt(limit) {
   return (
-    'Act as a professional stock market analyst and portfolio manager. You are given ' +
-    'a list of trending NSE stocks with live intraday data. Using fundamentals, ' +
-    'technicals, momentum, news/sentiment and risk, pick the best genuine buying ' +
-    'opportunities and avoid operator-driven pump-and-dump stocks. Respond ONLY with a ' +
+    'Act as a professional NSE stock market analyst. You are given a list of trending ' +
+    'stocks with live intraday data. Using catalyst/news, momentum, volume, delivery, ' +
+    'price-band headroom, liquidity and risk, pick the stocks with the best chance of ' +
+    'hitting the upper circuit. Prefer a fresh genuine catalyst and steady buying with ' +
+    'room left in the band. Skip stocks already locked at the circuit, stretched moves, ' +
+    'thin-float stocks with no news, and operator-driven pump-and-dump names. Respond ONLY with a ' +
     `compact JSON array of at most ${limit} stock symbols (strings), best first, e.g. ` +
-    '["SYM1","SYM2"]. No markdown, no prose, no code fences.'
+    '["SYM1","SYM2"]. Return [] if none qualify. No markdown, no prose, no code fences.'
   )
 }
 

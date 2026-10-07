@@ -1,1558 +1,1548 @@
 {
   "gainers": {
     "type": "gainers",
-    "dayStartedAt": "2026-10-01T06:42:06.532Z",
-    "updatedAt": "2026-10-01T13:56:12.480Z",
-    "timestamp": "01-Oct-2026 16:00:00",
-    "count": 25,
+    "dayStartedAt": "2026-10-07T11:40:21.047Z",
+    "updatedAt": "2026-10-07T12:03:07.178Z",
+    "timestamp": "07-Oct-2026 16:00:00",
+    "count": 20,
     "stocks": [
       {
-        "symbol": "SMLT",
+        "symbol": "KIRANVYPAR",
         "series": "EQ",
-        "ltp": 74.18,
-        "open": 67,
-        "high": 74.18,
-        "low": 66,
-        "prevClose": 61.82,
+        "ltp": 212.46,
+        "open": 177,
+        "high": 212.46,
+        "low": 169.96,
+        "prevClose": 177.05,
+        "change": 20,
+        "percentChange": 20,
+        "volume": 22423,
+        "turnover": 42.6418191,
+        "reason": "Dividend - Re 1 Per Share",
+        "reasonExDate": "18-Sep-2026",
+        "createdAt": "2026-10-07T11:40:21.047Z",
+        "modifiedAt": "2026-10-07T12:03:07.178Z",
+        "stale": false,
+        "aiRecommended": false,
+        "aiRecommendedAt": null,
+        "history": [
+          {
+            "time": "2026-10-07T11:40:21.047Z",
+            "percentChange": 20,
+            "ltp": 212.46
+          },
+          {
+            "time": "2026-10-07T11:44:09.337Z",
+            "percentChange": 20,
+            "ltp": 212.46
+          },
+          {
+            "time": "2026-10-07T11:46:44.798Z",
+            "percentChange": 20,
+            "ltp": 212.46
+          },
+          {
+            "time": "2026-10-07T11:49:50.344Z",
+            "percentChange": 20,
+            "ltp": 212.46
+          },
+          {
+            "time": "2026-10-07T11:50:45.853Z",
+            "percentChange": 20,
+            "ltp": 212.46
+          },
+          {
+            "time": "2026-10-07T11:52:04.177Z",
+            "percentChange": 20,
+            "ltp": 212.46
+          },
+          {
+            "time": "2026-10-07T11:53:47.468Z",
+            "percentChange": 20,
+            "ltp": 212.46
+          },
+          {
+            "time": "2026-10-07T11:57:36.090Z",
+            "percentChange": 20,
+            "ltp": 212.46
+          },
+          {
+            "time": "2026-10-07T12:00:50.172Z",
+            "percentChange": 20,
+            "ltp": 212.46
+          },
+          {
+            "time": "2026-10-07T12:01:25.420Z",
+            "percentChange": 20,
+            "ltp": 212.46
+          },
+          {
+            "time": "2026-10-07T12:03:07.178Z",
+            "percentChange": 20,
+            "ltp": 212.46
+          }
+        ]
+      },
+      {
+        "symbol": "HTEL",
+        "series": "EQ",
+        "ltp": 88.57,
+        "open": 75.2,
+        "high": 88.57,
+        "low": 73.1,
+        "prevClose": 73.81,
+        "change": 20,
+        "percentChange": 20,
+        "volume": 14238636,
+        "turnover": 11906.347423199999,
+        "reason": "",
+        "reasonExDate": "",
+        "createdAt": "2026-10-07T11:40:21.047Z",
+        "modifiedAt": "2026-10-07T12:03:07.178Z",
+        "stale": false,
+        "aiRecommended": false,
+        "aiRecommendedAt": null,
+        "history": [
+          {
+            "time": "2026-10-07T11:40:21.047Z",
+            "percentChange": 20,
+            "ltp": 88.57
+          },
+          {
+            "time": "2026-10-07T11:44:09.337Z",
+            "percentChange": 20,
+            "ltp": 88.57
+          },
+          {
+            "time": "2026-10-07T11:46:44.798Z",
+            "percentChange": 20,
+            "ltp": 88.57
+          },
+          {
+            "time": "2026-10-07T11:49:50.344Z",
+            "percentChange": 20,
+            "ltp": 88.57
+          },
+          {
+            "time": "2026-10-07T11:50:45.853Z",
+            "percentChange": 20,
+            "ltp": 88.57
+          },
+          {
+            "time": "2026-10-07T11:52:04.177Z",
+            "percentChange": 20,
+            "ltp": 88.57
+          },
+          {
+            "time": "2026-10-07T11:53:47.468Z",
+            "percentChange": 20,
+            "ltp": 88.57
+          },
+          {
+            "time": "2026-10-07T11:57:36.090Z",
+            "percentChange": 20,
+            "ltp": 88.57
+          },
+          {
+            "time": "2026-10-07T12:00:50.172Z",
+            "percentChange": 20,
+            "ltp": 88.57
+          },
+          {
+            "time": "2026-10-07T12:01:25.420Z",
+            "percentChange": 20,
+            "ltp": 88.57
+          },
+          {
+            "time": "2026-10-07T12:03:07.178Z",
+            "percentChange": 20,
+            "ltp": 88.57
+          }
+        ]
+      },
+      {
+        "symbol": "MONEYVIEW",
+        "series": "EQ",
+        "ltp": 60.6,
+        "open": 50.6,
+        "high": 60.6,
+        "low": 49.33,
+        "prevClose": 50.5,
+        "change": 20,
+        "percentChange": 20,
+        "volume": 424471169,
+        "turnover": 238425.4556273,
+        "reason": "",
+        "reasonExDate": "",
+        "createdAt": "2026-10-07T11:40:21.047Z",
+        "modifiedAt": "2026-10-07T12:03:07.178Z",
+        "stale": false,
+        "aiRecommended": false,
+        "aiRecommendedAt": null,
+        "history": [
+          {
+            "time": "2026-10-07T11:40:21.047Z",
+            "percentChange": 20,
+            "ltp": 60.6
+          },
+          {
+            "time": "2026-10-07T11:44:09.337Z",
+            "percentChange": 20,
+            "ltp": 60.6
+          },
+          {
+            "time": "2026-10-07T11:46:44.798Z",
+            "percentChange": 20,
+            "ltp": 60.6
+          },
+          {
+            "time": "2026-10-07T11:49:50.344Z",
+            "percentChange": 20,
+            "ltp": 60.6
+          },
+          {
+            "time": "2026-10-07T11:50:45.853Z",
+            "percentChange": 20,
+            "ltp": 60.6
+          },
+          {
+            "time": "2026-10-07T11:52:04.177Z",
+            "percentChange": 20,
+            "ltp": 60.6
+          },
+          {
+            "time": "2026-10-07T11:53:47.468Z",
+            "percentChange": 20,
+            "ltp": 60.6
+          },
+          {
+            "time": "2026-10-07T11:57:36.090Z",
+            "percentChange": 20,
+            "ltp": 60.6
+          },
+          {
+            "time": "2026-10-07T12:00:50.172Z",
+            "percentChange": 20,
+            "ltp": 60.6
+          },
+          {
+            "time": "2026-10-07T12:01:25.420Z",
+            "percentChange": 20,
+            "ltp": 60.6
+          },
+          {
+            "time": "2026-10-07T12:03:07.178Z",
+            "percentChange": 20,
+            "ltp": 60.6
+          }
+        ]
+      },
+      {
+        "symbol": "NELCAST",
+        "series": "EQ",
+        "ltp": 149.37,
+        "open": 128.77,
+        "high": 149.37,
+        "low": 125.72,
+        "prevClose": 124.48,
+        "change": 20,
+        "percentChange": 20,
+        "volume": 6710048,
+        "turnover": 9679.9152448,
+        "reason": "Dividend - Re 0.70 Per Share",
+        "reasonExDate": "20-Jul-2026",
+        "createdAt": "2026-10-07T11:40:21.047Z",
+        "modifiedAt": "2026-10-07T12:03:07.178Z",
+        "stale": false,
+        "aiRecommended": false,
+        "aiRecommendedAt": null,
+        "history": [
+          {
+            "time": "2026-10-07T11:40:21.047Z",
+            "percentChange": 20,
+            "ltp": 149.37
+          },
+          {
+            "time": "2026-10-07T11:44:09.337Z",
+            "percentChange": 20,
+            "ltp": 149.37
+          },
+          {
+            "time": "2026-10-07T11:46:44.798Z",
+            "percentChange": 20,
+            "ltp": 149.37
+          },
+          {
+            "time": "2026-10-07T11:49:50.344Z",
+            "percentChange": 20,
+            "ltp": 149.37
+          },
+          {
+            "time": "2026-10-07T11:50:45.853Z",
+            "percentChange": 20,
+            "ltp": 149.37
+          },
+          {
+            "time": "2026-10-07T11:52:04.177Z",
+            "percentChange": 20,
+            "ltp": 149.37
+          },
+          {
+            "time": "2026-10-07T11:53:47.468Z",
+            "percentChange": 20,
+            "ltp": 149.37
+          },
+          {
+            "time": "2026-10-07T11:57:36.090Z",
+            "percentChange": 20,
+            "ltp": 149.37
+          },
+          {
+            "time": "2026-10-07T12:00:50.172Z",
+            "percentChange": 20,
+            "ltp": 149.37
+          },
+          {
+            "time": "2026-10-07T12:01:25.420Z",
+            "percentChange": 20,
+            "ltp": 149.37
+          },
+          {
+            "time": "2026-10-07T12:03:07.178Z",
+            "percentChange": 20,
+            "ltp": 149.37
+          }
+        ]
+      },
+      {
+        "symbol": "INDIAGLYCO",
+        "series": "EQ",
+        "ltp": 382.7,
+        "open": 324.9,
+        "high": 382.7,
+        "low": 321.1,
+        "prevClose": 318.95,
         "change": 19.99,
         "percentChange": 19.99,
-        "volume": 112524,
-        "turnover": 81.8274528,
-        "reason": "Dividend - Re 0.50 Per Share",
-        "reasonExDate": "11-Jul-2025",
-        "createdAt": "2026-10-01T06:42:06.532Z",
-        "modifiedAt": "2026-10-01T13:56:12.480Z",
+        "volume": 9155076,
+        "turnover": 33091.022202,
+        "reason": "Demerger",
+        "reasonExDate": "02-Sep-2026",
+        "createdAt": "2026-10-07T11:40:21.047Z",
+        "modifiedAt": "2026-10-07T12:03:07.178Z",
         "stale": false,
         "aiRecommended": false,
         "aiRecommendedAt": null,
         "history": [
           {
-            "time": "2026-10-01T06:42:06.532Z",
+            "time": "2026-10-07T11:40:21.047Z",
             "percentChange": 19.99,
-            "ltp": 74.18
+            "ltp": 382.7
           },
           {
-            "time": "2026-10-01T06:42:16.561Z",
+            "time": "2026-10-07T11:44:09.337Z",
             "percentChange": 19.99,
-            "ltp": 74.18
+            "ltp": 382.7
           },
           {
-            "time": "2026-10-01T06:42:32.171Z",
+            "time": "2026-10-07T11:46:44.798Z",
             "percentChange": 19.99,
-            "ltp": 74.18
+            "ltp": 382.7
           },
           {
-            "time": "2026-10-01T13:00:31.604Z",
+            "time": "2026-10-07T11:49:50.344Z",
             "percentChange": 19.99,
-            "ltp": 74.18
+            "ltp": 382.7
           },
           {
-            "time": "2026-10-01T13:45:53.906Z",
+            "time": "2026-10-07T11:50:45.853Z",
             "percentChange": 19.99,
-            "ltp": 74.18
+            "ltp": 382.7
           },
           {
-            "time": "2026-10-01T13:47:12.408Z",
+            "time": "2026-10-07T11:52:04.177Z",
             "percentChange": 19.99,
-            "ltp": 74.18
+            "ltp": 382.7
           },
           {
-            "time": "2026-10-01T13:48:24.556Z",
+            "time": "2026-10-07T11:53:47.468Z",
             "percentChange": 19.99,
-            "ltp": 74.18
+            "ltp": 382.7
           },
           {
-            "time": "2026-10-01T13:49:29.776Z",
+            "time": "2026-10-07T11:57:36.090Z",
             "percentChange": 19.99,
-            "ltp": 74.18
+            "ltp": 382.7
           },
           {
-            "time": "2026-10-01T13:50:57.423Z",
+            "time": "2026-10-07T12:00:50.172Z",
             "percentChange": 19.99,
-            "ltp": 74.18
+            "ltp": 382.7
           },
           {
-            "time": "2026-10-01T13:56:12.480Z",
+            "time": "2026-10-07T12:01:25.420Z",
             "percentChange": 19.99,
-            "ltp": 74.18
+            "ltp": 382.7
+          },
+          {
+            "time": "2026-10-07T12:03:07.178Z",
+            "percentChange": 19.99,
+            "ltp": 382.7
           }
         ]
       },
       {
-        "symbol": "XELPMOC",
+        "symbol": "ACEVECTOR",
         "series": "EQ",
-        "ltp": 94.5,
-        "open": 79.55,
-        "high": 95,
-        "low": 79.55,
-        "prevClose": 80.24,
-        "change": 17.77,
-        "percentChange": 17.77,
-        "volume": 244539,
-        "turnover": 223.7776389,
+        "ltp": 31.11,
+        "open": 25.8,
+        "high": 31.11,
+        "low": 25.27,
+        "prevClose": 25.93,
+        "change": 19.98,
+        "percentChange": 19.98,
+        "volume": 66714951,
+        "turnover": 19607.5240989,
         "reason": "",
         "reasonExDate": "",
-        "createdAt": "2026-10-01T06:42:06.532Z",
-        "modifiedAt": "2026-10-01T13:56:12.480Z",
+        "createdAt": "2026-10-07T11:40:21.047Z",
+        "modifiedAt": "2026-10-07T12:03:07.178Z",
         "stale": false,
         "aiRecommended": false,
         "aiRecommendedAt": null,
         "history": [
           {
-            "time": "2026-10-01T06:42:06.532Z",
-            "percentChange": 11.49,
-            "ltp": 89.46
+            "time": "2026-10-07T11:40:21.047Z",
+            "percentChange": 19.98,
+            "ltp": 31.11
           },
           {
-            "time": "2026-10-01T06:42:16.561Z",
-            "percentChange": 11.49,
-            "ltp": 89.46
+            "time": "2026-10-07T11:44:09.337Z",
+            "percentChange": 19.98,
+            "ltp": 31.11
           },
           {
-            "time": "2026-10-01T06:42:32.171Z",
-            "percentChange": 11.49,
-            "ltp": 89.46
+            "time": "2026-10-07T11:46:44.798Z",
+            "percentChange": 19.98,
+            "ltp": 31.11
           },
           {
-            "time": "2026-10-01T13:00:31.604Z",
-            "percentChange": 17.77,
-            "ltp": 94.5
+            "time": "2026-10-07T11:49:50.344Z",
+            "percentChange": 19.98,
+            "ltp": 31.11
           },
           {
-            "time": "2026-10-01T13:45:53.906Z",
-            "percentChange": 17.77,
-            "ltp": 94.5
+            "time": "2026-10-07T11:50:45.853Z",
+            "percentChange": 19.98,
+            "ltp": 31.11
           },
           {
-            "time": "2026-10-01T13:47:12.408Z",
-            "percentChange": 17.77,
-            "ltp": 94.5
+            "time": "2026-10-07T11:52:04.177Z",
+            "percentChange": 19.98,
+            "ltp": 31.11
           },
           {
-            "time": "2026-10-01T13:48:24.556Z",
-            "percentChange": 17.77,
-            "ltp": 94.5
+            "time": "2026-10-07T11:53:47.468Z",
+            "percentChange": 19.98,
+            "ltp": 31.11
           },
           {
-            "time": "2026-10-01T13:49:29.776Z",
-            "percentChange": 17.77,
-            "ltp": 94.5
+            "time": "2026-10-07T11:57:36.090Z",
+            "percentChange": 19.98,
+            "ltp": 31.11
           },
           {
-            "time": "2026-10-01T13:50:57.423Z",
-            "percentChange": 17.77,
-            "ltp": 94.5
+            "time": "2026-10-07T12:00:50.172Z",
+            "percentChange": 19.98,
+            "ltp": 31.11
           },
           {
-            "time": "2026-10-01T13:56:12.480Z",
-            "percentChange": 17.77,
-            "ltp": 94.5
+            "time": "2026-10-07T12:01:25.420Z",
+            "percentChange": 19.98,
+            "ltp": 31.11
+          },
+          {
+            "time": "2026-10-07T12:03:07.178Z",
+            "percentChange": 19.98,
+            "ltp": 31.11
           }
         ]
       },
       {
-        "symbol": "RVTH",
+        "symbol": "PNGSREVA",
         "series": "EQ",
-        "ltp": 779,
-        "open": 698.9,
-        "high": 803.75,
-        "low": 680,
-        "prevClose": 669.8,
-        "change": 16.3,
-        "percentChange": 16.3,
-        "volume": 43662,
-        "turnover": 335.00106120000004,
+        "ltp": 643.9,
+        "open": 551.45,
+        "high": 653,
+        "low": 549.9,
+        "prevClose": 547.2,
+        "change": 17.67,
+        "percentChange": 17.67,
+        "volume": 4514798,
+        "turnover": 27953.823296799997,
         "reason": "",
         "reasonExDate": "",
-        "createdAt": "2026-10-01T06:42:06.532Z",
-        "modifiedAt": "2026-10-01T13:56:12.480Z",
-        "stale": false,
-        "aiRecommended": false,
-        "aiRecommendedAt": null,
-        "history": [
-          {
-            "time": "2026-10-01T06:42:06.532Z",
-            "percentChange": 14.8,
-            "ltp": 768.9
-          },
-          {
-            "time": "2026-10-01T06:42:16.561Z",
-            "percentChange": 14.8,
-            "ltp": 768.9
-          },
-          {
-            "time": "2026-10-01T06:42:32.171Z",
-            "percentChange": 14.8,
-            "ltp": 768.9
-          },
-          {
-            "time": "2026-10-01T13:00:31.604Z",
-            "percentChange": 16.3,
-            "ltp": 779
-          },
-          {
-            "time": "2026-10-01T13:45:53.906Z",
-            "percentChange": 16.3,
-            "ltp": 779
-          },
-          {
-            "time": "2026-10-01T13:47:12.408Z",
-            "percentChange": 16.3,
-            "ltp": 779
-          },
-          {
-            "time": "2026-10-01T13:48:24.556Z",
-            "percentChange": 16.3,
-            "ltp": 779
-          },
-          {
-            "time": "2026-10-01T13:49:29.776Z",
-            "percentChange": 16.3,
-            "ltp": 779
-          },
-          {
-            "time": "2026-10-01T13:50:57.423Z",
-            "percentChange": 16.3,
-            "ltp": 779
-          },
-          {
-            "time": "2026-10-01T13:56:12.480Z",
-            "percentChange": 16.3,
-            "ltp": 779
-          }
-        ]
-      },
-      {
-        "symbol": "MOLBIO",
-        "series": "EQ",
-        "ltp": 1507,
-        "open": 1313,
-        "high": 1564.3,
-        "low": 1312.1,
-        "prevClose": 1308.9,
-        "change": 15.13,
-        "percentChange": 15.13,
-        "volume": 8751936,
-        "turnover": 128431.1600256,
-        "reason": "",
-        "reasonExDate": "",
-        "createdAt": "2026-10-01T06:42:06.532Z",
-        "modifiedAt": "2026-10-01T13:56:12.480Z",
+        "createdAt": "2026-10-07T11:40:21.047Z",
+        "modifiedAt": "2026-10-07T12:03:07.178Z",
         "stale": false,
         "aiRecommended": true,
-        "aiRecommendedAt": "2026-10-01T13:48:24.556Z",
+        "aiRecommendedAt": "2026-10-07T11:46:44.798Z",
         "history": [
           {
-            "time": "2026-10-01T06:42:06.532Z",
-            "percentChange": 14.07,
-            "ltp": 1493.1
+            "time": "2026-10-07T11:40:21.047Z",
+            "percentChange": 17.67,
+            "ltp": 643.9
           },
           {
-            "time": "2026-10-01T06:42:16.561Z",
-            "percentChange": 14.07,
-            "ltp": 1493.1
+            "time": "2026-10-07T11:44:09.337Z",
+            "percentChange": 17.67,
+            "ltp": 643.9
           },
           {
-            "time": "2026-10-01T06:42:32.171Z",
-            "percentChange": 14.07,
-            "ltp": 1493.1
+            "time": "2026-10-07T11:46:44.798Z",
+            "percentChange": 17.67,
+            "ltp": 643.9
           },
           {
-            "time": "2026-10-01T13:00:31.604Z",
-            "percentChange": 15.13,
-            "ltp": 1507
+            "time": "2026-10-07T11:49:50.344Z",
+            "percentChange": 17.67,
+            "ltp": 643.9
           },
           {
-            "time": "2026-10-01T13:45:53.906Z",
-            "percentChange": 15.13,
-            "ltp": 1507
+            "time": "2026-10-07T11:50:45.853Z",
+            "percentChange": 17.67,
+            "ltp": 643.9
           },
           {
-            "time": "2026-10-01T13:47:12.408Z",
-            "percentChange": 15.13,
-            "ltp": 1507
+            "time": "2026-10-07T11:52:04.177Z",
+            "percentChange": 17.67,
+            "ltp": 643.9
           },
           {
-            "time": "2026-10-01T13:48:24.556Z",
-            "percentChange": 15.13,
-            "ltp": 1507
+            "time": "2026-10-07T11:53:47.468Z",
+            "percentChange": 17.67,
+            "ltp": 643.9
           },
           {
-            "time": "2026-10-01T13:49:29.776Z",
-            "percentChange": 15.13,
-            "ltp": 1507
+            "time": "2026-10-07T11:57:36.090Z",
+            "percentChange": 17.67,
+            "ltp": 643.9
           },
           {
-            "time": "2026-10-01T13:50:57.423Z",
-            "percentChange": 15.13,
-            "ltp": 1507
+            "time": "2026-10-07T12:00:50.172Z",
+            "percentChange": 17.67,
+            "ltp": 643.9
           },
           {
-            "time": "2026-10-01T13:56:12.480Z",
-            "percentChange": 15.13,
-            "ltp": 1507
+            "time": "2026-10-07T12:01:25.420Z",
+            "percentChange": 17.67,
+            "ltp": 643.9
+          },
+          {
+            "time": "2026-10-07T12:03:07.178Z",
+            "percentChange": 17.67,
+            "ltp": 643.9
           }
         ]
       },
       {
-        "symbol": "THOMASCOTT",
+        "symbol": "RENTOMOJO",
         "series": "EQ",
-        "ltp": 302,
-        "open": 267.35,
-        "high": 316.95,
-        "low": 264.65,
-        "prevClose": 267.35,
-        "change": 12.96,
-        "percentChange": 12.96,
-        "volume": 725256,
-        "turnover": 2170.32858,
-        "reason": "Annual General Meeting",
-        "reasonExDate": "20-Sep-2024",
-        "createdAt": "2026-10-01T06:42:06.532Z",
-        "modifiedAt": "2026-10-01T13:56:12.480Z",
-        "stale": false,
-        "aiRecommended": false,
-        "aiRecommendedAt": null,
-        "history": [
-          {
-            "time": "2026-10-01T06:42:06.532Z",
-            "percentChange": 14.83,
-            "ltp": 307
-          },
-          {
-            "time": "2026-10-01T06:42:16.561Z",
-            "percentChange": 14.83,
-            "ltp": 307
-          },
-          {
-            "time": "2026-10-01T06:42:32.171Z",
-            "percentChange": 14.83,
-            "ltp": 307
-          },
-          {
-            "time": "2026-10-01T13:00:31.604Z",
-            "percentChange": 12.96,
-            "ltp": 302
-          },
-          {
-            "time": "2026-10-01T13:45:53.906Z",
-            "percentChange": 12.96,
-            "ltp": 302
-          },
-          {
-            "time": "2026-10-01T13:47:12.408Z",
-            "percentChange": 12.96,
-            "ltp": 302
-          },
-          {
-            "time": "2026-10-01T13:48:24.556Z",
-            "percentChange": 12.96,
-            "ltp": 302
-          },
-          {
-            "time": "2026-10-01T13:49:29.776Z",
-            "percentChange": 12.96,
-            "ltp": 302
-          },
-          {
-            "time": "2026-10-01T13:50:57.423Z",
-            "percentChange": 12.96,
-            "ltp": 302
-          },
-          {
-            "time": "2026-10-01T13:56:12.480Z",
-            "percentChange": 12.96,
-            "ltp": 302
-          }
-        ]
-      },
-      {
-        "symbol": "EUROTEXIND",
-        "series": "EQ",
-        "ltp": 15.73,
-        "open": 15.5,
-        "high": 15.73,
-        "low": 15.5,
-        "prevClose": 14.3,
-        "change": 10,
-        "percentChange": 10,
-        "volume": 30574,
-        "turnover": 4.800117999999999,
-        "reason": "Annual General Meeting",
-        "reasonExDate": "12-Sep-2024",
-        "createdAt": "2026-10-01T06:42:06.532Z",
-        "modifiedAt": "2026-10-01T13:56:12.480Z",
-        "stale": false,
-        "aiRecommended": false,
-        "aiRecommendedAt": null,
-        "history": [
-          {
-            "time": "2026-10-01T06:42:06.532Z",
-            "percentChange": 10,
-            "ltp": 15.73
-          },
-          {
-            "time": "2026-10-01T06:42:16.561Z",
-            "percentChange": 10,
-            "ltp": 15.73
-          },
-          {
-            "time": "2026-10-01T06:42:32.171Z",
-            "percentChange": 10,
-            "ltp": 15.73
-          },
-          {
-            "time": "2026-10-01T13:00:31.604Z",
-            "percentChange": 10,
-            "ltp": 15.73
-          },
-          {
-            "time": "2026-10-01T13:45:53.906Z",
-            "percentChange": 10,
-            "ltp": 15.73
-          },
-          {
-            "time": "2026-10-01T13:47:12.408Z",
-            "percentChange": 10,
-            "ltp": 15.73
-          },
-          {
-            "time": "2026-10-01T13:48:24.556Z",
-            "percentChange": 10,
-            "ltp": 15.73
-          },
-          {
-            "time": "2026-10-01T13:49:29.776Z",
-            "percentChange": 10,
-            "ltp": 15.73
-          },
-          {
-            "time": "2026-10-01T13:50:57.423Z",
-            "percentChange": 10,
-            "ltp": 15.73
-          },
-          {
-            "time": "2026-10-01T13:56:12.480Z",
-            "percentChange": 10,
-            "ltp": 15.73
-          }
-        ]
-      },
-      {
-        "symbol": "HEROMOTORS",
-        "series": "EQ",
-        "ltp": 167.8,
-        "open": 159.99,
-        "high": 167.8,
-        "low": 159.03,
-        "prevClose": 152.55,
-        "change": 10,
-        "percentChange": 10,
-        "volume": 87174697,
-        "turnover": 143114.7000649,
+        "ltp": 637,
+        "open": 551.4,
+        "high": 643.5,
+        "low": 550,
+        "prevClose": 545.2,
+        "change": 16.84,
+        "percentChange": 16.84,
+        "volume": 18424264,
+        "turnover": 112539.08936479999,
         "reason": "",
         "reasonExDate": "",
-        "createdAt": "2026-10-01T06:42:06.532Z",
-        "modifiedAt": "2026-10-01T13:56:12.480Z",
+        "createdAt": "2026-10-07T11:40:21.047Z",
+        "modifiedAt": "2026-10-07T12:03:07.178Z",
         "stale": false,
         "aiRecommended": true,
-        "aiRecommendedAt": "2026-10-01T13:48:24.556Z",
+        "aiRecommendedAt": "2026-10-07T11:46:44.798Z",
         "history": [
           {
-            "time": "2026-10-01T06:42:06.532Z",
-            "percentChange": 9.22,
-            "ltp": 166.61
+            "time": "2026-10-07T11:40:21.047Z",
+            "percentChange": 16.84,
+            "ltp": 637
           },
           {
-            "time": "2026-10-01T06:42:16.561Z",
-            "percentChange": 9.22,
-            "ltp": 166.61
+            "time": "2026-10-07T11:44:09.337Z",
+            "percentChange": 16.84,
+            "ltp": 637
           },
           {
-            "time": "2026-10-01T06:42:32.171Z",
-            "percentChange": 9.22,
-            "ltp": 166.61
+            "time": "2026-10-07T11:46:44.798Z",
+            "percentChange": 16.84,
+            "ltp": 637
           },
           {
-            "time": "2026-10-01T13:00:31.604Z",
-            "percentChange": 10,
-            "ltp": 167.8
+            "time": "2026-10-07T11:49:50.344Z",
+            "percentChange": 16.84,
+            "ltp": 637
           },
           {
-            "time": "2026-10-01T13:45:53.906Z",
-            "percentChange": 10,
-            "ltp": 167.8
+            "time": "2026-10-07T11:50:45.853Z",
+            "percentChange": 16.84,
+            "ltp": 637
           },
           {
-            "time": "2026-10-01T13:47:12.408Z",
-            "percentChange": 10,
-            "ltp": 167.8
+            "time": "2026-10-07T11:52:04.177Z",
+            "percentChange": 16.84,
+            "ltp": 637
           },
           {
-            "time": "2026-10-01T13:48:24.556Z",
-            "percentChange": 10,
-            "ltp": 167.8
+            "time": "2026-10-07T11:53:47.468Z",
+            "percentChange": 16.84,
+            "ltp": 637
           },
           {
-            "time": "2026-10-01T13:49:29.776Z",
-            "percentChange": 10,
-            "ltp": 167.8
+            "time": "2026-10-07T11:57:36.090Z",
+            "percentChange": 16.84,
+            "ltp": 637
           },
           {
-            "time": "2026-10-01T13:50:57.423Z",
-            "percentChange": 10,
-            "ltp": 167.8
+            "time": "2026-10-07T12:00:50.172Z",
+            "percentChange": 16.84,
+            "ltp": 637
           },
           {
-            "time": "2026-10-01T13:56:12.480Z",
-            "percentChange": 10,
-            "ltp": 167.8
+            "time": "2026-10-07T12:01:25.420Z",
+            "percentChange": 16.84,
+            "ltp": 637
+          },
+          {
+            "time": "2026-10-07T12:03:07.178Z",
+            "percentChange": 16.84,
+            "ltp": 637
           }
         ]
       },
       {
-        "symbol": "GTECJAINX",
+        "symbol": "MONQ50",
         "series": "EQ",
-        "ltp": 35.88,
-        "open": 35.88,
-        "high": 35.88,
-        "low": 35.88,
-        "prevClose": 32.62,
-        "change": 9.99,
-        "percentChange": 9.99,
-        "volume": 8844,
-        "turnover": 3.1732272,
-        "reason": "Annual General Meeting",
-        "reasonExDate": "22-Jul-2024",
-        "createdAt": "2026-10-01T06:42:06.532Z",
-        "modifiedAt": "2026-10-01T13:56:12.480Z",
+        "ltp": 256,
+        "open": 223.9,
+        "high": 263.04,
+        "low": 219.5,
+        "prevClose": 219.2,
+        "change": 16.79,
+        "percentChange": 16.79,
+        "volume": 2886068,
+        "turnover": 7047.2008424000005,
+        "reason": "",
+        "reasonExDate": "",
+        "createdAt": "2026-10-07T11:40:21.047Z",
+        "modifiedAt": "2026-10-07T12:03:07.178Z",
         "stale": false,
         "aiRecommended": false,
         "aiRecommendedAt": null,
         "history": [
           {
-            "time": "2026-10-01T06:42:06.532Z",
-            "percentChange": 9.99,
-            "ltp": 35.88
+            "time": "2026-10-07T11:40:21.047Z",
+            "percentChange": 16.79,
+            "ltp": 256
           },
           {
-            "time": "2026-10-01T06:42:16.561Z",
-            "percentChange": 9.99,
-            "ltp": 35.88
+            "time": "2026-10-07T11:44:09.337Z",
+            "percentChange": 16.79,
+            "ltp": 256
           },
           {
-            "time": "2026-10-01T06:42:32.171Z",
-            "percentChange": 9.99,
-            "ltp": 35.88
+            "time": "2026-10-07T11:46:44.798Z",
+            "percentChange": 16.79,
+            "ltp": 256
           },
           {
-            "time": "2026-10-01T13:00:31.604Z",
-            "percentChange": 9.99,
-            "ltp": 35.88
+            "time": "2026-10-07T11:49:50.344Z",
+            "percentChange": 16.79,
+            "ltp": 256
           },
           {
-            "time": "2026-10-01T13:45:53.906Z",
-            "percentChange": 9.99,
-            "ltp": 35.88
+            "time": "2026-10-07T11:50:45.853Z",
+            "percentChange": 16.79,
+            "ltp": 256
           },
           {
-            "time": "2026-10-01T13:47:12.408Z",
-            "percentChange": 9.99,
-            "ltp": 35.88
+            "time": "2026-10-07T11:52:04.177Z",
+            "percentChange": 16.79,
+            "ltp": 256
           },
           {
-            "time": "2026-10-01T13:48:24.556Z",
-            "percentChange": 9.99,
-            "ltp": 35.88
+            "time": "2026-10-07T11:53:47.468Z",
+            "percentChange": 16.79,
+            "ltp": 256
           },
           {
-            "time": "2026-10-01T13:49:29.776Z",
-            "percentChange": 9.99,
-            "ltp": 35.88
+            "time": "2026-10-07T11:57:36.090Z",
+            "percentChange": 16.79,
+            "ltp": 256
           },
           {
-            "time": "2026-10-01T13:50:57.423Z",
-            "percentChange": 9.99,
-            "ltp": 35.88
+            "time": "2026-10-07T12:00:50.172Z",
+            "percentChange": 16.79,
+            "ltp": 256
           },
           {
-            "time": "2026-10-01T13:56:12.480Z",
-            "percentChange": 9.99,
-            "ltp": 35.88
+            "time": "2026-10-07T12:01:25.420Z",
+            "percentChange": 16.79,
+            "ltp": 256
+          },
+          {
+            "time": "2026-10-07T12:03:07.178Z",
+            "percentChange": 16.79,
+            "ltp": 256
           }
         ]
       },
       {
-        "symbol": "AUGMONT",
+        "symbol": "CHENNPETRO",
         "series": "EQ",
-        "ltp": 1195.2,
-        "open": 1105,
-        "high": 1195.2,
-        "low": 1105,
-        "prevClose": 1086.55,
-        "change": 9.99,
-        "percentChange": 10,
-        "volume": 2504499,
-        "turnover": 29546.5765026,
-        "reason": "",
-        "reasonExDate": "",
-        "createdAt": "2026-10-01T06:42:06.532Z",
-        "modifiedAt": "2026-10-01T13:56:12.480Z",
+        "ltp": 1605,
+        "open": 1410,
+        "high": 1628.7,
+        "low": 1410,
+        "prevClose": 1405.7,
+        "change": 14.18,
+        "percentChange": 14.18,
+        "volume": 20027812,
+        "turnover": 313303.0742408,
+        "reason": "Dividend - Rs 54 Per Share",
+        "reasonExDate": "07-Aug-2026",
+        "createdAt": "2026-10-07T11:40:21.047Z",
+        "modifiedAt": "2026-10-07T12:03:07.178Z",
         "stale": false,
         "aiRecommended": true,
-        "aiRecommendedAt": "2026-10-01T13:50:57.423Z",
+        "aiRecommendedAt": "2026-10-07T11:46:44.798Z",
         "history": [
           {
-            "time": "2026-10-01T06:42:06.532Z",
-            "percentChange": 10,
-            "ltp": 1195.2
+            "time": "2026-10-07T11:40:21.047Z",
+            "percentChange": 14.18,
+            "ltp": 1605
           },
           {
-            "time": "2026-10-01T06:42:16.561Z",
-            "percentChange": 10,
-            "ltp": 1195.2
+            "time": "2026-10-07T11:44:09.337Z",
+            "percentChange": 14.18,
+            "ltp": 1605
           },
           {
-            "time": "2026-10-01T06:42:32.171Z",
-            "percentChange": 10,
-            "ltp": 1195.2
+            "time": "2026-10-07T11:46:44.798Z",
+            "percentChange": 14.18,
+            "ltp": 1605
           },
           {
-            "time": "2026-10-01T13:00:31.604Z",
-            "percentChange": 10,
-            "ltp": 1195.2
+            "time": "2026-10-07T11:49:50.344Z",
+            "percentChange": 14.18,
+            "ltp": 1605
           },
           {
-            "time": "2026-10-01T13:45:53.906Z",
-            "percentChange": 10,
-            "ltp": 1195.2
+            "time": "2026-10-07T11:50:45.853Z",
+            "percentChange": 14.18,
+            "ltp": 1605
           },
           {
-            "time": "2026-10-01T13:47:12.408Z",
-            "percentChange": 10,
-            "ltp": 1195.2
+            "time": "2026-10-07T11:52:04.177Z",
+            "percentChange": 14.18,
+            "ltp": 1605
           },
           {
-            "time": "2026-10-01T13:48:24.556Z",
-            "percentChange": 10,
-            "ltp": 1195.2
+            "time": "2026-10-07T11:53:47.468Z",
+            "percentChange": 14.18,
+            "ltp": 1605
           },
           {
-            "time": "2026-10-01T13:49:29.776Z",
-            "percentChange": 10,
-            "ltp": 1195.2
+            "time": "2026-10-07T11:57:36.090Z",
+            "percentChange": 14.18,
+            "ltp": 1605
           },
           {
-            "time": "2026-10-01T13:50:57.423Z",
-            "percentChange": 10,
-            "ltp": 1195.2
+            "time": "2026-10-07T12:00:50.172Z",
+            "percentChange": 14.18,
+            "ltp": 1605
           },
           {
-            "time": "2026-10-01T13:56:12.480Z",
-            "percentChange": 10,
-            "ltp": 1195.2
+            "time": "2026-10-07T12:01:25.420Z",
+            "percentChange": 14.18,
+            "ltp": 1605
+          },
+          {
+            "time": "2026-10-07T12:03:07.178Z",
+            "percentChange": 14.18,
+            "ltp": 1605
           }
         ]
       },
       {
-        "symbol": "RETAIL",
+        "symbol": "KANOHAR",
         "series": "EQ",
-        "ltp": 34.93,
-        "open": 34.93,
-        "high": 34.93,
-        "low": 34.93,
-        "prevClose": 31.76,
-        "change": 9.98,
-        "percentChange": 9.98,
-        "volume": 35473,
-        "turnover": 12.3907189,
+        "ltp": 1074.4,
+        "open": 1030,
+        "high": 1131,
+        "low": 1011.2,
+        "prevClose": 942.5,
+        "change": 13.99,
+        "percentChange": 13.99,
+        "volume": 18502805,
+        "turnover": 199895.0538175,
         "reason": "",
         "reasonExDate": "",
-        "createdAt": "2026-10-01T06:42:06.532Z",
-        "modifiedAt": "2026-10-01T13:56:12.480Z",
+        "createdAt": "2026-10-07T11:40:21.047Z",
+        "modifiedAt": "2026-10-07T12:03:07.178Z",
         "stale": false,
         "aiRecommended": false,
         "aiRecommendedAt": null,
         "history": [
           {
-            "time": "2026-10-01T06:42:06.532Z",
-            "percentChange": 9.98,
-            "ltp": 34.93
+            "time": "2026-10-07T11:40:21.047Z",
+            "percentChange": 13.99,
+            "ltp": 1074.4
           },
           {
-            "time": "2026-10-01T06:42:16.561Z",
-            "percentChange": 9.98,
-            "ltp": 34.93
+            "time": "2026-10-07T11:44:09.337Z",
+            "percentChange": 13.99,
+            "ltp": 1074.4
           },
           {
-            "time": "2026-10-01T06:42:32.171Z",
-            "percentChange": 9.98,
-            "ltp": 34.93
+            "time": "2026-10-07T11:46:44.798Z",
+            "percentChange": 13.99,
+            "ltp": 1074.4
           },
           {
-            "time": "2026-10-01T13:00:31.604Z",
-            "percentChange": 9.98,
-            "ltp": 34.93
+            "time": "2026-10-07T11:49:50.344Z",
+            "percentChange": 13.99,
+            "ltp": 1074.4
           },
           {
-            "time": "2026-10-01T13:45:53.906Z",
-            "percentChange": 9.98,
-            "ltp": 34.93
+            "time": "2026-10-07T11:50:45.853Z",
+            "percentChange": 13.99,
+            "ltp": 1074.4
           },
           {
-            "time": "2026-10-01T13:47:12.408Z",
-            "percentChange": 9.98,
-            "ltp": 34.93
+            "time": "2026-10-07T11:52:04.177Z",
+            "percentChange": 13.99,
+            "ltp": 1074.4
           },
           {
-            "time": "2026-10-01T13:48:24.556Z",
-            "percentChange": 9.98,
-            "ltp": 34.93
+            "time": "2026-10-07T11:53:47.468Z",
+            "percentChange": 13.99,
+            "ltp": 1074.4
           },
           {
-            "time": "2026-10-01T13:49:29.776Z",
-            "percentChange": 9.98,
-            "ltp": 34.93
+            "time": "2026-10-07T11:57:36.090Z",
+            "percentChange": 13.99,
+            "ltp": 1074.4
           },
           {
-            "time": "2026-10-01T13:50:57.423Z",
-            "percentChange": 9.98,
-            "ltp": 34.93
+            "time": "2026-10-07T12:00:50.172Z",
+            "percentChange": 13.99,
+            "ltp": 1074.4
           },
           {
-            "time": "2026-10-01T13:56:12.480Z",
-            "percentChange": 9.98,
-            "ltp": 34.93
+            "time": "2026-10-07T12:01:25.420Z",
+            "percentChange": 13.99,
+            "ltp": 1074.4
+          },
+          {
+            "time": "2026-10-07T12:03:07.178Z",
+            "percentChange": 13.99,
+            "ltp": 1074.4
           }
         ]
       },
       {
-        "symbol": "LGHL",
+        "symbol": "DHANBANK",
         "series": "EQ",
-        "ltp": 219,
-        "open": 204.04,
-        "high": 224.82,
-        "low": 200.15,
-        "prevClose": 200.04,
-        "change": 9.48,
-        "percentChange": 9.48,
-        "volume": 148758,
-        "turnover": 323.0875002,
-        "reason": "Bonus 7:5",
-        "reasonExDate": "10-Oct-2025",
-        "createdAt": "2026-10-01T06:42:06.532Z",
-        "modifiedAt": "2026-10-01T13:56:12.480Z",
+        "ltp": 32.82,
+        "open": 28.9,
+        "high": 34.16,
+        "low": 28.41,
+        "prevClose": 28.83,
+        "change": 13.84,
+        "percentChange": 13.84,
+        "volume": 18177967,
+        "turnover": 5907.839275,
+        "reason": "Rights 14:25 @ Premium Rs 11/-",
+        "reasonExDate": "27-Dec-2024",
+        "createdAt": "2026-10-07T11:40:21.047Z",
+        "modifiedAt": "2026-10-07T12:03:07.178Z",
         "stale": false,
         "aiRecommended": false,
         "aiRecommendedAt": null,
         "history": [
           {
-            "time": "2026-10-01T06:42:06.532Z",
-            "percentChange": 8.46,
-            "ltp": 216.97
+            "time": "2026-10-07T11:40:21.047Z",
+            "percentChange": 13.84,
+            "ltp": 32.82
           },
           {
-            "time": "2026-10-01T06:42:16.561Z",
-            "percentChange": 8.46,
-            "ltp": 216.97
+            "time": "2026-10-07T11:44:09.337Z",
+            "percentChange": 13.84,
+            "ltp": 32.82
           },
           {
-            "time": "2026-10-01T06:42:32.171Z",
-            "percentChange": 8.46,
-            "ltp": 216.97
+            "time": "2026-10-07T11:46:44.798Z",
+            "percentChange": 13.84,
+            "ltp": 32.82
           },
           {
-            "time": "2026-10-01T13:00:31.604Z",
-            "percentChange": 9.48,
-            "ltp": 219
+            "time": "2026-10-07T11:49:50.344Z",
+            "percentChange": 13.84,
+            "ltp": 32.82
           },
           {
-            "time": "2026-10-01T13:45:53.906Z",
-            "percentChange": 9.48,
-            "ltp": 219
+            "time": "2026-10-07T11:50:45.853Z",
+            "percentChange": 13.84,
+            "ltp": 32.82
           },
           {
-            "time": "2026-10-01T13:47:12.408Z",
-            "percentChange": 9.48,
-            "ltp": 219
+            "time": "2026-10-07T11:52:04.177Z",
+            "percentChange": 13.84,
+            "ltp": 32.82
           },
           {
-            "time": "2026-10-01T13:48:24.556Z",
-            "percentChange": 9.48,
-            "ltp": 219
+            "time": "2026-10-07T11:53:47.468Z",
+            "percentChange": 13.84,
+            "ltp": 32.82
           },
           {
-            "time": "2026-10-01T13:49:29.776Z",
-            "percentChange": 9.48,
-            "ltp": 219
+            "time": "2026-10-07T11:57:36.090Z",
+            "percentChange": 13.84,
+            "ltp": 32.82
           },
           {
-            "time": "2026-10-01T13:50:57.423Z",
-            "percentChange": 9.48,
-            "ltp": 219
+            "time": "2026-10-07T12:00:50.172Z",
+            "percentChange": 13.84,
+            "ltp": 32.82
           },
           {
-            "time": "2026-10-01T13:56:12.480Z",
-            "percentChange": 9.48,
-            "ltp": 219
+            "time": "2026-10-07T12:01:25.420Z",
+            "percentChange": 13.84,
+            "ltp": 32.82
+          },
+          {
+            "time": "2026-10-07T12:03:07.178Z",
+            "percentChange": 13.84,
+            "ltp": 32.82
           }
         ]
       },
       {
-        "symbol": "LANDSMILL",
+        "symbol": "TANAA",
         "series": "EQ",
-        "ltp": 1.05,
-        "open": 0.96,
-        "high": 1.05,
-        "low": 0.87,
-        "prevClose": 0.96,
-        "change": 9.38,
-        "percentChange": 9.38,
-        "volume": 35042099,
-        "turnover": 329.3957306,
-        "reason": "Annual General Meeting",
-        "reasonExDate": "02-Aug-2024",
-        "createdAt": "2026-10-01T06:42:06.532Z",
-        "modifiedAt": "2026-10-01T13:56:12.480Z",
-        "stale": false,
-        "aiRecommended": false,
-        "aiRecommendedAt": null,
-        "history": [
-          {
-            "time": "2026-10-01T06:42:06.532Z",
-            "percentChange": 9.38,
-            "ltp": 1.05
-          },
-          {
-            "time": "2026-10-01T06:42:16.561Z",
-            "percentChange": 9.38,
-            "ltp": 1.05
-          },
-          {
-            "time": "2026-10-01T06:42:32.171Z",
-            "percentChange": 9.38,
-            "ltp": 1.05
-          },
-          {
-            "time": "2026-10-01T13:00:31.604Z",
-            "percentChange": 9.38,
-            "ltp": 1.05
-          },
-          {
-            "time": "2026-10-01T13:45:53.906Z",
-            "percentChange": 9.38,
-            "ltp": 1.05
-          },
-          {
-            "time": "2026-10-01T13:47:12.408Z",
-            "percentChange": 9.38,
-            "ltp": 1.05
-          },
-          {
-            "time": "2026-10-01T13:48:24.556Z",
-            "percentChange": 9.38,
-            "ltp": 1.05
-          },
-          {
-            "time": "2026-10-01T13:49:29.776Z",
-            "percentChange": 9.38,
-            "ltp": 1.05
-          },
-          {
-            "time": "2026-10-01T13:50:57.423Z",
-            "percentChange": 9.38,
-            "ltp": 1.05
-          },
-          {
-            "time": "2026-10-01T13:56:12.480Z",
-            "percentChange": 9.38,
-            "ltp": 1.05
-          }
-        ]
-      },
-      {
-        "symbol": "VIVIANA",
-        "series": "EQ",
-        "ltp": 770,
-        "open": 685,
-        "high": 787.75,
-        "low": 685,
-        "prevClose": 704.35,
-        "change": 9.32,
-        "percentChange": 9.32,
-        "volume": 140440,
-        "turnover": 1055.139764,
-        "reason": "Dividend - Re 1 Per Sh",
-        "reasonExDate": "22-Sep-2026",
-        "createdAt": "2026-10-01T13:00:31.604Z",
-        "modifiedAt": "2026-10-01T13:56:12.480Z",
-        "stale": false,
-        "aiRecommended": false,
-        "aiRecommendedAt": null,
-        "history": [
-          {
-            "time": "2026-10-01T13:00:31.604Z",
-            "percentChange": 9.32,
-            "ltp": 770
-          },
-          {
-            "time": "2026-10-01T13:45:53.906Z",
-            "percentChange": 9.32,
-            "ltp": 770
-          },
-          {
-            "time": "2026-10-01T13:47:12.408Z",
-            "percentChange": 9.32,
-            "ltp": 770
-          },
-          {
-            "time": "2026-10-01T13:48:24.556Z",
-            "percentChange": 9.32,
-            "ltp": 770
-          },
-          {
-            "time": "2026-10-01T13:49:29.776Z",
-            "percentChange": 9.32,
-            "ltp": 770
-          },
-          {
-            "time": "2026-10-01T13:50:57.423Z",
-            "percentChange": 9.32,
-            "ltp": 770
-          },
-          {
-            "time": "2026-10-01T13:56:12.480Z",
-            "percentChange": 9.32,
-            "ltp": 770
-          }
-        ]
-      },
-      {
-        "symbol": "KREBSBIO",
-        "series": "EQ",
-        "ltp": 65.6,
-        "open": 60.5,
-        "high": 71.75,
-        "low": 59,
-        "prevClose": 60.2,
-        "change": 8.97,
-        "percentChange": 8.97,
-        "volume": 610828,
-        "turnover": 411.33157520000003,
-        "reason": "Annual General Meeting",
-        "reasonExDate": "20-Sep-2023",
-        "createdAt": "2026-10-01T06:42:06.532Z",
-        "modifiedAt": "2026-10-01T13:56:12.480Z",
-        "stale": false,
-        "aiRecommended": false,
-        "aiRecommendedAt": null,
-        "history": [
-          {
-            "time": "2026-10-01T06:42:06.532Z",
-            "percentChange": 10.02,
-            "ltp": 66.23
-          },
-          {
-            "time": "2026-10-01T06:42:16.561Z",
-            "percentChange": 10.02,
-            "ltp": 66.23
-          },
-          {
-            "time": "2026-10-01T06:42:32.171Z",
-            "percentChange": 10.02,
-            "ltp": 66.23
-          },
-          {
-            "time": "2026-10-01T13:00:31.604Z",
-            "percentChange": 8.97,
-            "ltp": 65.6
-          },
-          {
-            "time": "2026-10-01T13:45:53.906Z",
-            "percentChange": 8.97,
-            "ltp": 65.6
-          },
-          {
-            "time": "2026-10-01T13:47:12.408Z",
-            "percentChange": 8.97,
-            "ltp": 65.6
-          },
-          {
-            "time": "2026-10-01T13:48:24.556Z",
-            "percentChange": 8.97,
-            "ltp": 65.6
-          },
-          {
-            "time": "2026-10-01T13:49:29.776Z",
-            "percentChange": 8.97,
-            "ltp": 65.6
-          },
-          {
-            "time": "2026-10-01T13:50:57.423Z",
-            "percentChange": 8.97,
-            "ltp": 65.6
-          },
-          {
-            "time": "2026-10-01T13:56:12.480Z",
-            "percentChange": 8.97,
-            "ltp": 65.6
-          }
-        ]
-      },
-      {
-        "symbol": "LOKESHMACH",
-        "series": "EQ",
-        "ltp": 398,
-        "open": 366.2,
-        "high": 411.45,
-        "low": 360.15,
-        "prevClose": 365.9,
-        "change": 8.77,
-        "percentChange": 8.77,
-        "volume": 991506,
-        "turnover": 3919.0266156000002,
-        "reason": "Annual General Meeting",
-        "reasonExDate": "20-Sep-2024",
-        "createdAt": "2026-10-01T13:00:31.604Z",
-        "modifiedAt": "2026-10-01T13:56:12.480Z",
-        "stale": false,
-        "aiRecommended": false,
-        "aiRecommendedAt": null,
-        "history": [
-          {
-            "time": "2026-10-01T13:00:31.604Z",
-            "percentChange": 8.77,
-            "ltp": 398
-          },
-          {
-            "time": "2026-10-01T13:45:53.906Z",
-            "percentChange": 8.77,
-            "ltp": 398
-          },
-          {
-            "time": "2026-10-01T13:47:12.408Z",
-            "percentChange": 8.77,
-            "ltp": 398
-          },
-          {
-            "time": "2026-10-01T13:48:24.556Z",
-            "percentChange": 8.77,
-            "ltp": 398
-          },
-          {
-            "time": "2026-10-01T13:49:29.776Z",
-            "percentChange": 8.77,
-            "ltp": 398
-          },
-          {
-            "time": "2026-10-01T13:50:57.423Z",
-            "percentChange": 8.77,
-            "ltp": 398
-          },
-          {
-            "time": "2026-10-01T13:56:12.480Z",
-            "percentChange": 8.77,
-            "ltp": 398
-          }
-        ]
-      },
-      {
-        "symbol": "GKSL",
-        "series": "EQ",
-        "ltp": 194.65,
-        "open": 180.1,
-        "high": 209.8,
-        "low": 180,
-        "prevClose": 179.05,
-        "change": 8.71,
-        "percentChange": 8.71,
-        "volume": 34935174,
-        "turnover": 69433.658325,
+        "ltp": 349,
+        "open": 310.85,
+        "high": 363,
+        "low": 308,
+        "prevClose": 309.3,
+        "change": 12.84,
+        "percentChange": 12.84,
+        "volume": 447847,
+        "turnover": 1551.5659315,
         "reason": "",
         "reasonExDate": "",
-        "createdAt": "2026-10-01T06:42:06.532Z",
-        "modifiedAt": "2026-10-01T13:56:12.480Z",
+        "createdAt": "2026-10-07T11:40:21.047Z",
+        "modifiedAt": "2026-10-07T12:03:07.178Z",
         "stale": false,
-        "aiRecommended": true,
-        "aiRecommendedAt": "2026-10-01T13:48:24.556Z",
+        "aiRecommended": false,
+        "aiRecommendedAt": null,
         "history": [
           {
-            "time": "2026-10-01T06:42:06.532Z",
-            "percentChange": 10.77,
-            "ltp": 198.34
+            "time": "2026-10-07T11:40:21.047Z",
+            "percentChange": 12.84,
+            "ltp": 349
           },
           {
-            "time": "2026-10-01T06:42:16.561Z",
-            "percentChange": 10.77,
-            "ltp": 198.34
+            "time": "2026-10-07T11:44:09.337Z",
+            "percentChange": 12.84,
+            "ltp": 349
           },
           {
-            "time": "2026-10-01T06:42:32.171Z",
-            "percentChange": 10.77,
-            "ltp": 198.34
+            "time": "2026-10-07T11:46:44.798Z",
+            "percentChange": 12.84,
+            "ltp": 349
           },
           {
-            "time": "2026-10-01T13:00:31.604Z",
-            "percentChange": 8.71,
-            "ltp": 194.65
+            "time": "2026-10-07T11:49:50.344Z",
+            "percentChange": 12.84,
+            "ltp": 349
           },
           {
-            "time": "2026-10-01T13:45:53.906Z",
-            "percentChange": 8.71,
-            "ltp": 194.65
+            "time": "2026-10-07T11:50:45.853Z",
+            "percentChange": 12.84,
+            "ltp": 349
           },
           {
-            "time": "2026-10-01T13:47:12.408Z",
-            "percentChange": 8.71,
-            "ltp": 194.65
+            "time": "2026-10-07T11:52:04.177Z",
+            "percentChange": 12.84,
+            "ltp": 349
           },
           {
-            "time": "2026-10-01T13:48:24.556Z",
-            "percentChange": 8.71,
-            "ltp": 194.65
+            "time": "2026-10-07T11:53:47.468Z",
+            "percentChange": 12.84,
+            "ltp": 349
           },
           {
-            "time": "2026-10-01T13:49:29.776Z",
-            "percentChange": 8.71,
-            "ltp": 194.65
+            "time": "2026-10-07T11:57:36.090Z",
+            "percentChange": 12.84,
+            "ltp": 349
           },
           {
-            "time": "2026-10-01T13:50:57.423Z",
-            "percentChange": 8.71,
-            "ltp": 194.65
+            "time": "2026-10-07T12:00:50.172Z",
+            "percentChange": 12.84,
+            "ltp": 349
           },
           {
-            "time": "2026-10-01T13:56:12.480Z",
-            "percentChange": 8.71,
-            "ltp": 194.65
+            "time": "2026-10-07T12:01:25.420Z",
+            "percentChange": 12.84,
+            "ltp": 349
+          },
+          {
+            "time": "2026-10-07T12:03:07.178Z",
+            "percentChange": 12.84,
+            "ltp": 349
           }
         ]
       },
       {
-        "symbol": "SHBAJRG",
+        "symbol": "MANIKA",
         "series": "EQ",
-        "ltp": 172,
-        "open": 161.95,
-        "high": 183,
-        "low": 160,
-        "prevClose": 159.79,
-        "change": 7.64,
-        "percentChange": 7.64,
-        "volume": 42622,
-        "turnover": 74.460634,
+        "ltp": 58.13,
+        "open": 53.5,
+        "high": 61,
+        "low": 42,
+        "prevClose": 51.52,
+        "change": 12.83,
+        "percentChange": 12.83,
+        "volume": 18085851,
+        "turnover": 9923.7064437,
         "reason": "",
         "reasonExDate": "",
-        "createdAt": "2026-10-01T06:42:06.532Z",
-        "modifiedAt": "2026-10-01T13:56:12.480Z",
+        "createdAt": "2026-10-07T11:40:21.047Z",
+        "modifiedAt": "2026-10-07T12:03:07.178Z",
         "stale": false,
         "aiRecommended": false,
         "aiRecommendedAt": null,
         "history": [
           {
-            "time": "2026-10-01T06:42:06.532Z",
-            "percentChange": 12.45,
-            "ltp": 179.69
+            "time": "2026-10-07T11:40:21.047Z",
+            "percentChange": 12.83,
+            "ltp": 58.13
           },
           {
-            "time": "2026-10-01T06:42:16.561Z",
-            "percentChange": 12.45,
-            "ltp": 179.69
+            "time": "2026-10-07T11:44:09.337Z",
+            "percentChange": 12.83,
+            "ltp": 58.13
           },
           {
-            "time": "2026-10-01T06:42:32.171Z",
-            "percentChange": 12.45,
-            "ltp": 179.69
+            "time": "2026-10-07T11:46:44.798Z",
+            "percentChange": 12.83,
+            "ltp": 58.13
           },
           {
-            "time": "2026-10-01T13:00:31.604Z",
-            "percentChange": 7.64,
-            "ltp": 172
+            "time": "2026-10-07T11:49:50.344Z",
+            "percentChange": 12.83,
+            "ltp": 58.13
           },
           {
-            "time": "2026-10-01T13:45:53.906Z",
-            "percentChange": 7.64,
-            "ltp": 172
+            "time": "2026-10-07T11:50:45.853Z",
+            "percentChange": 12.83,
+            "ltp": 58.13
           },
           {
-            "time": "2026-10-01T13:47:12.408Z",
-            "percentChange": 7.64,
-            "ltp": 172
+            "time": "2026-10-07T11:52:04.177Z",
+            "percentChange": 12.83,
+            "ltp": 58.13
           },
           {
-            "time": "2026-10-01T13:48:24.556Z",
-            "percentChange": 7.64,
-            "ltp": 172
+            "time": "2026-10-07T11:53:47.468Z",
+            "percentChange": 12.83,
+            "ltp": 58.13
           },
           {
-            "time": "2026-10-01T13:49:29.776Z",
-            "percentChange": 7.64,
-            "ltp": 172
+            "time": "2026-10-07T11:57:36.090Z",
+            "percentChange": 12.83,
+            "ltp": 58.13
           },
           {
-            "time": "2026-10-01T13:50:57.423Z",
-            "percentChange": 7.64,
-            "ltp": 172
+            "time": "2026-10-07T12:00:50.172Z",
+            "percentChange": 12.83,
+            "ltp": 58.13
           },
           {
-            "time": "2026-10-01T13:56:12.480Z",
-            "percentChange": 7.64,
-            "ltp": 172
+            "time": "2026-10-07T12:01:25.420Z",
+            "percentChange": 12.83,
+            "ltp": 58.13
+          },
+          {
+            "time": "2026-10-07T12:03:07.178Z",
+            "percentChange": 12.83,
+            "ltp": 58.13
           }
         ]
       },
       {
-        "symbol": "MOM50",
+        "symbol": "MBEL",
         "series": "EQ",
-        "ltp": 254.9,
-        "open": 236.92,
-        "high": 254.9,
-        "low": 233.15,
-        "prevClose": 236.92,
-        "change": 7.59,
-        "percentChange": 7.59,
-        "volume": 20224,
-        "turnover": 47.41314559999999,
-        "reason": "Face Value Split From Rs.10/- To Rs.7/-",
-        "reasonExDate": "16-Oct-2014",
-        "createdAt": "2026-10-01T13:00:31.604Z",
-        "modifiedAt": "2026-10-01T13:56:12.480Z",
+        "ltp": 288,
+        "open": 255,
+        "high": 300.74,
+        "low": 250.26,
+        "prevClose": 255.41,
+        "change": 12.76,
+        "percentChange": 12.76,
+        "volume": 7111495,
+        "turnover": 20480.3944505,
+        "reason": "Dividend - Re 1 Per Share",
+        "reasonExDate": "10-Sep-2026",
+        "createdAt": "2026-10-07T11:40:21.047Z",
+        "modifiedAt": "2026-10-07T12:03:07.178Z",
         "stale": false,
         "aiRecommended": false,
         "aiRecommendedAt": null,
         "history": [
           {
-            "time": "2026-10-01T13:00:31.604Z",
-            "percentChange": 7.59,
-            "ltp": 254.9
+            "time": "2026-10-07T11:40:21.047Z",
+            "percentChange": 12.76,
+            "ltp": 288
           },
           {
-            "time": "2026-10-01T13:45:53.906Z",
-            "percentChange": 7.59,
-            "ltp": 254.9
+            "time": "2026-10-07T11:44:09.337Z",
+            "percentChange": 12.76,
+            "ltp": 288
           },
           {
-            "time": "2026-10-01T13:47:12.408Z",
-            "percentChange": 7.59,
-            "ltp": 254.9
+            "time": "2026-10-07T11:46:44.798Z",
+            "percentChange": 12.76,
+            "ltp": 288
           },
           {
-            "time": "2026-10-01T13:48:24.556Z",
-            "percentChange": 7.59,
-            "ltp": 254.9
+            "time": "2026-10-07T11:49:50.344Z",
+            "percentChange": 12.76,
+            "ltp": 288
           },
           {
-            "time": "2026-10-01T13:49:29.776Z",
-            "percentChange": 7.59,
-            "ltp": 254.9
+            "time": "2026-10-07T11:50:45.853Z",
+            "percentChange": 12.76,
+            "ltp": 288
           },
           {
-            "time": "2026-10-01T13:50:57.423Z",
-            "percentChange": 7.59,
-            "ltp": 254.9
+            "time": "2026-10-07T11:52:04.177Z",
+            "percentChange": 12.76,
+            "ltp": 288
           },
           {
-            "time": "2026-10-01T13:56:12.480Z",
-            "percentChange": 7.59,
-            "ltp": 254.9
+            "time": "2026-10-07T11:53:47.468Z",
+            "percentChange": 12.76,
+            "ltp": 288
+          },
+          {
+            "time": "2026-10-07T11:57:36.090Z",
+            "percentChange": 12.76,
+            "ltp": 288
+          },
+          {
+            "time": "2026-10-07T12:00:50.172Z",
+            "percentChange": 12.76,
+            "ltp": 288
+          },
+          {
+            "time": "2026-10-07T12:01:25.420Z",
+            "percentChange": 12.76,
+            "ltp": 288
+          },
+          {
+            "time": "2026-10-07T12:03:07.178Z",
+            "percentChange": 12.76,
+            "ltp": 288
           }
         ]
       },
       {
-        "symbol": "OMNI",
+        "symbol": "PRADPME",
         "series": "EQ",
-        "ltp": 606.45,
-        "open": 560,
-        "high": 614,
-        "low": 560,
-        "prevClose": 564.05,
-        "change": 7.52,
-        "percentChange": 7.52,
-        "volume": 2667824,
-        "turnover": 15929.3103216,
-        "reason": "",
-        "reasonExDate": "",
-        "createdAt": "2026-10-01T13:00:31.604Z",
-        "modifiedAt": "2026-10-01T13:56:12.480Z",
+        "ltp": 613,
+        "open": 572.2,
+        "high": 653.1,
+        "low": 572.2,
+        "prevClose": 544.25,
+        "change": 12.63,
+        "percentChange": 12.63,
+        "volume": 514852,
+        "turnover": 3234.7636307999996,
+        "reason": "Dividend - Rs 2.50 Per Share",
+        "reasonExDate": "31-Jul-2026",
+        "createdAt": "2026-10-07T11:40:21.047Z",
+        "modifiedAt": "2026-10-07T12:03:07.178Z",
         "stale": false,
         "aiRecommended": false,
         "aiRecommendedAt": null,
         "history": [
           {
-            "time": "2026-10-01T13:00:31.604Z",
-            "percentChange": 7.52,
-            "ltp": 606.45
+            "time": "2026-10-07T11:40:21.047Z",
+            "percentChange": 12.63,
+            "ltp": 613
           },
           {
-            "time": "2026-10-01T13:45:53.906Z",
-            "percentChange": 7.52,
-            "ltp": 606.45
+            "time": "2026-10-07T11:44:09.337Z",
+            "percentChange": 12.63,
+            "ltp": 613
           },
           {
-            "time": "2026-10-01T13:47:12.408Z",
-            "percentChange": 7.52,
-            "ltp": 606.45
+            "time": "2026-10-07T11:46:44.798Z",
+            "percentChange": 12.63,
+            "ltp": 613
           },
           {
-            "time": "2026-10-01T13:48:24.556Z",
-            "percentChange": 7.52,
-            "ltp": 606.45
+            "time": "2026-10-07T11:49:50.344Z",
+            "percentChange": 12.63,
+            "ltp": 613
           },
           {
-            "time": "2026-10-01T13:49:29.776Z",
-            "percentChange": 7.52,
-            "ltp": 606.45
+            "time": "2026-10-07T11:50:45.853Z",
+            "percentChange": 12.63,
+            "ltp": 613
           },
           {
-            "time": "2026-10-01T13:50:57.423Z",
-            "percentChange": 7.52,
-            "ltp": 606.45
+            "time": "2026-10-07T11:52:04.177Z",
+            "percentChange": 12.63,
+            "ltp": 613
           },
           {
-            "time": "2026-10-01T13:56:12.480Z",
-            "percentChange": 7.52,
-            "ltp": 606.45
-          }
-        ]
-      },
-      {
-        "symbol": "ELEVATE",
-        "series": "EQ",
-        "ltp": 345,
-        "open": 315,
-        "high": 353,
-        "low": 312.25,
-        "prevClose": 322.95,
-        "change": 6.83,
-        "percentChange": 6.83,
-        "volume": 15447430,
-        "turnover": 52525.896229,
-        "reason": "",
-        "reasonExDate": "",
-        "createdAt": "2026-10-01T13:00:31.604Z",
-        "modifiedAt": "2026-10-01T13:56:12.480Z",
-        "stale": false,
-        "aiRecommended": false,
-        "aiRecommendedAt": null,
-        "history": [
-          {
-            "time": "2026-10-01T13:00:31.604Z",
-            "percentChange": 6.83,
-            "ltp": 345
+            "time": "2026-10-07T11:53:47.468Z",
+            "percentChange": 12.63,
+            "ltp": 613
           },
           {
-            "time": "2026-10-01T13:45:53.906Z",
-            "percentChange": 6.83,
-            "ltp": 345
+            "time": "2026-10-07T11:57:36.090Z",
+            "percentChange": 12.63,
+            "ltp": 613
           },
           {
-            "time": "2026-10-01T13:47:12.408Z",
-            "percentChange": 6.83,
-            "ltp": 345
+            "time": "2026-10-07T12:00:50.172Z",
+            "percentChange": 12.63,
+            "ltp": 613
           },
           {
-            "time": "2026-10-01T13:48:24.556Z",
-            "percentChange": 6.83,
-            "ltp": 345
+            "time": "2026-10-07T12:01:25.420Z",
+            "percentChange": 12.63,
+            "ltp": 613
           },
           {
-            "time": "2026-10-01T13:49:29.776Z",
-            "percentChange": 6.83,
-            "ltp": 345
-          },
-          {
-            "time": "2026-10-01T13:50:57.423Z",
-            "percentChange": 6.83,
-            "ltp": 345
-          },
-          {
-            "time": "2026-10-01T13:56:12.480Z",
-            "percentChange": 6.83,
-            "ltp": 345
-          }
-        ]
-      },
-      {
-        "symbol": "MTNL",
-        "series": "EQ",
-        "ltp": 25.18,
-        "open": 23.1,
-        "high": 26.94,
-        "low": 22.71,
-        "prevClose": 22.97,
-        "change": 9.62,
-        "percentChange": 9.62,
-        "volume": 24088505,
-        "turnover": 6144.9776255,
-        "reason": "Annual General Meeting",
-        "reasonExDate": "23-Sep-2024",
-        "createdAt": "2026-10-01T06:42:06.532Z",
-        "modifiedAt": "2026-10-01T06:42:32.171Z",
-        "stale": true,
-        "aiRecommended": false,
-        "aiRecommendedAt": null,
-        "history": [
-          {
-            "time": "2026-10-01T06:42:06.532Z",
-            "percentChange": 9.62,
-            "ltp": 25.18
-          },
-          {
-            "time": "2026-10-01T06:42:16.561Z",
-            "percentChange": 9.62,
-            "ltp": 25.18
-          },
-          {
-            "time": "2026-10-01T06:42:32.171Z",
-            "percentChange": 9.62,
-            "ltp": 25.18
+            "time": "2026-10-07T12:03:07.178Z",
+            "percentChange": 12.63,
+            "ltp": 613
           }
         ]
       },
       {
         "symbol": "HAVISHA",
         "series": "EQ",
-        "ltp": 1.45,
-        "open": 1.32,
-        "high": 1.48,
-        "low": 1.32,
-        "prevClose": 1.34,
-        "change": 8.21,
-        "percentChange": 8.21,
-        "volume": 29439,
-        "turnover": 0.4062582,
+        "ltp": 1.53,
+        "open": 1.4,
+        "high": 1.63,
+        "low": 1.4,
+        "prevClose": 1.36,
+        "change": 12.5,
+        "percentChange": 12.5,
+        "volume": 501425,
+        "turnover": 7.5715175,
         "reason": "Annual General Meeting",
         "reasonExDate": "17-Sep-2024",
-        "createdAt": "2026-10-01T06:42:06.532Z",
-        "modifiedAt": "2026-10-01T06:42:32.171Z",
-        "stale": true,
+        "createdAt": "2026-10-07T11:40:21.047Z",
+        "modifiedAt": "2026-10-07T12:03:07.178Z",
+        "stale": false,
         "aiRecommended": false,
         "aiRecommendedAt": null,
         "history": [
           {
-            "time": "2026-10-01T06:42:06.532Z",
-            "percentChange": 8.21,
-            "ltp": 1.45
+            "time": "2026-10-07T11:40:21.047Z",
+            "percentChange": 12.5,
+            "ltp": 1.53
           },
           {
-            "time": "2026-10-01T06:42:16.561Z",
-            "percentChange": 8.21,
-            "ltp": 1.45
+            "time": "2026-10-07T11:44:09.337Z",
+            "percentChange": 12.5,
+            "ltp": 1.53
           },
           {
-            "time": "2026-10-01T06:42:32.171Z",
-            "percentChange": 8.21,
-            "ltp": 1.45
+            "time": "2026-10-07T11:46:44.798Z",
+            "percentChange": 12.5,
+            "ltp": 1.53
+          },
+          {
+            "time": "2026-10-07T11:49:50.344Z",
+            "percentChange": 12.5,
+            "ltp": 1.53
+          },
+          {
+            "time": "2026-10-07T11:50:45.853Z",
+            "percentChange": 12.5,
+            "ltp": 1.53
+          },
+          {
+            "time": "2026-10-07T11:52:04.177Z",
+            "percentChange": 12.5,
+            "ltp": 1.53
+          },
+          {
+            "time": "2026-10-07T11:53:47.468Z",
+            "percentChange": 12.5,
+            "ltp": 1.53
+          },
+          {
+            "time": "2026-10-07T11:57:36.090Z",
+            "percentChange": 12.5,
+            "ltp": 1.53
+          },
+          {
+            "time": "2026-10-07T12:00:50.172Z",
+            "percentChange": 12.5,
+            "ltp": 1.53
+          },
+          {
+            "time": "2026-10-07T12:01:25.420Z",
+            "percentChange": 12.5,
+            "ltp": 1.53
+          },
+          {
+            "time": "2026-10-07T12:03:07.178Z",
+            "percentChange": 12.5,
+            "ltp": 1.53
           }
         ]
       },
       {
-        "symbol": "PBMPOLY",
+        "symbol": "VIVOBIOT",
         "series": "EQ",
-        "ltp": 64.98,
-        "open": 56.2,
-        "high": 64.98,
-        "low": 56.2,
-        "prevClose": 60.32,
-        "change": 7.73,
-        "percentChange": 7.73,
-        "volume": 29,
-        "turnover": 0.016666300000000002,
+        "ltp": 15.5,
+        "open": 13.87,
+        "high": 16,
+        "low": 12.8,
+        "prevClose": 13.87,
+        "change": 11.75,
+        "percentChange": 11.75,
+        "volume": 116917,
+        "turnover": 16.36838,
         "reason": "",
         "reasonExDate": "",
-        "createdAt": "2026-10-01T06:42:06.532Z",
-        "modifiedAt": "2026-10-01T06:42:32.171Z",
-        "stale": true,
+        "createdAt": "2026-10-07T11:40:21.047Z",
+        "modifiedAt": "2026-10-07T12:03:07.178Z",
+        "stale": false,
         "aiRecommended": false,
         "aiRecommendedAt": null,
         "history": [
           {
-            "time": "2026-10-01T06:42:06.532Z",
-            "percentChange": 7.73,
-            "ltp": 64.98
+            "time": "2026-10-07T11:40:21.047Z",
+            "percentChange": 11.75,
+            "ltp": 15.5
           },
           {
-            "time": "2026-10-01T06:42:16.561Z",
-            "percentChange": 7.73,
-            "ltp": 64.98
+            "time": "2026-10-07T11:44:09.337Z",
+            "percentChange": 11.75,
+            "ltp": 15.5
           },
           {
-            "time": "2026-10-01T06:42:32.171Z",
-            "percentChange": 7.73,
-            "ltp": 64.98
+            "time": "2026-10-07T11:46:44.798Z",
+            "percentChange": 11.75,
+            "ltp": 15.5
+          },
+          {
+            "time": "2026-10-07T11:49:50.344Z",
+            "percentChange": 11.75,
+            "ltp": 15.5
+          },
+          {
+            "time": "2026-10-07T11:50:45.853Z",
+            "percentChange": 11.75,
+            "ltp": 15.5
+          },
+          {
+            "time": "2026-10-07T11:52:04.177Z",
+            "percentChange": 11.75,
+            "ltp": 15.5
+          },
+          {
+            "time": "2026-10-07T11:53:47.468Z",
+            "percentChange": 11.75,
+            "ltp": 15.5
+          },
+          {
+            "time": "2026-10-07T11:57:36.090Z",
+            "percentChange": 11.75,
+            "ltp": 15.5
+          },
+          {
+            "time": "2026-10-07T12:00:50.172Z",
+            "percentChange": 11.75,
+            "ltp": 15.5
+          },
+          {
+            "time": "2026-10-07T12:01:25.420Z",
+            "percentChange": 11.75,
+            "ltp": 15.5
+          },
+          {
+            "time": "2026-10-07T12:03:07.178Z",
+            "percentChange": 11.75,
+            "ltp": 15.5
           }
         ]
       },
       {
-        "symbol": "FEDDERSHOL",
+        "symbol": "MARSONS",
         "series": "EQ",
-        "ltp": 66.2,
-        "open": 62.27,
-        "high": 66.9,
-        "low": 61.36,
-        "prevClose": 61.51,
-        "change": 7.62,
-        "percentChange": 7.62,
-        "volume": 7746747,
-        "turnover": 5012.1453089999995,
+        "ltp": 132.7,
+        "open": 123,
+        "high": 138.95,
+        "low": 122.38,
+        "prevClose": 119.24,
+        "change": 11.29,
+        "percentChange": 11.29,
+        "volume": 19136401,
+        "turnover": 25099.303551599998,
         "reason": "",
         "reasonExDate": "",
-        "createdAt": "2026-10-01T06:42:06.532Z",
-        "modifiedAt": "2026-10-01T06:42:32.171Z",
-        "stale": true,
+        "createdAt": "2026-10-07T11:40:21.047Z",
+        "modifiedAt": "2026-10-07T12:03:07.178Z",
+        "stale": false,
         "aiRecommended": false,
         "aiRecommendedAt": null,
         "history": [
           {
-            "time": "2026-10-01T06:42:06.532Z",
-            "percentChange": 7.62,
-            "ltp": 66.2
+            "time": "2026-10-07T11:40:21.047Z",
+            "percentChange": 11.29,
+            "ltp": 132.7
           },
           {
-            "time": "2026-10-01T06:42:16.561Z",
-            "percentChange": 7.62,
-            "ltp": 66.2
+            "time": "2026-10-07T11:44:09.337Z",
+            "percentChange": 11.29,
+            "ltp": 132.7
           },
           {
-            "time": "2026-10-01T06:42:32.171Z",
-            "percentChange": 7.62,
-            "ltp": 66.2
+            "time": "2026-10-07T11:46:44.798Z",
+            "percentChange": 11.29,
+            "ltp": 132.7
+          },
+          {
+            "time": "2026-10-07T11:49:50.344Z",
+            "percentChange": 11.29,
+            "ltp": 132.7
+          },
+          {
+            "time": "2026-10-07T11:50:45.853Z",
+            "percentChange": 11.29,
+            "ltp": 132.7
+          },
+          {
+            "time": "2026-10-07T11:52:04.177Z",
+            "percentChange": 11.29,
+            "ltp": 132.7
+          },
+          {
+            "time": "2026-10-07T11:53:47.468Z",
+            "percentChange": 11.29,
+            "ltp": 132.7
+          },
+          {
+            "time": "2026-10-07T11:57:36.090Z",
+            "percentChange": 11.29,
+            "ltp": 132.7
+          },
+          {
+            "time": "2026-10-07T12:00:50.172Z",
+            "percentChange": 11.29,
+            "ltp": 132.7
+          },
+          {
+            "time": "2026-10-07T12:01:25.420Z",
+            "percentChange": 11.29,
+            "ltp": 132.7
+          },
+          {
+            "time": "2026-10-07T12:03:07.178Z",
+            "percentChange": 11.29,
+            "ltp": 132.7
           }
         ]
       },
       {
-        "symbol": "PML",
+        "symbol": "TEMPSENS",
         "series": "EQ",
-        "ltp": 499.9,
-        "open": 467,
-        "high": 504,
-        "low": 460.7,
-        "prevClose": 465.85,
-        "change": 7.31,
-        "percentChange": 7.31,
-        "volume": 487,
-        "turnover": 2.3606838,
+        "ltp": 571,
+        "open": 515.7,
+        "high": 603,
+        "low": 514.9,
+        "prevClose": 515.5,
+        "change": 10.77,
+        "percentChange": 10.77,
+        "volume": 9435714,
+        "turnover": 53900.5726536,
         "reason": "",
         "reasonExDate": "",
-        "createdAt": "2026-10-01T06:42:06.532Z",
-        "modifiedAt": "2026-10-01T06:42:32.171Z",
-        "stale": true,
+        "createdAt": "2026-10-07T11:40:21.047Z",
+        "modifiedAt": "2026-10-07T12:03:07.178Z",
+        "stale": false,
         "aiRecommended": false,
         "aiRecommendedAt": null,
         "history": [
           {
-            "time": "2026-10-01T06:42:06.532Z",
-            "percentChange": 7.31,
-            "ltp": 499.9
+            "time": "2026-10-07T11:40:21.047Z",
+            "percentChange": 10.77,
+            "ltp": 571
           },
           {
-            "time": "2026-10-01T06:42:16.561Z",
-            "percentChange": 7.31,
-            "ltp": 499.9
+            "time": "2026-10-07T11:44:09.337Z",
+            "percentChange": 10.77,
+            "ltp": 571
           },
           {
-            "time": "2026-10-01T06:42:32.171Z",
-            "percentChange": 7.31,
-            "ltp": 499.9
+            "time": "2026-10-07T11:46:44.798Z",
+            "percentChange": 10.77,
+            "ltp": 571
+          },
+          {
+            "time": "2026-10-07T11:49:50.344Z",
+            "percentChange": 10.77,
+            "ltp": 571
+          },
+          {
+            "time": "2026-10-07T11:50:45.853Z",
+            "percentChange": 10.77,
+            "ltp": 571
+          },
+          {
+            "time": "2026-10-07T11:52:04.177Z",
+            "percentChange": 10.77,
+            "ltp": 571
+          },
+          {
+            "time": "2026-10-07T11:53:47.468Z",
+            "percentChange": 10.77,
+            "ltp": 571
+          },
+          {
+            "time": "2026-10-07T11:57:36.090Z",
+            "percentChange": 10.77,
+            "ltp": 571
+          },
+          {
+            "time": "2026-10-07T12:00:50.172Z",
+            "percentChange": 10.77,
+            "ltp": 571
+          },
+          {
+            "time": "2026-10-07T12:01:25.420Z",
+            "percentChange": 10.77,
+            "ltp": 571
+          },
+          {
+            "time": "2026-10-07T12:03:07.178Z",
+            "percentChange": 10.77,
+            "ltp": 571
           }
         ]
       }
