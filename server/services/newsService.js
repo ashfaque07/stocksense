@@ -31,3 +31,11 @@ export async function enrichFactsWithNews(facts) {
     return { ...fact, news }
   })
 }
+
+// Fetch recent headlines for a single company name or ticker. Best-effort —
+// returns [] on failure so the stock analysis still runs on model knowledge.
+export async function getNewsForQuery(query) {
+  const term = String(query || '').trim()
+  if (!term) return []
+  return getSymbolNews(term)
+}

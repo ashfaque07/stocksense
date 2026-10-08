@@ -56,6 +56,11 @@ export const STOCK_SYSTEM_PROMPT =
   'respond ONLY in the exact markdown template below. Fill every bracketed ' +
   'placeholder; if a value is genuinely unknown, write "N/A". Do not add extra ' +
   'sections, preamble, or text outside the template.\n\n' +
+  'The user message may include a `Recent news` list of headlines (title, source, ' +
+  'date) gathered from the web in the last few days. When present, factor these ' +
+  'fresh catalysts into your Key Risk, AI Outlook and confidence, and reflect them ' +
+  'in the rationale. If no headlines are supplied, rely on your own knowledge and ' +
+  'keep confidence appropriately cautious.\n\n' +
   '## AI Stock Analysis\n\n' +
   '**[Company Name] ([Ticker]):** Fundamental analysis indicates ' +
   '**[Positive/Neutral/Cautious]** sentiment. Confidence is **[High/Medium/Low]**. ' +
@@ -74,8 +79,10 @@ export const STOCK_SYSTEM_PROMPT =
   '*Disclaimer: Automated analysis based on the model\u2019s knowledge, which may be ' +
   'outdated. Not investment advice.*'
 
-export function stockUserPrompt(query) {
-  return `Analyze the fundamentals of this listed stock: ${query}`
+export function stockUserPrompt(query, news) {
+  const base = `Analyze the fundamentals of this listed stock: ${query}`
+  if (!Array.isArray(news) || news.length === 0) return base
+  return `${base}\n\nRecent news (last few days):\n${JSON.stringify(news, null, 2)}`
 }
 
 // ---------------------------------------------------------------------------
