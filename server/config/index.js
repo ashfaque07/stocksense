@@ -62,6 +62,21 @@ export const REPORT_ID = 331
 export const SITE_HOST = 'https://www.investorgain.com'
 export const REPORT_REFERER = 'https://www.investorgain.com/report/ipo-gmp-live/331/'
 
+// Live news enrichment for the trending best-pick analysis. Headlines are
+// fetched from Google News RSS (no API key) and injected into the AI prompt so
+// the model reasons over real, recent news instead of admitting it has none.
+export const NEWS_RSS_HOST = 'https://news.google.com/rss/search'
+// Max headlines kept per stock symbol (most-recent first).
+export const NEWS_MAX_PER_SYMBOL = Number(process.env.NEWS_MAX_PER_SYMBOL) || 5
+// Only consider headlines newer than this many hours (fresh catalysts).
+export const NEWS_MAX_AGE_HOURS = Number(process.env.NEWS_MAX_AGE_HOURS) || 72
+// Cache TTL for a symbol's fetched headlines (ms).
+export const NEWS_CACHE_TTL_MS = Number(process.env.NEWS_CACHE_TTL_MS) || 15 * 60 * 1000
+// Max symbols fetched concurrently to avoid hammering the RSS endpoint.
+export const NEWS_FETCH_CONCURRENCY = Number(process.env.NEWS_FETCH_CONCURRENCY) || 4
+// Per-request timeout for a single RSS fetch (ms).
+export const NEWS_FETCH_TIMEOUT_MS = Number(process.env.NEWS_FETCH_TIMEOUT_MS) || 6000
+
 // AI providers (OpenAI-compatible endpoints) used for real-time analysis.
 // Each provider is enabled only when its API key env var is set; its selectable
 // models come from the matching comma-separated *_MODELS env var. This lets the

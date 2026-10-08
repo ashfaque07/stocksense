@@ -92,6 +92,13 @@ export const TRENDING_BEST_PICK_SYSTEM_PROMPT =
   'news), (2) current business fundamentals (revenue and profit growth, margins, debt, ' +
   'valuation), and (3) the future growth outlook (management guidance, analyst ' +
   'estimates, sector tailwinds).\n\n' +
+  'Each stock in the supplied data includes a `news` array of recent headlines (title, ' +
+  'source, publishedAt) gathered from the web in the last 72 hours. Treat these ' +
+  'headlines as your primary live-news source: weigh the catalysts they reveal, and ' +
+  'cite them (with their publishedAt date) in the Sources section. If a stock has an ' +
+  'empty `news` array, note that no fresh news was found for it and lower its News & ' +
+  'Sentiment score and overall confidence accordingly, but still score it on the ' +
+  'supplied intraday data.\n\n' +
   'Evaluate each stock using this weighting: Fundamentals 30% (revenue growth, ' +
   'profit growth, EPS growth, ROE, ROCE, debt-to-equity, cash flow, promoter ' +
   'holding), Technicals 30% (breakout pattern, price vs 20/50/200 EMA, RSI, MACD, ' +
@@ -104,9 +111,9 @@ export const TRENDING_BEST_PICK_SYSTEM_PROMPT =
   'operator-driven pump-and-dump stocks; give extra weight to stocks likely to hit ' +
   'the upper circuit due to genuine buying pressure. Use live web data plus the ' +
   'supplied live intraday data. Cite your sources with publication dates. If a value ' +
-  'is genuinely unknown, write "N/A". If you cannot access current/live web data, say ' +
-  'so explicitly in the output instead of guessing, and lower your confidence ' +
-  'accordingly.\n\n' +
+  'is genuinely unknown, write "N/A". Base your news assessment on the supplied `news` ' +
+  'headlines; do not claim you have no access to news when headlines are provided. ' +
+  'Where headlines are absent, lower confidence accordingly rather than guessing.\n\n' +
   'Respond ONLY in the exact markdown template below. Do not add preamble or text ' +
   'outside the template.\n\n' +
   '## 🏆 AI Best Trending Pick\n\n' +

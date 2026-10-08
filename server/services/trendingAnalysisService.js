@@ -2,6 +2,7 @@
 // AI streaming/caching helper and yields markdown text tokens as they arrive.
 
 import { streamCompletion, isAiConfigured } from './analysisService.js'
+import { enrichFactsWithNews } from './newsService.js'
 import { getModelFallbacks } from '../config/index.js'
 import {
   TRENDING_BEST_PICK_SYSTEM_PROMPT,
@@ -28,8 +29,7 @@ function stockFacts(s) {
   }
 }
 
-function buildMessages(type, stocks) {
-  const facts = stocks.map(stockFacts)
+function buildMessages(type, facts) {
   const listLabel = type === 'losers' ? 'top losers' : 'top gainers'
 
   return [
@@ -67,7 +67,11 @@ const BEST_PICK_CACHE_TTL_MS = 1 * 60 * 1000
 // Async generator that yields markdown chunks for the best-pick analysis.
 export async function* streamTrendingAnalysis(type, stocks, model) {
   const fresh = availableStocks(stocks)
-  yield* streamCompletion(buildMessages(type, fresh), cacheKey(type, fresh), model, { ttl: BEST_PICK_CACHE_TTL_MS })
+  // Enrich with recent news headlines so the AI reasons over real catalysts
+  // instead of reporting it has no live news. Best-effort — failures yield
+  // empty `news` arrays and the analysis still runs on intraday data.
+  const facts = await enrichFactsWithNews(fresh.map(stockFacts))
+  yield* streamCompletion(buildMessages(type, facts), cacheKey(type, fresh), model, { ttl: BEST_PICK_CACHE_TTL_MS })
 }
 
 // Overall budget for the refresh-time AI flagging. `streamCompletion` retries

@@ -3,26 +3,7 @@
 
 import { ICONS } from '../constants/ui.js'
 import Modal from './Modal.jsx'
-
-const fmtNum = (n, d = 2) =>
-  n === null || n === undefined || Number.isNaN(n)
-    ? '—'
-    : Number(n).toLocaleString('en-IN', { minimumFractionDigits: d, maximumFractionDigits: d })
-
-const fmtTime = (iso) => {
-  if (!iso) return '—'
-  const d = new Date(iso)
-  if (Number.isNaN(d.getTime())) return '—'
-  return d.toLocaleTimeString('en-IN', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-    timeZone: 'Asia/Kolkata'
-  })
-}
-
-const fmtInt = (n) =>
-  n === null || n === undefined || Number.isNaN(n) ? '—' : Number(n).toLocaleString('en-IN')
+import { fmtNum, fmtCount, fmtCompact, fmtTime } from '../utils/format.js'
 
 // NSE returns a literal "-" when a field has no value; treat it as empty.
 const clean = (v) => {
@@ -68,11 +49,11 @@ export default function TrendingHistoryModal({ stock, onClose }) {
         </div>
         <div>
           <dt>Volume</dt>
-          <dd>{fmtInt(stock.volume)}</dd>
+          <dd>{fmtCount(stock.volume)}</dd>
         </div>
         <div>
           <dt>Turnover (₹ L)</dt>
-          <dd>{fmtNum(stock.turnover)}</dd>
+          <dd>{fmtCompact(stock.turnover)}</dd>
         </div>
         <div>
           <dt>Created</dt>

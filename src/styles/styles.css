@@ -472,8 +472,8 @@ h1 {
 .trending-table tbody tr:last-child td { border-bottom: none; }
 .trending-table .sym { font-weight: 700; color: var(--text); }
 .trending-table .muted { color: var(--text-faint); }
-.trending-table .pos { color: var(--up); font-weight: 700; }
-.trending-table .neg { color: var(--down); font-weight: 700; }
+.pos { color: var(--up); font-weight: 700; }
+.neg { color: var(--down); font-weight: 700; }
 .trending-table .day-range {
   display: flex; flex-direction: column; gap: 2px;
   font-size: 12px; line-height: 1.3; white-space: nowrap;
