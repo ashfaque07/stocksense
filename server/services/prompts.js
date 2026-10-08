@@ -74,6 +74,10 @@ export const STOCK_SYSTEM_PROMPT =
   '| Valuation | P/E [X]x · P/B [X]x | Attractive / Fair / Expensive |\n' +
   '| Key Risk | [Short risk] | Low / Medium / High |\n' +
   '| AI Outlook | Buy / Hold / Avoid | Confidence: [X]% |\n\n' +
+  'For the Valuation row, give your best estimate of the trailing P/E and P/B ' +
+  'multiples from your knowledge of the company (e.g. "P/E 28x · P/B 4.2x"). Only ' +
+  'if a multiple is genuinely unknown, omit that metric rather than writing a bare ' +
+  '"N/Ax" — e.g. "P/E 28x · P/B N/A" or just "P/E N/A" — and lower confidence accordingly.\n\n' +
   '**Fundamental rationale:** The strongest factor is **[factor]**, while the main ' +
   'concern is **[risk]**. Summarise the investment case in two to three sentences.\n\n' +
   '*Disclaimer: Automated analysis based on the model\u2019s knowledge, which may be ' +
@@ -153,10 +157,12 @@ export const TRENDING_BEST_PICK_SYSTEM_PROMPT =
   '- [Source title] — [publisher], [YYYY-MM-DD]\n' +
   '- [Source title] — [publisher], [YYYY-MM-DD]\n\n' +
   '## 📊 Full Ranking\n\n' +
+  'List EVERY stock from the supplied data exactly once, ranked best to worst, with ' +
+  'consecutive ranks starting at 1. Do NOT add placeholder, filler, or ellipsis ("…") ' +
+  'rows, and do NOT invent symbols or rows beyond the stocks provided.\n\n' +
   '| Rank | Symbol | Score | Verdict |\n' +
   '| --- | --- | --- | --- |\n' +
-  '| 1 | [SYM] | [X]/100 | Buy / Watch / Avoid |\n' +
-  '| … | … | … | … |'
+  '| 1 | [SYM] | [X]/100 | Buy / Watch / Avoid |'
 
 export function trendingBestPickUserPrompt(listLabel, facts) {
   return (
