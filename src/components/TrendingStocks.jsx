@@ -280,6 +280,9 @@ export default function TrendingStocks() {
             <div className="summary markdown">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>{bestPick.summary}</ReactMarkdown>
               {analyzing && <span className="cursor">▍</span>}
+              {!analyzing && (
+                <p className="disclaimer"><em>Disclaimer: Automated analysis, not investment advice.</em></p>
+              )}
             </div>
           )}
         </Modal>
