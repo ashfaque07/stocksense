@@ -79,7 +79,13 @@ export async function* streamTrendingAnalysis(type, stocks, model) {
 // a slow/hung provider could block the trending refresh (and the HTTP response
 // the browser is waiting on) for minutes. The flagging is best-effort, so we
 // bound the whole thing and fall back to "no new flags" when it's exceeded.
-const RECOMMEND_TIMEOUT_MS = Number(process.env.TRENDING_RECOMMEND_TIMEOUT_MS) || 20000
+//
+// The budget must comfortably exceed the primary model's time-to-first-token:
+// reasoning models (e.g. Groq `gpt-oss-120b`) routinely take ~25–30s of
+// server-side reasoning before emitting the JSON, so too tight a cap times out
+// every refresh and nothing ever gets flagged. Keep it under the per-request
+// idle timeout (AI_REQUEST_TIMEOUT_MS, default 45s) so a single attempt can finish.
+const RECOMMEND_TIMEOUT_MS = Number(process.env.TRENDING_RECOMMEND_TIMEOUT_MS) || 600000
 
 // Ask the AI to pick the best `limit` stocks from the trending list and return
 // their symbols. Used at refresh time to flag `aiRecommended` stocks. Returns
@@ -91,18 +97,25 @@ export async function recommendBestSymbols(type, stocks, limit = 3) {
   // (its per-request idle timeout is longer than this outer budget, so a fallback
   // hasn't kicked in yet). Name it so the log points at the actual culprit.
   const stuckModel = getModelFallbacks(undefined)[0]?.model || 'none configured'
-  return Promise.race([
-    recommendBestSymbolsInner(type, stocks, limit),
-    new Promise((resolve) =>
-      setTimeout(() => {
-        console.error(
-          `[trending] AI recommendation timed out after ${RECOMMEND_TIMEOUT_MS}ms ` +
-            `(type=${type}, model: ${stuckModel}); skipping flags`
-        )
-        resolve([])
-      }, RECOMMEND_TIMEOUT_MS)
-    )
-  ])
+  // Clear the loser timer once the inner call settles, otherwise it keeps
+  // running and logs a misleading "timed out" message after a successful result.
+  let timer
+  try {
+    return await Promise.race([
+      recommendBestSymbolsInner(type, stocks, limit),
+      new Promise((resolve) => {
+        timer = setTimeout(() => {
+          console.error(
+            `[trending] AI recommendation timed out after ${RECOMMEND_TIMEOUT_MS}ms ` +
+              `(type=${type}, model: ${stuckModel}); skipping flags`
+          )
+          resolve([])
+        }, RECOMMEND_TIMEOUT_MS)
+      })
+    ])
+  } finally {
+    clearTimeout(timer)
+  }
 }
 
 async function recommendBestSymbolsInner(type, stocks, limit = 3) {
