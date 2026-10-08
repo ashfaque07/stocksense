@@ -24,7 +24,7 @@ const HEADINGS = {
   trending: {
     title: 'Trending Stocks',
     logo: ICONS.trending,
-    subtitle: 'Live NSE top gainers & losers, refreshed through the trading day.'
+    subtitle: 'Live NSE top gainers & losers, auto refreshed through the trading day.'
   }
 }
 
