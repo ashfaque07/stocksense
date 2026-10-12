@@ -3,12 +3,10 @@
 import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { useStockAnalysis } from '../hooks/useStockAnalysis.js'
 import { ICONS } from '../constants/ui.js'
 
-export default function StockAnalyzer() {
+export default function StockAnalyzer({ result, streaming, error, query, analyze }) {
   const [input, setInput] = useState('')
-  const { result, streaming, error, query, analyze } = useStockAnalysis()
 
   function onSubmit(e) {
     e.preventDefault()

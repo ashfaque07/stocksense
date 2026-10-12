@@ -7,6 +7,7 @@ import StockAnalyzer from './components/StockAnalyzer.jsx'
 import TrendingStocks from './components/TrendingStocks.jsx'
 import { useIpos } from './hooks/useIpos.js'
 import { useAnalysis } from './hooks/useAnalysis.js'
+import { useStockAnalysis } from './hooks/useStockAnalysis.js'
 import { useTheme } from './hooks/useTheme.js'
 import { ICONS } from './constants/ui.js'
 import { useState, useEffect } from 'react'
@@ -14,6 +15,7 @@ import { useState, useEffect } from 'react'
 export default function App() {
   const { ipos, source, loading, error, filter, setFilter, search, setSearch, filtered, counts } = useIpos()
   const { analysis, analyzing, streaming, analyze, close } = useAnalysis()
+  const stockAnalysis = useStockAnalysis()
   const { theme, toggle } = useTheme()
   const [view, setView] = useState(() => {
     try {
@@ -57,7 +59,7 @@ export default function App() {
       </nav>
 
       {view === 'stocks' ? (
-        <StockAnalyzer />
+        <StockAnalyzer {...stockAnalysis} />
       ) : view === 'trending' ? (
         <TrendingStocks />
       ) : (

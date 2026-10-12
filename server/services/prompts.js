@@ -59,8 +59,14 @@ export const STOCK_SYSTEM_PROMPT =
   'The user message may include a `Recent news` list of headlines (title, source, ' +
   'date) gathered from the web in the last few days. When present, factor these ' +
   'fresh catalysts into your Key Risk, AI Outlook and confidence, and reflect them ' +
-  'in the rationale. If no headlines are supplied, rely on your own knowledge and ' +
-  'keep confidence appropriately cautious.\n\n' +
+  'in the rationale. List up to three of the most relevant of these headlines ' +
+  '(most recent first) in the Recent news section, citing title, source and date. ' +
+  'If no headlines are supplied, write a single "- No recent news found" bullet, ' +
+  'rely on your own knowledge and keep confidence appropriately cautious.\n\n' +
+  'For the Valuation row, give your best estimate of the trailing P/E and P/B ' +
+  'multiples from your knowledge of the company (e.g. "P/E 28x · P/B 4.2x"). Only ' +
+  'if a multiple is genuinely unknown, omit that metric rather than writing a bare ' +
+  '"N/Ax" — e.g. "P/E 28x · P/B N/A" or just "P/E N/A" — and lower confidence accordingly.\n\n' +
   '## AI Stock Analysis\n\n' +
   '**[Company Name] ([Ticker]):** Fundamental analysis indicates ' +
   '**[Positive/Neutral/Cautious]** sentiment. Confidence is **[High/Medium/Low]**. ' +
@@ -74,12 +80,11 @@ export const STOCK_SYSTEM_PROMPT =
   '| Valuation | P/E [X]x · P/B [X]x | Attractive / Fair / Expensive |\n' +
   '| Key Risk | [Short risk] | Low / Medium / High |\n' +
   '| AI Outlook | Buy / Hold / Avoid | Confidence: [X]% |\n\n' +
-  'For the Valuation row, give your best estimate of the trailing P/E and P/B ' +
-  'multiples from your knowledge of the company (e.g. "P/E 28x · P/B 4.2x"). Only ' +
-  'if a multiple is genuinely unknown, omit that metric rather than writing a bare ' +
-  '"N/Ax" — e.g. "P/E 28x · P/B N/A" or just "P/E N/A" — and lower confidence accordingly.\n\n' +
   '**Fundamental rationale:** The strongest factor is **[factor]**, while the main ' +
   'concern is **[risk]**. Summarise the investment case in two to three sentences.\n\n' +
+  '**Recent news:**\n' +
+  '- [Headline] — [source], [YYYY-MM-DD]\n' +
+  '- [Headline] — [source], [YYYY-MM-DD]\n\n' +
   '*Disclaimer: Automated analysis based on the model\u2019s knowledge, which may be ' +
   'outdated. Not investment advice.*'
 
