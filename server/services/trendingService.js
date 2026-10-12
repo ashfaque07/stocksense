@@ -169,6 +169,26 @@ export function isMarketOpen(date = new Date()) {
 // `createdAt` marks the 09:00 IST day start.
 export async function refreshTrending(rawType = 'gainers') {
   const type = NSE_INDEX[rawType] ? rawType : 'gainers'
+
+  // Never fetch, clear, or start a new day on a non-trading day (weekend or
+  // public holiday). NSE still serves the previous session's data, so refreshing
+  // here would wrongly reset the list and update timestamps on a holiday. Serve
+  // the last stored snapshot untouched instead.
+  await loadHolidays()
+  if (!isTradingDay()) {
+    const prev = await readSnapshot(type)
+    return {
+      source: 'cache',
+      marketOpen: false,
+      type,
+      dayStartedAt: prev?.dayStartedAt || null,
+      updatedAt: prev?.updatedAt || null,
+      timestamp: prev?.timestamp || null,
+      count: prev?.stocks?.length || 0,
+      stocks: prev?.stocks || []
+    }
+  }
+
   const live = await getTrendingStocks(type)
   const prev = await readSnapshot(type)
 
@@ -250,5 +270,24 @@ export async function readTrending(rawType = 'gainers') {
   if (isFromToday && Array.isArray(snapshot.stocks) && snapshot.stocks.length) {
     return { source: 'cache', marketOpen: isMarketOpen(), ...snapshot }
   }
+
+  // No snapshot for today yet. On a non-trading day (weekend / holiday) we must
+  // NOT fetch or start a new day — that would clear the list and repopulate it
+  // with the previous session's stale data. Serve the last stored snapshot
+  // as-is; `refreshTrending` only resets and fetches on an actual trading day.
+  await loadHolidays()
+  if (!isTradingDay() && snapshot?.stocks?.length) {
+    return {
+      source: 'cache',
+      marketOpen: false,
+      type,
+      dayStartedAt: snapshot.dayStartedAt || null,
+      updatedAt: snapshot.updatedAt || null,
+      timestamp: snapshot.timestamp || null,
+      count: snapshot.stocks.length,
+      stocks: snapshot.stocks
+    }
+  }
+
   return refreshTrending(type)
 }
