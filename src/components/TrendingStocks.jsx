@@ -6,6 +6,7 @@ import remarkGfm from 'remark-gfm'
 import { useTrending } from '../hooks/useTrending.js'
 import { useTrendingAnalysis } from '../hooks/useTrendingAnalysis.js'
 import TrendingHistoryModal from './TrendingHistoryModal.jsx'
+import TrendingSkeleton from './TrendingSkeleton.jsx'
 import Modal from './Modal.jsx'
 import { ICONS } from '../constants/ui.js'
 import { fmtNum, fmtCount, fmtCompact, fmtTime } from '../utils/format.js'
@@ -148,7 +149,7 @@ export default function TrendingStocks() {
       )}
 
       {loading && !stocks.length ? (
-        <p className="info">Loading live trending stocks…</p>
+        <TrendingSkeleton />
       ) : (
         !!stocks.length && (
           <div className="trending-table-wrap">
