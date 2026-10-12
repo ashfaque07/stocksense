@@ -76,6 +76,7 @@ function parseRss(xml) {
     items.push({
       title: decodeEntities(headline),
       source: decodeEntities(source) || null,
+      link: pickTag(block, 'link') || null,
       publishedAt: Number.isNaN(published) ? null : new Date(published).toISOString()
     })
   }

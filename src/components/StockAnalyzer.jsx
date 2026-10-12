@@ -4,6 +4,7 @@ import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { ICONS } from '../constants/ui.js'
+import { MD_COMPONENTS } from '../constants/markdown.jsx'
 
 export default function StockAnalyzer({ result, streaming, error, query, analyze }) {
   const [input, setInput] = useState('')
@@ -44,7 +45,7 @@ export default function StockAnalyzer({ result, streaming, error, query, analyze
           </div>
           {streaming && !result.summary && <p className="info">{ICONS.ai} Analyzing in real time…</p>}
           <div className="summary markdown">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{result.summary}</ReactMarkdown>
+            <ReactMarkdown remarkPlugins={[remarkGfm]} components={MD_COMPONENTS}>{result.summary}</ReactMarkdown>
             {streaming && <span className="cursor">{ICONS.cursor}</span>}
           </div>
         </div>

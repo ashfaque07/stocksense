@@ -24,7 +24,7 @@
   --scrollbar: #334155;
   --scrollbar-hover: #475569;
   --heading-grad: linear-gradient(135deg, #fff 0%, #c7d2fe 45%, #7dd3fc 100%);
-  --link: #7dd3fc;
+  --link: #7575e5;
   --strong: #fff;
   --table-stripe: rgba(255, 255, 255, 0.04);
 }
@@ -54,7 +54,7 @@
   --scrollbar: #cbd5e1;
   --scrollbar-hover: #94a3b8;
   --heading-grad: linear-gradient(135deg, #1e293b 0%, #4f46e5 55%, #0284c7 100%);
-  --link: #0284c7;
+  --link: #111ee5;
   --strong: #0f172a;
   --table-stripe: rgba(15, 23, 42, 0.04);
 }
@@ -337,6 +337,7 @@ h1 {
 .markdown table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; border-radius: 8px; overflow: hidden; }
 .markdown th, .markdown td { border: 1px solid var(--border); padding: 9px 11px; text-align: left; }
 .markdown th { background: var(--surface-2); color: var(--text); font-weight: 700; }
+.markdown a { color: var(--link); text-decoration: underline; }
 .markdown tr:nth-child(even) td { background: var(--table-stripe); }
 .cursor { display: inline-block; color: var(--brand); font-weight: 700; animation: blink 1s steps(2, start) infinite; }
 @keyframes blink { to { visibility: hidden; } }

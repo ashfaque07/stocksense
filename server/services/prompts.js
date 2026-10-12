@@ -57,10 +57,13 @@ export const STOCK_SYSTEM_PROMPT =
   'placeholder; if a value is genuinely unknown, write "N/A". Do not add extra ' +
   'sections, preamble, or text outside the template.\n\n' +
   'The user message may include a `Recent news` list of headlines (title, source, ' +
-  'date) gathered from the web in the last few days. When present, factor these ' +
+  'link, date) gathered from the web in the last few days. When present, factor these ' +
   'fresh catalysts into your Key Risk, AI Recommendation and confidence, and reflect them ' +
   'in the rationale. List up to three of the most relevant of these headlines ' +
-  '(most recent first) in the Recent news section, citing title, source and date. ' +
+  '(most recent first) in the Recent news section. Render each as the plain headline ' +
+  'followed by an em dash and the source as a markdown link using the supplied ' +
+  '`link` field (only the source text is the link), then the date. Strip any ' +
+  'trailing " - [source]" that Google News appends to the headline. ' +
   'If no headlines are supplied, write a single "- No recent news found" bullet, ' +
   'rely on your own knowledge and keep confidence appropriately cautious.\n\n' +
   'For the Valuation row, give your best estimate of the trailing P/E and P/B ' +
@@ -83,8 +86,8 @@ export const STOCK_SYSTEM_PROMPT =
   '**Fundamental rationale:** The strongest factor is **[factor]**, while the main ' +
   'concern is **[risk]**. Summarise the investment case in two to three sentences.\n\n' +
   '**Recent news:**\n' +
-  '- [Headline] — [source], [YYYY-MM-DD]\n' +
-  '- [Headline] — [source], [YYYY-MM-DD]\n\n' +
+  '- [Headline] — [[source]]([url]), [YYYY-MM-DD]\n' +
+  '- [Headline] — [[source]]([url]), [YYYY-MM-DD]\n\n' +
   '*Disclaimer: Automated analysis based on the model\u2019s knowledge, which may be ' +
   'outdated. Not investment advice.*'
 
@@ -109,9 +112,11 @@ export const TRENDING_BEST_PICK_SYSTEM_PROMPT =
   'valuation), and (3) the future growth outlook (management guidance, analyst ' +
   'estimates, sector tailwinds).\n\n' +
   'Each stock in the supplied data includes a `news` array of recent headlines (title, ' +
-  'source, publishedAt) gathered from the web in the last 72 hours. Treat these ' +
+  'source, link, publishedAt) gathered from the web in the last 72 hours. Treat these ' +
   'headlines as your primary live-news source: weigh the catalysts they reveal, and ' +
-  'cite them (with their publishedAt date) in the Sources section. If a stock has an ' +
+  'cite them (with their publishedAt date) in the Sources section. Render only the ' +
+  'publisher name as a markdown link using the supplied `link` field; keep the source ' +
+  'title as plain text. If a stock has an ' +
   'empty `news` array, note that no fresh news was found for it and lower its News & ' +
   'Sentiment score and overall confidence accordingly, but still score it on the ' +
   'supplied intraday data.\n\n' +
@@ -159,8 +164,8 @@ export const TRENDING_BEST_PICK_SYSTEM_PROMPT =
   '- [Risk 1]\n' +
   '- [Risk 2]\n\n' +
   '**Sources**\n' +
-  '- [Source title] — [publisher], [YYYY-MM-DD]\n' +
-  '- [Source title] — [publisher], [YYYY-MM-DD]\n\n' +
+  '- [Source title] — [[publisher]]([url]), [YYYY-MM-DD]\n' +
+  '- [Source title] — [[publisher]]([url]), [YYYY-MM-DD]\n\n' +
   '## 📊 Full Ranking\n\n' +
   'List EVERY stock from the supplied data exactly once, ranked best to worst, with ' +
   'consecutive ranks starting at 1. Do NOT add placeholder, filler, or ellipsis ("…") ' +

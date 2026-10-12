@@ -3,6 +3,7 @@
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { ICONS } from '../constants/ui.js'
+import { MD_COMPONENTS } from '../constants/markdown.jsx'
 import Modal from './Modal.jsx'
 
 export default function AnalysisModal({ analysis, streaming, onClose }) {
@@ -24,7 +25,7 @@ export default function AnalysisModal({ analysis, streaming, onClose }) {
       )}
       {streaming && empty && <p className="info">{ICONS.ai} Analyzing in real time…</p>}
       <div className="summary markdown">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>{result.summary}</ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[remarkGfm]} components={MD_COMPONENTS}>{result.summary}</ReactMarkdown>
         {streaming && <span className="cursor">{ICONS.cursor}</span>}
       </div>
     </Modal>

@@ -9,6 +9,7 @@ import TrendingHistoryModal from './TrendingHistoryModal.jsx'
 import TrendingSkeleton from './TrendingSkeleton.jsx'
 import Modal from './Modal.jsx'
 import { ICONS } from '../constants/ui.js'
+import { MD_COMPONENTS } from '../constants/markdown.jsx'
 import { fmtNum, fmtCount, fmtCompact, fmtTime } from '../utils/format.js'
 
 // NSE returns a literal "-" when a field has no value; treat it as empty.
@@ -239,7 +240,7 @@ export default function TrendingStocks() {
           )}
           {bestPick && (
             <div className="summary markdown">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{bestPick.summary}</ReactMarkdown>
+              <ReactMarkdown remarkPlugins={[remarkGfm]} components={MD_COMPONENTS}>{bestPick.summary}</ReactMarkdown>
               {analyzing && <span className="cursor">▍</span>}
               {!analyzing && (
                 <p className="disclaimer"><em>Disclaimer: Automated analysis, not investment advice.</em></p>
