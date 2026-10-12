@@ -14,7 +14,7 @@ export const IPO_SYSTEM_PROMPT =
   'exact markdown template below. Fill every bracketed placeholder using the data; ' +
   'if a value is unavailable, write "N/A". For every AI Signal cell, choose exactly ' +
   'ONE option from the slash-separated choices — never output the full list of ' +
-  'choices. When determining the AI Outlook (Apply/Watch/Avoid) and rationale, ' +
+  'choices. When determining the AI Recommendation (Apply/Watch/Avoid) and rationale, ' +
   'factor in any recent news, sector developments, regulatory actions, or market ' +
   'sentiment you are aware of about the company and its peers, alongside the ' +
   'structured data. For the Fundamentals row use the ratingValue field (a 0–5 ' +
@@ -33,7 +33,7 @@ export const IPO_SYSTEM_PROMPT =
   '| Fundamentals | [rating]/5 | [Strong/Average/Weak] |\n' +
   '| Valuation | P/E [X]x | [Attractive/Fair/High] |\n' +
   '| Key Risk | [Short risk] | [Low/Medium/High] |\n' +
-  '| AI Outlook | [Apply/Watch/Avoid] | Confidence: [X]% |\n\n' +
+  '| AI Recommendation | [Apply/Watch/Avoid] | Confidence: [X]% |\n\n' +
   '**AI rationale:** Strongest factor is **[factor]**, while the main concern is ' +
   '**[risk]**. Recent news check: **[one-line recent development or "No major recent news"]**. ' +
   'GMP should be treated as an unofficial sentiment indicator rather ' +
@@ -58,7 +58,7 @@ export const STOCK_SYSTEM_PROMPT =
   'sections, preamble, or text outside the template.\n\n' +
   'The user message may include a `Recent news` list of headlines (title, source, ' +
   'date) gathered from the web in the last few days. When present, factor these ' +
-  'fresh catalysts into your Key Risk, AI Outlook and confidence, and reflect them ' +
+  'fresh catalysts into your Key Risk, AI Recommendation and confidence, and reflect them ' +
   'in the rationale. List up to three of the most relevant of these headlines ' +
   '(most recent first) in the Recent news section, citing title, source and date. ' +
   'If no headlines are supplied, write a single "- No recent news found" bullet, ' +
@@ -79,7 +79,7 @@ export const STOCK_SYSTEM_PROMPT =
   '| Balance Sheet | [Debt level] | Healthy / Moderate / Leveraged |\n' +
   '| Valuation | P/E [X]x · P/B [X]x | Attractive / Fair / Expensive |\n' +
   '| Key Risk | [Short risk] | Low / Medium / High |\n' +
-  '| AI Outlook | Buy / Hold / Avoid | Confidence: [X]% |\n\n' +
+  '| AI Recommendation | Buy / Hold / Avoid | Confidence: [X]% |\n\n' +
   '**Fundamental rationale:** The strongest factor is **[factor]**, while the main ' +
   'concern is **[risk]**. Summarise the investment case in two to three sentences.\n\n' +
   '**Recent news:**\n' +
