@@ -115,14 +115,15 @@ export default function TrendingStocks() {
           </button>
         </div>
         <div className="trending-meta">
-          {marketOpen ? (
-            <span className="badge" title="NSE market is open">Live</span>
-          ) : (
-            <span className="market-status closed" title="NSE market is closed">
-              <span className="market-dot" />
-              Market Closed
-            </span>
-          )}
+          {!loading &&
+            (marketOpen ? (
+              <span className="badge" title="NSE market is open">Live</span>
+            ) : (
+              <span className="market-status closed" title="NSE market is closed">
+                <span className="market-dot" />
+                Market Closed
+              </span>
+            ))}
           {dayStartedAt && <span className="trending-time">Day start {fmtTime(dayStartedAt)}</span>}
           {updatedAt && <span className="trending-time">Updated {fmtTime(updatedAt)}</span>}
           {timestamp && <span className="trending-time">NSE {timestamp}</span>}
