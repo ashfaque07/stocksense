@@ -16,7 +16,10 @@ export function useTrending() {
 
   const load = useCallback(async (nextType, force = false) => {
     if (force) setRefreshing(true)
-    else setLoading(true)
+    else {
+      setLoading(true)
+      setStocks([])
+    }
     setError(null)
     try {
       const data = await fetchTrending(nextType, force)
