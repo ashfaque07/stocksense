@@ -5,7 +5,7 @@ import { getSelectedModel } from './modelApi.js'
 export async function fetchTrending(type = 'gainers', force = false) {
   const params = new URLSearchParams({ type })
   if (force) params.set('refresh', '1')
-  const res = await fetch(`/api/trending?${params.toString()}`)
+  const res = await fetch(`/api/trending?${params.toString()}`, { cache: 'no-store' })
   return res.json()
 }
 

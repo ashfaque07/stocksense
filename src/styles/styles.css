@@ -403,7 +403,7 @@ h1 {
   border-color: transparent; color: #fff;
   box-shadow: 0 6px 16px -6px rgba(99, 102, 241, 0.7);
 }
-.trending-meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.trending-meta, .trending-times { display: flex; align-items: center; gap: 12px 10px; flex-wrap: wrap; }
 .trend-actions { display: inline-flex; align-items: center; gap: 12px; }
 .trending-time { color: var(--text-faint); font-size: 12px; }
 .market-status { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; }
@@ -461,7 +461,7 @@ h1 {
   background: linear-gradient(180deg, var(--card-grad-top), var(--card-grad-bottom));
 }
 .trending-table th, .trending-table td {
-  padding: 11px 14px; text-align: left; white-space: nowrap;
+  padding: 10px; text-align: left; white-space: nowrap;
   border-bottom: 1px solid var(--border-soft);
 }
 .trending-table thead th {

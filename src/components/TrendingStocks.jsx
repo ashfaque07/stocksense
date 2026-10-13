@@ -126,9 +126,11 @@ export default function TrendingStocks() {
                 Market Closed
               </span>
             ))}
-          {dayStartedAt && <span className="trending-time">Day start {fmtTime(dayStartedAt)}</span>}
-          {updatedAt && <span className="trending-time">Updated {fmtTime(updatedAt)}</span>}
-          {timestamp && <span className="trending-time">NSE {timestamp}</span>}
+          <div className="trending-times">
+            {dayStartedAt && <span className="trending-time">Day start {fmtTime(dayStartedAt)}</span>}
+            {updatedAt && <span className="trending-time">Updated {fmtTime(updatedAt)}</span>}
+            {timestamp && <span className="trending-time">NSE {timestamp}</span>}
+          </div>
           <div className="trend-actions">
             <button
               className="trend-ai-btn"
@@ -160,14 +162,14 @@ export default function TrendingStocks() {
                   <th>#</th>
                   <th className="ta-left sortable" onClick={() => onSort('symbol')}>Symbol{sortIcon('symbol')}</th>
                   <th className="sortable" title="Last Traded Price (% change from prev close)" onClick={() => onSort('ltp')}>LTP (%){sortIcon('ltp')}</th>
+                  <th className="sortable" onClick={() => onSort('created')}>Created{sortIcon('created')}</th>
+                  <th className="sortable" onClick={() => onSort('modified')}>Modified{sortIcon('modified')}</th>
                   <th className="sortable" onClick={() => onSort('open')}>Open{sortIcon('open')}</th>
                   <th className="sortable" title="Previous Close" onClick={() => onSort('prev')}>Prev{sortIcon('prev')}</th>
                   <th title="Intraday High and Low">Day Range</th>
                   <th className="sortable" title="Shares traded" onClick={() => onSort('volume')}>Vol{sortIcon('volume')}</th>
                   <th className="sortable" title="Traded value (₹)" onClick={() => onSort('turnover')}>Turnover{sortIcon('turnover')}</th>
                   <th className="ta-left sortable" onClick={() => onSort('reason')}>Reason (Trending){sortIcon('reason')}</th>
-                  <th className="sortable" onClick={() => onSort('created')}>Created{sortIcon('created')}</th>
-                  <th className="sortable" onClick={() => onSort('modified')}>Modified{sortIcon('modified')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -205,6 +207,8 @@ export default function TrendingStocks() {
                           ({up ? '▲' : '▼'} {fmtNum(s.percentChange)}%)
                         </span>
                       </td>
+                      <td className="muted">{fmtTime(s.createdAt)}</td>
+                      <td className="muted">{fmtTime(s.modifiedAt)}</td>
                       <td>{fmtNum(s.open)}</td>
                       <td>{fmtNum(s.prevClose)}</td>
                       <td className="day-range">
@@ -216,8 +220,6 @@ export default function TrendingStocks() {
                       <td className="ta-left reason" title={reason ? (exDate ? `${reason} · Ex-date: ${exDate}` : reason) : 'No reason found'}>
                         <span className="reason-text">{reason || '—'}</span>
                       </td>
-                      <td className="muted">{fmtTime(s.createdAt)}</td>
-                      <td className="muted">{fmtTime(s.modifiedAt)}</td>
                     </tr>
                   )
                 })}
