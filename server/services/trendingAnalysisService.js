@@ -29,7 +29,7 @@ function stockFacts(s) {
   }
 }
 
-function buildMessages(type, facts) {
+function buildMessages(type, facts, sourceMap) {
   const listLabel = type === 'losers' ? 'top losers' : 'top gainers'
 
   return [
@@ -39,10 +39,69 @@ function buildMessages(type, facts) {
     },
     {
       role: 'user',
-      content: trendingBestPickUserPrompt(listLabel, facts)
+      content: trendingBestPickUserPrompt(listLabel, promptFacts(facts, sourceMap))
     }
   ]
 }
+
+// Replace each news item's long Google News `link` with a short citation id
+// (e.g. `S3`) before sending to the AI, and record id -> { source, link } in
+// `sourceMap`. The model cites `[S3]` in its Sources section (costing ~1 token
+// instead of ~80 for the raw URL); we re-inject the real markdown link into the
+// streamed output afterwards. This keeps clickable sources while saving ~3-4k
+// tokens on a 20-stock request. The links on the data returned to the UI are
+// untouched — only the prompt copy is trimmed.
+function promptFacts(facts, sourceMap) {
+  let nextId = 0
+  return facts.map((f) =>
+    Array.isArray(f.news) && f.news.length
+      ? {
+          ...f,
+          news: f.news.map(({ link, ...rest }) => {
+            const id = `S${++nextId}`
+            if (link) sourceMap.set(id, { source: rest.source || 'source', link })
+            return { ...rest, cite: id }
+          })
+        }
+      : f
+  )
+}
+
+// Citation token the model emits in place of a real link: `[S<number>]`.
+const CITATION_RE = /\[S(\d+)\]/g
+
+// Swap every `[S<id>]` citation for the real markdown link `[source](link)`
+// using the recorded source map. Unknown ids are left as plain text (the id
+// stripped) so no dangling placeholder is shown.
+function replaceCitations(text, sourceMap) {
+  return text.replace(CITATION_RE, (match, n) => {
+    const entry = sourceMap.get(`S${n}`)
+    if (!entry) return ''
+    return `[${entry.source}](${entry.link})`
+  })
+}
+
+// Longest trailing substring of `buffer` that could still grow into a citation
+// token (`[`, `[S`, `[S3`, …) and so must be held back until more text arrives.
+const PARTIAL_CITATION_RE = /\[S?\d*$/
+
+// Stream-safe wrapper: re-inject real links for `[S<id>]` citations as tokens
+// arrive. A citation can be split across chunks, so we buffer only the trailing
+// bytes that might be an incomplete citation and emit everything else.
+async function* reinjectCitations(stream, sourceMap) {
+  let buffer = ''
+  for await (const chunk of stream) {
+    buffer += chunk
+    const match = PARTIAL_CITATION_RE.exec(buffer)
+    const safeLen = match ? match.index : buffer.length
+    if (safeLen > 0) {
+      yield replaceCitations(buffer.slice(0, safeLen), sourceMap)
+      buffer = buffer.slice(safeLen)
+    }
+  }
+  if (buffer) yield replaceCitations(buffer, sourceMap)
+}
+
 
 // Build a stable cache key from the symbols and their % change so identical
 // snapshots reuse the cached analysis.
@@ -71,7 +130,10 @@ export async function* streamTrendingAnalysis(type, stocks, model) {
   // instead of reporting it has no live news. Best-effort — failures yield
   // empty `news` arrays and the analysis still runs on intraday data.
   const facts = await enrichFactsWithNews(fresh.map(stockFacts))
-  yield* streamCompletion(buildMessages(type, facts), cacheKey(type, fresh), model, { ttl: BEST_PICK_CACHE_TTL_MS })
+  const sourceMap = new Map()
+  const messages = buildMessages(type, facts, sourceMap)
+  const stream = streamCompletion(messages, cacheKey(type, fresh), model, { ttl: BEST_PICK_CACHE_TTL_MS })
+  yield* reinjectCitations(stream, sourceMap)
 }
 
 // Overall budget for the refresh-time AI flagging. `streamCompletion` retries
