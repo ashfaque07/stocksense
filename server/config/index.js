@@ -66,8 +66,10 @@ export const REPORT_REFERER = 'https://www.investorgain.com/report/ipo-gmp-live/
 // fetched from Google News RSS (no API key) and injected into the AI prompt so
 // the model reasons over real, recent news instead of admitting it has none.
 export const NEWS_RSS_HOST = 'https://news.google.com/rss/search'
-// Max headlines kept per stock symbol (most-recent first).
-export const NEWS_MAX_PER_SYMBOL = Number(process.env.NEWS_MAX_PER_SYMBOL) || 5
+// Max headlines kept per stock symbol (most-recent first). Kept low because the
+// best-pick prompt sends headlines for every trending stock, so each extra item
+// multiplies prompt tokens across the whole list.
+export const NEWS_MAX_PER_SYMBOL = Number(process.env.NEWS_MAX_PER_SYMBOL) || 3
 // Only consider headlines newer than this many hours (fresh catalysts).
 export const NEWS_MAX_AGE_HOURS = Number(process.env.NEWS_MAX_AGE_HOURS) || 72
 // Cache TTL for a symbol's fetched headlines (ms).
