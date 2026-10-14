@@ -133,6 +133,7 @@ h1 {
   color: inherit; font-size: 13px; font-weight: 600;
   padding: 0 10px; max-width: 200px;
   transition: border-color 0.15s ease, background 0.15s ease;
+  text-transform: capitalize;
 }
 .model-selector select:hover { border-color: var(--brand); }
 .model-selector select:focus { outline: none; border-color: var(--brand); }
