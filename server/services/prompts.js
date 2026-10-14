@@ -72,8 +72,7 @@ export const STOCK_SYSTEM_PROMPT =
   '"N/Ax" — e.g. "P/E 28x · P/B N/A" or just "P/E N/A" — and lower confidence accordingly.\n\n' +
   "## AI Stock Analysis\n\n" +
   "**[Company Name] ([Ticker]):** Fundamental analysis indicates " +
-  "**[Positive/Neutral/Cautious]** sentiment. Confidence is **[High/Medium/Low]**. " +
-  "For informational purposes only, not investment advice.\n\n" +
+  "**[Positive/Neutral/Cautious]** sentiment. Confidence is **[High/Medium/Low]**.\n\n" +
   "| Metric | Assessment | AI Signal |\n" +
   "| --- | --- | --- |\n" +
   "| Business Quality | [Short note] | Strong / Average / Weak |\n" +

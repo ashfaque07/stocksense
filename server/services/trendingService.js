@@ -170,12 +170,15 @@ export function isMarketOpen(date = new Date()) {
 export async function refreshTrending(rawType = 'gainers') {
   const type = NSE_INDEX[rawType] ? rawType : 'gainers'
 
-  // Never fetch, clear, or start a new day on a non-trading day (weekend or
-  // public holiday). NSE still serves the previous session's data, so refreshing
-  // here would wrongly reset the list and update timestamps on a holiday. Serve
-  // the last stored snapshot untouched instead.
+  // Never fetch, clear, or start a new day while the market is closed — that is,
+  // on a non-trading day (weekend / public holiday) OR on a trading day before
+  // the 09:00 IST open and after the 15:30 IST close. NSE still serves the
+  // previous session's data outside hours, so refreshing here would wrongly
+  // reset the list and start a new day early (before open). Serve the last
+  // stored snapshot untouched so the previous (stale) stocks stay visible until
+  // the market actually opens.
   await loadHolidays()
-  if (!isTradingDay()) {
+  if (!isMarketOpen()) {
     const prev = await readSnapshot(type)
     return {
       source: 'cache',
@@ -271,12 +274,14 @@ export async function readTrending(rawType = 'gainers') {
     return { source: 'cache', marketOpen: isMarketOpen(), ...snapshot }
   }
 
-  // No snapshot for today yet. On a non-trading day (weekend / holiday) we must
-  // NOT fetch or start a new day — that would clear the list and repopulate it
-  // with the previous session's stale data. Serve the last stored snapshot
-  // as-is; `refreshTrending` only resets and fetches on an actual trading day.
+  // No snapshot for today yet. While the market is closed (non-trading day, or a
+  // trading day before 09:00 IST open / after 15:30 IST close) we must NOT fetch
+  // or start a new day — that would clear the list and repopulate it with the
+  // previous session's data, and start "today" early. Serve the last stored
+  // snapshot as-is so the previous (stale) stocks stay visible until the market
+  // opens; `refreshTrending` only resets and fetches during market hours.
   await loadHolidays()
-  if (!isTradingDay() && snapshot?.stocks?.length) {
+  if (!isMarketOpen() && snapshot?.stocks?.length) {
     return {
       source: 'cache',
       marketOpen: false,
