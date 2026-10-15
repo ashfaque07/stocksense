@@ -545,7 +545,6 @@ h1 {
   .trend-actions .trend-ai-btn,
   .trend-actions .trend-refresh { gap: 12px 5px; }
   .trending-meta, .trending-time { font-size: 11px; }
-  .trending-meta, .trending-time { font-size: 12px; }
   .trending-table { font-size: 12px; }
 
   .modal { padding: 10px; }
