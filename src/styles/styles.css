@@ -405,7 +405,7 @@ h1 {
   box-shadow: 0 6px 16px -6px rgba(99, 102, 241, 0.7);
 }
 .trending-meta, .trending-times { display: flex; align-items: center; gap: 12px 10px; flex-wrap: wrap; }
-.trending-meta { margin: auto; justify-content: flex-end; }
+.trending-meta { justify-content: flex-end; }
 .trend-actions { display: inline-grid; grid-auto-flow: column; grid-auto-columns: 1fr; align-items: stretch; gap: 12px; }
 .trend-actions .trend-refresh,
 .trend-actions .trend-ai-btn {
@@ -531,7 +531,7 @@ h1 {
   }
   .subtitle { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 6px; }
   .badge { flex: 0 0 auto; }
-  .header-actions { position: static; margin-top: 14px; }
+  .header-actions { position: static; margin-top: 14px; justify-content: end; }
   .toolbar { position: static; }
   .trending-details { grid-template-columns: repeat(2, 1fr); gap: 12px 14px; }
   .trending-details dt { font-size: 10px; }
@@ -545,6 +545,7 @@ h1 {
   .trend-actions .trend-ai-btn,
   .trend-actions .trend-refresh { gap: 12px 5px; }
   .trending-meta, .trending-time { font-size: 11px; }
+  .trending-meta { margin: auto; }
   .trending-table { font-size: 12px; }
 
   .modal { padding: 10px; }
