@@ -534,8 +534,8 @@ h1 {
   .header-actions { position: static; margin-top: 14px; }
   .toolbar { position: static; }
   .trending-details { grid-template-columns: repeat(2, 1fr); gap: 12px 14px; }
-  .trending-details dt { font-size: 12px; }
-  .trending-details dd { font-size: 15px; }
+  .trending-details dt { font-size: 10px; }
+  .trending-details dd { font-size: 13px; }
   .trending-details div:last-child { grid-column: 1 / -1; }
 
   .trend-actions,
@@ -543,9 +543,9 @@ h1 {
   .trending-tabs .trend-tab { flex: 1 1 0; justify-content: center; }
   .trending-tabs .trend-tab,
   .trend-actions .trend-ai-btn,
-  .trend-actions .trend-refresh { font-size: 14px; }
+  .trend-actions .trend-refresh { font-size: 12px; }
   .trending-meta, .trending-time { font-size: 12px; }
-  .trending-table { font-size: 14px; }
+  .trending-table { font-size: 12px; }
 
   .modal { padding: 10px; }
   .modal-body { max-height: 92vh; padding: 18px 16px; }
