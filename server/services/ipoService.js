@@ -2,7 +2,6 @@
 
 import { REPORT_REFERER } from '../config/index.js'
 import { normalizeRow } from '../models/ipo.js'
-import { readStore, upsertIpos } from '../repositories/ipoRepository.js'
 import { buildUrl } from '../utils/parsers.js'
 
 async function fetchLiveRows() {
@@ -39,16 +38,7 @@ export async function getIpos() {
   const live = await fetchLiveRows()
 
   if (live) {
-    // Persist the latest data and merge with previously stored IPOs (closed /
-    // no-longer-listed ones are kept for future reference).
-    const merged = await upsertIpos(live)
-    return { source: 'live', count: merged.length, ipos: merged }
-  }
-
-  // Live fetch failed — fall back to whatever we've stored before.
-  const stored = await readStore()
-  if (stored.length) {
-    return { source: 'cache', count: stored.length, ipos: stored }
+    return { source: 'live', count: live.length, ipos: live }
   }
 
   return {

@@ -42,8 +42,9 @@ async function fetchNseJson(url) {
   try {
     const res = await fetch(url, { headers: BROWSER_HEADERS })
     if (res.ok) return await res.json()
-  } catch {
+  } catch(err) {
     /* fall through to cookie handshake */
+    console.error('fetchNseJson: failed without cookies, err=', err)
   }
 
   const cookie = await getCookies()

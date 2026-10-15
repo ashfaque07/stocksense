@@ -1,5 +1,7 @@
-// Real-time AI IPO analysis via the server's /api/analyze endpoint (Gemini).
+// Real-time AI IPO analysis via the server's /api/analyze endpoint.
 // Calls onToken for each chunk of text as it arrives.
+
+import { getSelectedModel } from './modelApi.js'
 
 export async function streamAnalysis(ipo, onToken, signal) {
   let res
@@ -7,7 +9,7 @@ export async function streamAnalysis(ipo, onToken, signal) {
     res = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(ipo),
+      body: JSON.stringify({ ...ipo, model: getSelectedModel() }),
       signal
     })
   } catch (err) {

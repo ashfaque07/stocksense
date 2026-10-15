@@ -10,6 +10,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname } from 'node:path'
 import { TRENDING_FILE, IS_SERVERLESS } from '../config/index.js'
 
+// TODO: rename to 'stocksense' later (keeping old value to preserve existing blob data)
 const BLOB_STORE = 'ipo-analyzer'
 const blobKey = (type) => `trending:${type}`
 

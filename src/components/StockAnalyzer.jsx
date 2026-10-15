@@ -3,11 +3,11 @@
 import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { useStockAnalysis } from '../hooks/useStockAnalysis.js'
+import { ICONS } from '../constants/ui.js'
+import { MD_COMPONENTS } from '../constants/markdown.jsx'
 
-export default function StockAnalyzer() {
+export default function StockAnalyzer({ result, streaming, error, query, analyze }) {
   const [input, setInput] = useState('')
-  const { result, streaming, error, query, analyze } = useStockAnalysis()
 
   function onSubmit(e) {
     e.preventDefault()
@@ -26,7 +26,7 @@ export default function StockAnalyzer() {
           aria-label="Stock name or ticker"
         />
         <button type="submit" className="stock-btn" disabled={streaming || !input.trim()}>
-          {streaming ? 'Analyzing…' : '🔍 Analyze'}
+          {streaming ? 'Analyzing…' : `${ICONS.search} Analyze`}
         </button>
       </form>
 
@@ -43,10 +43,10 @@ export default function StockAnalyzer() {
           <div className="modal-head">
             <h2>AI Analysis · {query}</h2>
           </div>
-          {streaming && !result.summary && <p className="info">🤖 Analyzing in real time…</p>}
+          {streaming && !result.summary && <p className="info">{ICONS.ai} Analyzing in real time…</p>}
           <div className="summary markdown">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{result.summary}</ReactMarkdown>
-            {streaming && <span className="cursor">▍</span>}
+            <ReactMarkdown remarkPlugins={[remarkGfm]} components={MD_COMPONENTS}>{result.summary}</ReactMarkdown>
+            {streaming && <span className="cursor">{ICONS.cursor}</span>}
           </div>
         </div>
       )}

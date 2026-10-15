@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
-const STORAGE_KEY = 'ipo-analyzer-theme'
+const STORAGE_KEY = 'stocksense-theme'
 
 function getInitialTheme() {
   if (typeof window === 'undefined') return 'dark'

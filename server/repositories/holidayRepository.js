@@ -16,6 +16,7 @@ const HOLIDAY_FILE = IS_SERVERLESS
   ? '/tmp/holidays.json'
   : join(__dirname, '..', 'data', 'holidays.json')
 
+// TODO: rename to 'stocksense' later (keeping old value to preserve existing blob data)
 const BLOB_STORE = 'ipo-analyzer'
 const blobKey = (year) => `holidays:${year}`
 

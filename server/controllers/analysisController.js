@@ -49,7 +49,7 @@ export async function handleAnalyze(req, res) {
   res.setHeader('Cache-Control', 'no-cache')
 
   try {
-    for await (const token of streamAnalysis(ipo)) {
+    for await (const token of streamAnalysis(ipo, ipo.model)) {
       res.write(token)
     }
   } catch (err) {

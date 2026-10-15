@@ -2,13 +2,18 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { fetchIpos } from '../services/ipoApi.js'
-import { FILTERS } from '../constants/filters.js'
+import { FILTERS } from '../constants/ui.js'
+
+function isOpen(ipo) {
+  return ipo.status === 'Open' || ipo.status === 'Closing Today'
+}
 
 function matchesFilter(ipo, filter) {
   return (
     filter === 'All' ||
-    (filter === 'IPO' && /IPO|Mainboard/i.test(ipo.type)) ||
-    (filter === 'SME' && /SME/i.test(ipo.type)) ||
+    (filter === 'Open' && isOpen(ipo)) ||
+    (filter === 'Mainboard' && /IPO|Mainboard/i.test(ipo.type) && isOpen(ipo)) ||
+    (filter === 'SME' && /SME/i.test(ipo.type) && isOpen(ipo)) ||
     ipo.status === filter
   )
 }
@@ -18,7 +23,7 @@ export function useIpos() {
   const [source, setSource] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [filter, setFilter] = useState('Open')
+  const [filter, setFilter] = useState('Closing Today')
   const [search, setSearch] = useState('')
 
   async function load() {
@@ -30,7 +35,7 @@ export function useIpos() {
       setSource(data.source || '')
       if (data.source === 'error') setError(data.error || 'Failed to load IPOs.')
     } catch (e) {
-      setError('Could not reach the IPO proxy server. Run "npm run server".')
+      setError('Could not reach the StockSense proxy server. Run "npm run server".')
     } finally {
       setLoading(false)
     }
@@ -66,7 +71,6 @@ export function useIpos() {
     search,
     setSearch,
     filtered,
-    counts,
-    reload: load
+    counts
   }
 }

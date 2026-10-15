@@ -1,6 +1,6 @@
 // Toolbar: company search box and status/type filter chips.
 
-import { FILTERS } from '../constants/filters.js'
+import { FILTERS } from '../constants/ui.js'
 
 export default function Toolbar({ search, onSearch, filter, onFilter, counts = {} }) {
   return (

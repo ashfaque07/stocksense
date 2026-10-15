@@ -1,5 +1,7 @@
 // Single IPO card with key metrics and the analyze action.
 
+import { ICONS } from '../constants/ui.js'
+
 export default function IpoCard({ ipo, index, analyzing, onAnalyze }) {
   return (
     <div className={`card ${ipo.anchor ? 'anchored' : ''}`}>
@@ -37,12 +39,12 @@ export default function IpoCard({ ipo, index, analyzing, onAnalyze }) {
         {ipo.closeDate && <li><span>Close</span>{ipo.closeDate}</li>}
         {ipo.boaDate && <li><span>Allotment</span>{ipo.boaDate}</li>}
         {ipo.listingDate && <li><span>Listing</span>{ipo.listingDate}</li>}
-        <li><span>Anchor</span>{ipo.anchor ? '✅ Yes' : '❌ No'}</li>
+        <li><span>Anchor</span>{ipo.anchor ? `${ICONS.yes} Yes` : `${ICONS.no} No`}</li>
         {ipo.updatedOn && <li><span>Updated</span>{ipo.updatedOn}</li>}
       </ul>
 
       <button className="analyze" onClick={() => onAnalyze(ipo, index)} disabled={analyzing === index}>
-        {analyzing === index ? 'Analyzing…' : '🤖 AI Analysis'}
+        {analyzing === index ? 'Analyzing…' : `${ICONS.ai} AI Analysis`}
       </button>
     </div>
   )

@@ -10,7 +10,6 @@ const __dirname = import.meta.url ? dirname(fileURLToPath(import.meta.url)) : pr
 
 export const PORT = process.env.PORT || 8787
 
-// JSON file where every IPO ever seen is persisted for future reference.
 // On serverless platforms (Netlify / AWS Lambda) the app filesystem is
 // read-only except for /tmp, so persist there. We detect the serverless
 // runtime via common env vars set by those platforms.
@@ -20,10 +19,6 @@ export const IS_SERVERLESS = Boolean(
     process.env.AWS_LAMBDA_FUNCTION_NAME ||
     process.env.AWS_EXECUTION_ENV
 )
-
-export const DATA_FILE = IS_SERVERLESS
-  ? '/tmp/ipos.json'
-  : join(__dirname, '..', 'data', 'ipos.json')
 
 // JSON file where the daily trending-stocks snapshot is persisted (per type).
 export const TRENDING_FILE = IS_SERVERLESS
@@ -67,21 +62,98 @@ export const REPORT_ID = 331
 export const SITE_HOST = 'https://www.investorgain.com'
 export const REPORT_REFERER = 'https://www.investorgain.com/report/ipo-gmp-live/331/'
 
-// AI provider (OpenAI-compatible) used for real-time IPO analysis. Configure via
-// .env. If no API key is set, the client falls back to a local heuristic.
-export const AI = {
-  apiKey: process.env.AI_API_KEY || process.env.GEMINI_API_KEY || '',
-  baseUrl: (
-    process.env.AI_BASE_URL ||
-    'https://generativelanguage.googleapis.com/v1beta/openai'
-  ).replace(/\/+$/, ''),
-  // Models tried in order; if one is overloaded (503) or rate-limited (429) we
-  // fall back to the next. Configure a comma-separated list via AI_MODELS.
-  models: (process.env.AI_MODELS || process.env.AI_MODEL ||
-    'gemini-3.6-flash,gemini-3.6-flash-lite,gemini-3.5-flash,gemini-2.5-flash')
+// Live news enrichment for the trending best-pick analysis. Headlines are
+// fetched from Google News RSS (no API key) and injected into the AI prompt so
+// the model reasons over real, recent news instead of admitting it has none.
+export const NEWS_RSS_HOST = 'https://news.google.com/rss/search'
+// Max headlines kept per stock symbol (most-recent first). Kept low because the
+// best-pick prompt sends headlines for every trending stock, so each extra item
+// multiplies prompt tokens across the whole list.
+export const NEWS_MAX_PER_SYMBOL = Number(process.env.NEWS_MAX_PER_SYMBOL) || 3
+// Only consider headlines newer than this many hours (fresh catalysts).
+export const NEWS_MAX_AGE_HOURS = Number(process.env.NEWS_MAX_AGE_HOURS) || 72
+// Cache TTL for a symbol's fetched headlines (ms).
+export const NEWS_CACHE_TTL_MS = Number(process.env.NEWS_CACHE_TTL_MS) || 15 * 60 * 1000
+// Max symbols fetched concurrently to avoid hammering the RSS endpoint.
+export const NEWS_FETCH_CONCURRENCY = Number(process.env.NEWS_FETCH_CONCURRENCY) || 4
+// Per-request timeout for a single RSS fetch (ms).
+export const NEWS_FETCH_TIMEOUT_MS = Number(process.env.NEWS_FETCH_TIMEOUT_MS) || 6000
+
+// AI providers (OpenAI-compatible endpoints) used for real-time analysis.
+// Each provider is enabled only when its API key env var is set; its selectable
+// models come from the matching comma-separated *_MODELS env var. This lets the
+// user switch between providers/models from the UI dropdown, so hitting one
+// provider's daily limit (e.g. Gemini) can be worked around by picking another.
+const splitModels = (value) =>
+  String(value || '')
     .split(',')
     .map((m) => m.trim())
     .filter(Boolean)
+
+const PROVIDER_DEFS = [
+  {
+    name: 'groq',
+    apiKey: process.env.GROQ_API_KEY || '',
+    baseUrl: process.env.GROQ_BASE_URL || 'https://api.groq.com/openai/v1',
+    models: splitModels(process.env.GROQ_MODELS)
+  },
+  {
+    name: 'gemini',
+    apiKey: process.env.GEMINI_API_KEY || '',
+    baseUrl: process.env.GEMINI_BASE_URL ||
+      'https://generativelanguage.googleapis.com/v1beta/openai',
+    models: splitModels(process.env.GEMINI_MODELS)
+  },
+  {
+    name: 'openai',
+    apiKey: process.env.OPENAI_API_KEY || '',
+    baseUrl: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
+    models: splitModels(process.env.OPENAI_MODELS)
+  },
+  // Generic OpenAI-compatible provider configured via the legacy AI_* vars.
+  {
+    name: 'custom',
+    apiKey: process.env.AI_API_KEY || '',
+    baseUrl: process.env.AI_BASE_URL ||
+      'https://generativelanguage.googleapis.com/v1beta/openai',
+    models: splitModels(process.env.AI_MODELS || process.env.AI_MODEL)
+  }
+]
+
+// Only providers with an API key AND at least one model are active.
+export const AI_PROVIDERS = PROVIDER_DEFS.filter(
+  (p) => p.apiKey && p.models.length
+).map((p) => ({ ...p, baseUrl: p.baseUrl.replace(/\/+$/, '') }))
+
+// Flat, ordered list of every selectable model with its provider config.
+export const AI_MODELS = AI_PROVIDERS.flatMap((p) =>
+  p.models.map((model) => ({
+    model,
+    provider: p.name,
+    apiKey: p.apiKey,
+    baseUrl: p.baseUrl
+  }))
+)
+
+// Plain model-name list (for the UI dropdown) and the default selection.
+export const AI_MODEL_NAMES = AI_MODELS.map((m) => m.model)
+export const DEFAULT_MODEL = AI_MODEL_NAMES[0] || ''
+
+// Resolve the provider config for a given model name (null if unknown).
+export function getModelConfig(model) {
+  return AI_MODELS.find((m) => m.model === model) || null
+}
+
+// Ordered list of model configs to try for a request. The selected model is
+// tried first; if it fails (rate-limit / overload / error) the remaining
+// configured models are tried as fallbacks. When nothing is selected (e.g.
+// background tasks like the trending best-pick recommendation), every
+// configured model is tried in order. Either way `streamCompletion` surfaces
+// the primary (selected) model's error so the message matches the user's choice.
+export function getModelFallbacks(selected) {
+  const chosen = getModelConfig(selected)
+  if (!chosen) return AI_MODELS
+  return [chosen, ...AI_MODELS.filter((m) => m.model !== chosen.model)]
 }
 
 // Maps InvestorGain status codes to human-readable labels.
@@ -90,5 +162,6 @@ export const STATUS_MAP = {
   O: 'Open',
   CT: 'Closing Today',
   C: 'Closed',
-  L: 'Listed'
+  LP: 'Listed',
+  LN: 'Listed'
 }

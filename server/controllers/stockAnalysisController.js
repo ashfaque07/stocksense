@@ -51,7 +51,7 @@ export async function handleAnalyzeStock(req, res) {
   res.setHeader('Cache-Control', 'no-cache')
 
   try {
-    for await (const token of streamStockAnalysis(query)) {
+    for await (const token of streamStockAnalysis(query, body?.model)) {
       res.write(token)
     }
   } catch (err) {

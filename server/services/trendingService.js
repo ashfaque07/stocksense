@@ -16,6 +16,7 @@ import {
 } from '../config/index.js'
 import { readSnapshot, writeSnapshot } from '../repositories/trendingRepository.js'
 import { ensureHolidays, isHoliday } from './holidayService.js'
+import { recommendBestSymbols } from './trendingAnalysisService.js'
 
 const NSE_BASE = 'https://www.nseindia.com'
 const NSE_REFERER = `${NSE_BASE}/market-data/top-gainers-losers`
@@ -63,6 +64,11 @@ async function fetchNseJson(url) {
 
 // Map a raw NSE security row into a clean, UI-friendly object.
 function normalizeStock(row) {
+  // NSE uses a literal "-" to mean "no value"; treat it as empty.
+  const clean = (v) => {
+    const s = (v ?? '').toString().trim()
+    return s === '-' ? '' : s
+  }
   return {
     symbol: row.symbol,
     series: row.series || '',
@@ -77,8 +83,8 @@ function normalizeStock(row) {
     turnover: row.turnover ?? null,
     // Reason the stock is trending (corporate action / event), e.g.
     // "Dividend - Rs 5.25 Per Share", "Annual General Meeting".
-    reason: row.ca_purpose || '',
-    reasonExDate: row.ca_ex_dt || ''
+    reason: clean(row.ca_purpose),
+    reasonExDate: clean(row.ca_ex_dt)
   }
 }
 
@@ -163,6 +169,29 @@ export function isMarketOpen(date = new Date()) {
 // `createdAt` marks the 09:00 IST day start.
 export async function refreshTrending(rawType = 'gainers') {
   const type = NSE_INDEX[rawType] ? rawType : 'gainers'
+
+  // Never fetch, clear, or start a new day while the market is closed — that is,
+  // on a non-trading day (weekend / public holiday) OR on a trading day before
+  // the 09:00 IST open and after the 15:30 IST close. NSE still serves the
+  // previous session's data outside hours, so refreshing here would wrongly
+  // reset the list and start a new day early (before open). Serve the last
+  // stored snapshot untouched so the previous (stale) stocks stay visible until
+  // the market actually opens.
+  await loadHolidays()
+  if (!isMarketOpen()) {
+    const prev = await readSnapshot(type)
+    return {
+      source: 'cache',
+      marketOpen: false,
+      type,
+      dayStartedAt: prev?.dayStartedAt || null,
+      updatedAt: prev?.updatedAt || null,
+      timestamp: prev?.timestamp || null,
+      count: prev?.stocks?.length || 0,
+      stocks: prev?.stocks || []
+    }
+  }
+
   const live = await getTrendingStocks(type)
   const prev = await readSnapshot(type)
 
@@ -172,16 +201,39 @@ export async function refreshTrending(rawType = 'gainers') {
   const prevBySymbol = new Map((prev?.stocks || []).map((s) => [s.symbol, s]))
   const liveSymbols = new Set(live.stocks.map((s) => s.symbol))
 
-  // Current live stocks (fresh data).
+  // Current live stocks (fresh data). Each stock keeps a `history` array with a
+  // snapshot of its % change (and LTP) at every refresh, so the UI can show how
+  // the stock moved over the trading day.
   const fresh = live.stocks.map((s) => {
     const existing = isNewDay ? null : prevBySymbol.get(s.symbol)
+    const prevHistory = existing?.history || []
     return {
       ...s,
       createdAt: existing?.createdAt || now,
       modifiedAt: now,
-      stale: false
+      stale: false,
+      // Preserve a previous AI recommendation (and the time it was made) so a
+      // stock stays flagged for the rest of the trading day once picked.
+      aiRecommended: existing?.aiRecommended || false,
+      aiRecommendedAt: existing?.aiRecommendedAt || null,
+      history: [
+        ...prevHistory,
+        { time: now, percentChange: s.percentChange ?? null, ltp: s.ltp ?? null }
+      ]
     }
   })
+
+  // Ask the AI to flag the best 3 genuine opportunities from the fresh list.
+  // Existing recommendations are preserved; newly picked stocks are flagged and
+  // stamped with the time they were recommended. Best-effort: if the AI is
+  // unconfigured or fails, nothing new is flagged and the refresh still succeeds.
+  const recommended = new Set(await recommendBestSymbols(type, fresh, 3))
+  for (const s of fresh) {
+    if (recommended.has(String(s.symbol).toUpperCase())) {
+      s.aiRecommended = true
+      if (!s.aiRecommendedAt) s.aiRecommendedAt = now
+    }
+  }
 
   // Stocks seen earlier today but absent from this refresh: keep last-known
   // values, mark stale, and don't touch `modifiedAt` (data wasn't updated).
@@ -204,7 +256,7 @@ export async function refreshTrending(rawType = 'gainers') {
   }
 
   await writeSnapshot(type, snapshot)
-  return { source: 'live', ...snapshot }
+  return { source: 'live', marketOpen: isMarketOpen(), ...snapshot }
 }
 
 // Read the persisted snapshot for the endpoint. Falls back to a live refresh
@@ -213,8 +265,34 @@ export async function refreshTrending(rawType = 'gainers') {
 export async function readTrending(rawType = 'gainers') {
   const type = NSE_INDEX[rawType] ? rawType : 'gainers'
   const snapshot = await readSnapshot(type)
-  if (snapshot && Array.isArray(snapshot.stocks) && snapshot.stocks.length) {
-    return { source: 'cache', ...snapshot }
+  // Only serve the cache when it belongs to the current IST trading day.
+  // A snapshot from a previous day would otherwise leak yesterday's stocks
+  // until the scheduler runs its first refresh.
+  const isFromToday =
+    snapshot?.dayStartedAt && istDayKey(new Date(snapshot.dayStartedAt)) === istDayKey()
+  if (isFromToday && Array.isArray(snapshot.stocks) && snapshot.stocks.length) {
+    return { source: 'cache', marketOpen: isMarketOpen(), ...snapshot }
   }
+
+  // No snapshot for today yet. While the market is closed (non-trading day, or a
+  // trading day before 09:00 IST open / after 15:30 IST close) we must NOT fetch
+  // or start a new day — that would clear the list and repopulate it with the
+  // previous session's data, and start "today" early. Serve the last stored
+  // snapshot as-is so the previous (stale) stocks stay visible until the market
+  // opens; `refreshTrending` only resets and fetches during market hours.
+  await loadHolidays()
+  if (!isMarketOpen() && snapshot?.stocks?.length) {
+    return {
+      source: 'cache',
+      marketOpen: false,
+      type,
+      dayStartedAt: snapshot.dayStartedAt || null,
+      updatedAt: snapshot.updatedAt || null,
+      timestamp: snapshot.timestamp || null,
+      count: snapshot.stocks.length,
+      stocks: snapshot.stocks
+    }
+  }
+
   return refreshTrending(type)
 }

@@ -1,13 +1,15 @@
 // Real-time AI fundamental analysis for a listed stock via /api/analyze-stock.
 // Calls onToken for each chunk of text as it arrives.
 
+import { getSelectedModel } from './modelApi.js'
+
 export async function streamStockAnalysis(query, onToken, signal) {
   let res
   try {
     res = await fetch('/api/analyze-stock', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query }),
+      body: JSON.stringify({ query, model: getSelectedModel() }),
       signal
     })
   } catch (err) {
