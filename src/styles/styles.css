@@ -543,7 +543,8 @@ h1 {
   .trending-tabs .trend-tab { flex: 1 1 0; justify-content: center; }
   .trending-tabs .trend-tab,
   .trend-actions .trend-ai-btn,
-  .trend-actions .trend-refresh { font-size: 12px; }
+  .trend-actions .trend-refresh { gap: 12px 5px; }
+  .trending-meta, .trending-time { font-size: 11px; }
   .trending-meta, .trending-time { font-size: 12px; }
   .trending-table { font-size: 12px; }
 
