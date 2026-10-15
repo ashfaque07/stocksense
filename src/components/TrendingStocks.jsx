@@ -123,7 +123,7 @@ export default function TrendingStocks() {
             ) : (
               <span className="market-status closed" title="NSE market is closed">
                 <span className="market-dot" />
-                Market Closed
+                Closed
               </span>
             ))}
           <div className="trending-times">
@@ -131,18 +131,18 @@ export default function TrendingStocks() {
             {updatedAt && <span className="trending-time">Updated {fmtTime(updatedAt)}</span>}
             {timestamp && <span className="trending-time">NSE {timestamp}</span>}
           </div>
-          <div className="trend-actions">
-            <button
-              className="trend-ai-btn"
-              onClick={() => analyzeBest(type, stocks)}
-              disabled={analyzing || loading || !stocks.length}
-            >
-              {analyzing ? 'Analyzing…' : `${ICONS.ai} AI Best Pick`}
-            </button>
-            <button className="trend-refresh" onClick={reload} disabled={loading || refreshing}>
-              {refreshing ? 'Refreshing…' : '↻ Refresh'}
-            </button>
-          </div>
+        </div>
+        <div className="trend-actions">
+          <button
+            className="trend-ai-btn"
+            onClick={() => analyzeBest(type, stocks)}
+            disabled={analyzing || loading || !stocks.length}
+          >
+            {analyzing ? 'Analyzing…' : `${ICONS.ai} AI Best Pick`}
+          </button>
+          <button className="trend-refresh" onClick={reload} disabled={loading || refreshing}>
+            {refreshing ? 'Refreshing…' : '↻ Refresh'}
+          </button>
         </div>
       </div>
 
