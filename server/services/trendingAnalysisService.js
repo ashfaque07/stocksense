@@ -25,7 +25,7 @@ function stockFacts(s) {
     percentChange: s.percentChange ?? null,
     volume: s.volume ?? null,
     turnover: s.turnover ?? null,
-    reason: s.reason || ''
+    // reason: s.reason || ''
   }
 }
 
