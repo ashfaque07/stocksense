@@ -110,6 +110,12 @@ const PROVIDER_DEFS = [
     baseUrl: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
     models: splitModels(process.env.OPENAI_MODELS)
   },
+  {
+    name: 'nvidia',
+    apiKey: process.env.NVIDIA_API_KEY || '',
+    baseUrl: process.env.NVIDIA_BASE_URL || 'https://integrate.api.nvidia.com/v1',
+    models: splitModels(process.env.NVIDIA_MODELS)
+  },
   // Generic OpenAI-compatible provider configured via the legacy AI_* vars.
   {
     name: 'custom',
