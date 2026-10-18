@@ -42,6 +42,18 @@ export function useTrending() {
     load(type)
   }, [type, load])
 
+  // Duplicating a tab restores the page from the browser's back-forward cache
+  // WITHOUT remounting, so the mount effect above never re-runs and the view
+  // keeps showing a stale snapshot. Refetch on `pageshow` (which fires on
+  // bfcache restores) so the latest stocks load without a manual refresh.
+  useEffect(() => {
+    const refetch = (e) => {
+      if (e.persisted) load(type)
+    }
+    window.addEventListener('pageshow', refetch)
+    return () => window.removeEventListener('pageshow', refetch)
+  }, [type, load])
+
   return {
     type,
     setType,

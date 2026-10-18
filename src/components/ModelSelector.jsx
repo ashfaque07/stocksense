@@ -36,7 +36,7 @@ export default function ModelSelector() {
 
   return (
     <label className="model-selector" title="AI model used for analysis">
-      <select value={selected} onChange={onChange} aria-label="AI model">
+      <select id='ai-model' value={selected} onChange={onChange} aria-label="AI model">
         {models.map((m) => (
           <option key={m} value={m}>
             {m}

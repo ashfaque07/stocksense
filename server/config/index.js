@@ -27,7 +27,7 @@ export const TRENDING_FILE = IS_SERVERLESS
 
 // Indian market (NSE) hours in IST used to gate the scheduled refresh.
 export const IST_OFFSET_MIN = 5 * 60 + 30 // UTC+5:30
-export const MARKET_OPEN_MIN = 9 * 60 // 09:00 IST — day start
+export const MARKET_OPEN_MIN = 9 * 60 + 15 // 09:15 IST — day start
 export const MARKET_CLOSE_MIN = 15 * 60 + 30 // 15:30 IST
 
 // NSE trading holidays (market fully closed) as IST YYYY-MM-DD strings.
@@ -109,6 +109,12 @@ const PROVIDER_DEFS = [
     apiKey: process.env.OPENAI_API_KEY || '',
     baseUrl: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
     models: splitModels(process.env.OPENAI_MODELS)
+  },
+  {
+    name: 'nvidia',
+    apiKey: process.env.NVIDIA_API_KEY || '',
+    baseUrl: process.env.NVIDIA_BASE_URL || 'https://integrate.api.nvidia.com/v1',
+    models: splitModels(process.env.NVIDIA_MODELS)
   },
   // Generic OpenAI-compatible provider configured via the legacy AI_* vars.
   {

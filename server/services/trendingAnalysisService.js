@@ -25,7 +25,7 @@ function stockFacts(s) {
     percentChange: s.percentChange ?? null,
     volume: s.volume ?? null,
     turnover: s.turnover ?? null,
-    reason: s.reason || ''
+    // reason: s.reason || ''
   }
 }
 
@@ -68,7 +68,9 @@ function promptFacts(facts, sourceMap) {
 }
 
 // Citation token the model emits in place of a real link: `[S<number>]`.
-const CITATION_RE = /\[S(\d+)\]/g
+// Some models (e.g. Qwen) emit fullwidth brackets `【S<number>】` instead of
+// ASCII ones, so accept either bracket style.
+const CITATION_RE = /[[【]S(\d+)[\]】]/g
 
 // Swap every `[S<id>]` citation for the real markdown link `[source](link)`
 // using the recorded source map. Unknown ids are left as plain text (the id
@@ -83,7 +85,8 @@ function replaceCitations(text, sourceMap) {
 
 // Longest trailing substring of `buffer` that could still grow into a citation
 // token (`[`, `[S`, `[S3`, …) and so must be held back until more text arrives.
-const PARTIAL_CITATION_RE = /\[S?\d*$/
+// Matches both ASCII `[` and fullwidth `【` opening brackets.
+const PARTIAL_CITATION_RE = /[[【]S?\d*$/
 
 // Stream-safe wrapper: re-inject real links for `[S<id>]` citations as tokens
 // arrive. A citation can be split across chunks, so we buffer only the trailing

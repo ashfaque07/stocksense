@@ -405,7 +405,12 @@ h1 {
   box-shadow: 0 6px 16px -6px rgba(99, 102, 241, 0.7);
 }
 .trending-meta, .trending-times { display: flex; align-items: center; gap: 12px 10px; flex-wrap: wrap; }
-.trend-actions { display: inline-flex; align-items: center; gap: 12px; }
+.trending-meta { justify-content: flex-end; }
+.trend-actions { display: inline-grid; grid-auto-flow: column; grid-auto-columns: 1fr; align-items: stretch; gap: 12px; }
+.trend-actions .trend-refresh,
+.trend-actions .trend-ai-btn {
+  display: inline-flex; align-items: center; justify-content: center; white-space: nowrap;
+}
 .trending-time { color: var(--text-faint); font-size: 12px; }
 .market-status { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; }
 .market-status .market-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
@@ -516,30 +521,36 @@ h1 {
 /* ---------- Responsive ---------- */
 @media (max-width: 640px) {
   .app { padding: 20px 16px 40px; }
-  h1 { font-size: 24px; }
+  h1 { font-size: 26px; }
 
-  /* Keep the three view tabs on a single row regardless of device width/font scaling */
-  /* .view-nav { flex-wrap: nowrap; gap: 6px; } */
-  /* .view-tab {
-    flex: 1 1 0; min-width: 0; justify-content: center;
-    padding: 9px 10px; font-size: 13px; gap: 5px; white-space: nowrap;
-  } */
+  /* Let the view tabs wrap to a second row when they don't fit on one line */
+  .view-nav { flex-wrap: wrap; gap: 6px; }
+  .view-tab {
+    flex: 1 1 auto; min-width: 0; justify-content: center;
+    padding: 12px 10px; gap: 5px; white-space: nowrap; font-size: 14px; margin-bottom: 4px;
+  }
   .subtitle { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 6px; }
   .badge { flex: 0 0 auto; }
-  .header-actions { position: static; margin-top: 14px; }
+  .header-actions { position: static; margin-top: 14px; justify-content: end; }
   .toolbar { position: static; }
   .trending-details { grid-template-columns: repeat(2, 1fr); gap: 12px 14px; }
   .trending-details dt { font-size: 10px; }
   .trending-details dd { font-size: 13px; }
   .trending-details div:last-child { grid-column: 1 / -1; }
 
-  .trend-actions { width: 100%; }
+  .trend-actions,
+  .trending-tabs { width: 100%; flex: 1 0 100%; }
+  .trending-tabs .trend-tab { flex: 1 1 0; justify-content: center; }
+  .trending-tabs .trend-tab,
   .trend-actions .trend-ai-btn,
-  .trend-actions .trend-refresh { flex: 1 1 0; }
+  .trend-actions .trend-refresh { gap: 12px 5px; }
+  .trending-meta, .trending-time { font-size: 11px; }
+  .trending-meta { margin: auto; }
+  .trending-table { font-size: 12px; }
 
   .modal { padding: 10px; }
   .modal-body { max-height: 92vh; padding: 18px 16px; }
-  .modal-head h2 { font-size: 17px; }
+  .modal-head h2 { font-size: 20px; }
 }
 
 /* Prevent markdown content from forcing horizontal scroll inside modals */
@@ -547,6 +558,7 @@ h1 {
 .summary.markdown pre { overflow-x: auto; max-width: 100%; }
 .summary.markdown table { display: table; width: 100%; max-width: 100%; }
 .summary.markdown img { max-width: 100%; height: auto; }
+.trending-table th, .trending-table td { padding: 10px 7px; }
 
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
