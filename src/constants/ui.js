@@ -12,6 +12,7 @@ export const ICONS = {
   light: '🌞',
   dark: '🌜',
   close: '✕',
+  menu: '☰',
   cursor: '▋',
   search: '🔎',
   yes: '✔️',

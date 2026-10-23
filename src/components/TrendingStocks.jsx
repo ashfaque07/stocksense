@@ -117,20 +117,32 @@ export default function TrendingStocks() {
           </button>
         </div>
         <div className="trending-meta">
-          {!loading &&
-            (marketOpen ? (
-              <span className="badge" title="NSE market is open">Live</span>
-            ) : (
-              <span className="market-status closed" title="NSE market is closed">
-                <span className="market-dot" />
-                Closed
-              </span>
-            ))}
-          <div className="trending-times">
-            {dayStartedAt && <span className="trending-time">Day start {fmtTime(dayStartedAt)}</span>}
-            {updatedAt && <span className="trending-time">Updated {fmtTime(updatedAt)}</span>}
-            {timestamp && <span className="trending-time">NSE {timestamp}</span>}
-          </div>
+          {loading ? (
+            <>
+              <span className="skeleton skeleton-pill" />
+              <div className="trending-times">
+                <span className="skeleton skeleton-pill" style={{ width: 86 }} />
+                <span className="skeleton skeleton-pill" style={{ width: 86 }} />
+                <span className="skeleton skeleton-pill" style={{ width: 70 }} />
+              </div>
+            </>
+          ) : (
+            <>
+              {marketOpen ? (
+                <span className="badge" title="NSE market is open">Live</span>
+              ) : (
+                <span className="market-status closed" title="NSE market is closed">
+                  <span className="market-dot" />
+                  Closed
+                </span>
+              )}
+              <div className="trending-times">
+                {dayStartedAt && <span className="trending-time">Day start {fmtTime(dayStartedAt)}</span>}
+                {updatedAt && <span className="trending-time">Updated {fmtTime(updatedAt)}</span>}
+                {timestamp && <span className="trending-time">NSE {timestamp}</span>}
+              </div>
+            </>
+          )}
         </div>
         <div className="trend-actions">
           <button

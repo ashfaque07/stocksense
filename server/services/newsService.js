@@ -3,7 +3,7 @@
 // has no live news. News is best-effort — a symbol with no (or failed) lookups
 // simply gets an empty `news` array, and the model handles that per the prompt.
 
-import { getSymbolNews } from '../repositories/newsRepository.js'
+import { getSymbolNews, getIpoNews } from '../repositories/newsRepository.js'
 import { NEWS_FETCH_CONCURRENCY } from '../config/index.js'
 
 // Run an async mapper over items with a bounded concurrency so we don't fire
@@ -38,4 +38,12 @@ export async function getNewsForQuery(query) {
   const term = String(query || '').trim()
   if (!term) return []
   return getSymbolNews(term)
+}
+
+// Fetch recent headlines for an IPO by company name. Best-effort — returns []
+// on failure so the IPO analysis still runs on structured data and model knowledge.
+export async function getNewsForIpo(company) {
+  const term = String(company || '').trim()
+  if (!term) return []
+  return getIpoNews(term)
 }

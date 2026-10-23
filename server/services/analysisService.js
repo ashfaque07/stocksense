@@ -2,6 +2,7 @@
 // (Gemini by default). Yields text tokens as they arrive from the provider.
 
 import { AI_PROVIDERS, getModelFallbacks } from '../config/index.js'
+import { getNewsForIpo } from './newsService.js'
 import { IPO_SYSTEM_PROMPT, ipoUserPrompt } from './prompts.js'
 
 export function isAiConfigured() {
@@ -52,7 +53,7 @@ function setCached(key, text, ttl = CACHE_TTL_MS) {
   if (text) cache.set(key, { text, expires: Date.now() + ttl })
 }
 
-function buildMessages(ipo) {
+function buildMessages(ipo, news) {
   const facts = ipoFacts(ipo)
 
   return [
@@ -62,7 +63,7 @@ function buildMessages(ipo) {
     },
     {
       role: 'user',
-      content: ipoUserPrompt(facts)
+      content: ipoUserPrompt(facts, news)
     }
   ]
 }
@@ -72,7 +73,9 @@ function buildMessages(ipo) {
 // retries transient errors (503/429) with backoff and falls back across models,
 // then caches the full result. `model` selects which configured model to use.
 export async function* streamAnalysis(ipo, model) {
-  yield* streamCompletion(buildMessages(ipo), cacheKey(ipo), model)
+  // Best-effort: pull recent IPO headlines so the model reasons over fresh news.
+  const news = await getNewsForIpo(ipo.company)
+  yield* streamCompletion(buildMessages(ipo, news), cacheKey(ipo), model)
 }
 
 // Generic streaming completion helper shared by IPO and stock analysis.

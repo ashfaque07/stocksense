@@ -33,14 +33,6 @@ export default function Header({ view = 'ipos', source, count, theme, onToggleTh
 
   return (
     <header>
-      <h1>
-        <span className="logo">{heading.logo}</span>{' '}
-        <span className="title-text">{heading.title}</span>
-      </h1>
-      <p className="subtitle">
-        {heading.subtitle}
-        {view === 'ipos' && source === 'live' && <span className="badge">Live · {count} IPOs</span>}
-      </p>
       <div className="header-actions">
         <ModelSelector />
         <button
@@ -52,6 +44,14 @@ export default function Header({ view = 'ipos', source, count, theme, onToggleTh
           {theme === 'dark' ? ICONS.light : ICONS.dark}
         </button>
       </div>
+      <h1>
+        <span className="logo">{heading.logo}</span>{' '}
+        <span className="title-text">{heading.title}</span>
+      </h1>
+      <p className="subtitle">
+        {heading.subtitle}
+        {view === 'ipos' && source === 'live' && <span className="badge">Live · {count} IPOs</span>}
+      </p>
     </header>
   )
 }

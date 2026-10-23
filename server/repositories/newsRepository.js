@@ -86,35 +86,49 @@ function parseRss(xml) {
   return items.slice(0, NEWS_MAX_PER_SYMBOL)
 }
 
-// Build the Google News RSS search URL for an NSE-listed company symbol.
-function buildQueryUrl(symbol) {
-  const q = encodeURIComponent(`${symbol} stock NSE share`)
+// Build the Google News RSS search URL for a given search term.
+function buildQueryUrl(term) {
+  const q = encodeURIComponent(term)
   return `${NEWS_RSS_HOST}?q=${q}&hl=en-IN&gl=IN&ceid=IN:en`
 }
 
-// Fetch recent headlines for a single symbol. Returns [] on any failure so the
-// best-pick flow degrades gracefully (news is best-effort enrichment).
-export async function getSymbolNews(symbol) {
-  if (!symbol) return []
-  const cached = getCached(symbol)
+// Fetch recent headlines for a search `term`, cached under `cacheId`. Returns []
+// on any failure so callers degrade gracefully (news is best-effort enrichment).
+async function fetchNews(cacheId, term) {
+  if (!cacheId || !term) return []
+  const cached = getCached(cacheId)
   if (cached) return cached
 
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), NEWS_FETCH_TIMEOUT_MS)
   try {
-    const res = await fetch(buildQueryUrl(symbol), {
+    const res = await fetch(buildQueryUrl(term), {
       headers: BROWSER_HEADERS,
       signal: controller.signal
     })
     if (!res.ok) throw new Error(`news RSS status ${res.status}`)
     const xml = await res.text()
     const items = parseRss(xml)
-    setCached(symbol, items)
+    setCached(cacheId, items)
     return items
   } catch (err) {
-    console.error(`[news] failed to fetch headlines for ${symbol}:`, err.message)
+    console.error(`[news] failed to fetch headlines for ${cacheId}:`, err.message)
     return []
   } finally {
     clearTimeout(timer)
   }
+}
+
+// Fetch recent headlines for an NSE-listed company name or ticker. Returns []
+// on any failure so the best-pick/stock flow degrades gracefully.
+export async function getSymbolNews(symbol) {
+  if (!symbol) return []
+  return fetchNews(symbol, `${symbol} stock NSE share`)
+}
+
+// Fetch recent headlines for an IPO by company name. Uses an IPO-focused query
+// (and a distinct cache id) so results aren't skewed toward listed-stock noise.
+export async function getIpoNews(company) {
+  if (!company) return []
+  return fetchNews(`ipo:${company}`, `${company} IPO`)
 }

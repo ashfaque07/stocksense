@@ -87,7 +87,7 @@ body {
 ::-webkit-scrollbar-thumb { background: var(--scrollbar); border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-hover); }
 
-.app { max-width: 1160px; margin: 0 auto; padding: 28px 24px 48px; }
+.app { flex: 1 1 auto; min-width: 0; max-width: 1160px; margin: 0 auto; padding: 28px 24px 48px; }
 
 /* ---------- Header ---------- */
 header { position: relative; margin-bottom: 28px; }
@@ -343,22 +343,58 @@ h1 {
 .cursor { display: inline-block; color: var(--brand); font-weight: 700; animation: blink 1s steps(2, start) infinite; }
 @keyframes blink { to { visibility: hidden; } }
 
-/* ---------- View navigation ---------- */
-.view-nav {
-  display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;
+/* ---------- Layout shell + side navigation ---------- */
+.app-shell { display: flex; align-items: flex-start; }
+
+.nav-toggle {
+  display: none;
+  position: fixed; top: 20px; left: 14px; z-index: 60;
+  width: 44px; height: 44px; border-radius: 10px; cursor: pointer;
+  background: var(--surface-2); border: 1px solid var(--border);
+  color: var(--text); font-size: 20px; line-height: 1;
+  align-items: center; justify-content: center;
 }
-.view-tab {
-  background: var(--surface-2); border: 1px solid var(--border); color: var(--text-dim);
-  padding: 9px 18px; border-radius: 999px; cursor: pointer; font-size: 14px; font-weight: 600;
-  display: inline-flex; align-items: center; gap: 7px;
+
+.sidebar-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 50;
+  background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px);
+}
+
+.sidebar {
+  position: sticky; top: 0; align-self: flex-start;
+  width: 240px; flex: 0 0 240px; height: 100vh;
+  padding: 22px 14px; box-sizing: border-box;
+  background: var(--surface-2); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 18px;
+}
+.sidebar-head { display: flex; align-items: center; justify-content: space-between; padding: 0 6px; }
+.sidebar-brand {
+  font-size: 18px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;
+  background: var(--heading-grad);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.sidebar-brand .logo { -webkit-text-fill-color: initial; }
+.sidebar-close {
+  display: none; background: none; border: none; cursor: pointer;
+  color: var(--text-dim); font-size: 18px; line-height: 1; padding: 4px;
+}
+
+.sidebar-nav { display: flex; flex-direction: column; gap: 6px; }
+.nav-item {
+  background: transparent; border: 1px solid transparent; color: var(--text-dim);
+  padding: 11px 14px; border-radius: 10px; cursor: pointer; font-size: 14px; font-weight: 600;
+  display: flex; align-items: center; gap: 11px; text-align: left; width: 100%;
   transition: all 0.15s ease;
 }
-.view-tab:hover { border-color: var(--brand); color: var(--text); transform: translateY(-1px); }
-.view-tab.active {
+.nav-item:hover { background: var(--surface); color: var(--text); }
+.nav-item.active {
   background: linear-gradient(135deg, var(--brand), var(--brand-2));
   border-color: transparent; color: #fff;
   box-shadow: 0 6px 16px -6px rgba(99, 102, 241, 0.7);
 }
+.nav-item-icon { font-size: 18px; line-height: 1; }
+
 
 /* ---------- Stock Analyzer ---------- */
 .stock-search { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
@@ -521,17 +557,27 @@ h1 {
 /* ---------- Responsive ---------- */
 @media (max-width: 640px) {
   .app { padding: 20px 16px 40px; }
-  h1 { font-size: 26px; }
+  h1 { font-size: 26px; margin-top: 15px; }
 
-  /* Let the view tabs wrap to a second row when they don't fit on one line */
-  .view-nav { flex-wrap: wrap; gap: 6px; }
-  .view-tab {
-    flex: 1 1 auto; min-width: 0; justify-content: center;
-    padding: 12px 10px; gap: 5px; white-space: nowrap; font-size: 14px; margin-bottom: 4px;
+  .nav-toggle { display: inline-flex; }
+  .nav-toggle.hidden { display: none; }
+
+  /* header { padding-left: 54px; min-height: 44px; } */
+
+  .sidebar {
+    position: fixed; top: 0; left: 0; z-index: 55;
+    height: 100vh; transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
   }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar.open ~ .sidebar-overlay,
+  .sidebar-overlay { display: block; }
+  .sidebar-close { display: inline-flex; align-items: center; }
+
   .subtitle { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 6px; }
   .badge { flex: 0 0 auto; }
-  .header-actions { position: static; margin-top: 14px; justify-content: end; }
+  .header-actions { position: static; justify-content: end; }
   .toolbar { position: static; }
   .trending-details { grid-template-columns: repeat(2, 1fr); gap: 12px 14px; }
   .trending-details dt { font-size: 10px; }
@@ -554,7 +600,7 @@ h1 {
 }
 
 /* Prevent markdown content from forcing horizontal scroll inside modals */
-.summary.markdown { overflow-wrap: break-word; word-break: break-word; }
+/* .summary.markdown { overflow-wrap: break-word; word-break: break-word; } */
 .summary.markdown pre { overflow-x: auto; max-width: 100%; }
 .summary.markdown table { display: table; width: 100%; max-width: 100%; }
 .summary.markdown img { max-width: 100%; height: auto; }
