@@ -5,6 +5,8 @@ import { handleAnalyze } from '../controllers/analysisController.js'
 import { handleAnalyzeStock } from '../controllers/stockAnalysisController.js'
 import { handleAnalyzeTrending } from '../controllers/trendingAnalysisController.js'
 import { handleGetTrending, handleRefreshTrending } from '../controllers/trendingController.js'
+import { handleGetResults } from '../controllers/resultsController.js'
+import { handleAnalyzeResults } from '../controllers/resultsAnalysisController.js'
 import { handleGetModels } from '../controllers/modelsController.js'
 
 export async function router(req, res) {
@@ -40,6 +42,16 @@ export async function router(req, res) {
 
   if (req.url.startsWith('/api/trending')) {
     await handleGetTrending(req, res)
+    return
+  }
+
+  if (req.url.startsWith('/api/analyze-results')) {
+    await handleAnalyzeResults(req, res)
+    return
+  }
+
+  if (req.url.startsWith('/api/results')) {
+    await handleGetResults(req, res)
     return
   }
 

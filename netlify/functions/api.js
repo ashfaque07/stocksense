@@ -8,6 +8,8 @@ import { getIpos } from '../../server/services/ipoService.js'
 import { isAiConfigured, streamAnalysis } from '../../server/services/analysisService.js'
 import { streamStockAnalysis } from '../../server/services/stockAnalysisService.js'
 import { streamTrendingAnalysis } from '../../server/services/trendingAnalysisService.js'
+import { getUpcomingResults } from '../../server/services/resultsService.js'
+import { streamResultsAnalysis } from '../../server/services/resultsAnalysisService.js'
 import {
   readTrending,
   refreshTrending,
@@ -155,6 +157,77 @@ export const handler = async (event) => {
             count: 0,
             stocks: [],
             error: `Could not fetch trending stocks from NSE: ${err.message}`
+          })
+        }
+      }
+    }
+
+    if (path.includes('/analyze-results')) {
+      if (method !== 'POST') {
+        return { statusCode: 405, headers: CORS, body: 'Method not allowed' }
+      }
+      if (!isAiConfigured()) {
+        return {
+          statusCode: 503,
+          headers: { ...CORS, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ error: 'AI provider not configured. Set AI_API_KEY.' })
+        }
+      }
+
+      let resultsPayload
+      try {
+        resultsPayload = JSON.parse(event.body || '{}')
+      } catch {
+        return {
+          statusCode: 400,
+          headers: { ...CORS, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ error: 'Invalid JSON body.' })
+        }
+      }
+      if (!resultsPayload?.symbol?.trim()) {
+        return {
+          statusCode: 400,
+          headers: { ...CORS, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ error: 'Missing stock symbol.' })
+        }
+      }
+
+      let resultsText = ''
+      try {
+        for await (const token of streamResultsAnalysis(resultsPayload, resultsPayload?.model)) {
+          resultsText += token
+        }
+      } catch (err) {
+        return {
+          statusCode: 502,
+          headers: { ...CORS, 'Content-Type': 'text/plain; charset=utf-8' },
+          body: `${resultsText}\n\n[Analysis failed: ${err.message}]`
+        }
+      }
+      return {
+        statusCode: 200,
+        headers: { ...CORS, 'Content-Type': 'text/plain; charset=utf-8' },
+        body: resultsText
+      }
+    }
+
+    if (path.includes('/results')) {
+      try {
+        const data = await getUpcomingResults()
+        return {
+          statusCode: 200,
+          headers: { ...CORS, 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        }
+      } catch (err) {
+        return {
+          statusCode: 502,
+          headers: { ...CORS, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            source: 'error',
+            count: 0,
+            results: [],
+            error: `Could not fetch upcoming results from NSE: ${err.message}`
           })
         }
       }

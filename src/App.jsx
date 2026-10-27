@@ -6,6 +6,7 @@ import IpoSkeleton from './components/IpoSkeleton.jsx'
 import AnalysisModal from './components/AnalysisModal.jsx'
 import StockAnalyzer from './components/StockAnalyzer.jsx'
 import TrendingStocks from './components/TrendingStocks.jsx'
+import UpcomingResults from './components/UpcomingResults.jsx'
 import { useIpos } from './hooks/useIpos.js'
 import { useAnalysis } from './hooks/useAnalysis.js'
 import { useStockAnalysis } from './hooks/useStockAnalysis.js'
@@ -17,6 +18,7 @@ export default function App() {
   const { analysis, analyzing, streaming, analyze, close } = useAnalysis()
   const stockAnalysis = useStockAnalysis()
   const { theme, toggle } = useTheme()
+  const [navOpen, setNavOpen] = useState(false)
   const [view, setView] = useState(() => {
     try {
       return localStorage.getItem('view') || 'ipos'
@@ -35,15 +37,30 @@ export default function App() {
 
   return (
     <div className="app-shell">
-      <Sidebar view={view} onSelect={setView} />
+      <Sidebar
+        view={view}
+        onSelect={setView}
+        open={navOpen}
+        onOpen={() => setNavOpen(true)}
+        onClose={() => setNavOpen(false)}
+      />
 
       <div className="app">
-      <Header source={source} count={ipos.length} theme={theme} onToggleTheme={toggle} view={view} />
+      <Header
+        source={source}
+        count={ipos.length}
+        theme={theme}
+        onToggleTheme={toggle}
+        view={view}
+        onOpenNav={() => setNavOpen(true)}
+      />
 
       {view === 'stocks' ? (
         <StockAnalyzer {...stockAnalysis} />
       ) : view === 'trending' ? (
         <TrendingStocks />
+      ) : view === 'results' ? (
+        <UpcomingResults />
       ) : (
         <>
           <Toolbar search={search} onSearch={setSearch} filter={filter} onFilter={setFilter} counts={counts} />

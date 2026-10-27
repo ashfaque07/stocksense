@@ -1,34 +1,23 @@
 // Side navigation with a mobile hamburger drawer.
 
-import { useState } from 'react'
 import { ICONS } from '../constants/ui.js'
 
 const NAV_ITEMS = [
   { id: 'ipos', label: 'IPOs', icon: ICONS.ipos },
   { id: 'trending', label: 'Trending', icon: ICONS.trending },
+  { id: 'results', label: 'Upcoming Results', icon: ICONS.results },
   { id: 'stocks', label: 'Stock Analysis', icon: ICONS.stocks }
 ]
 
-export default function Sidebar({ view, onSelect }) {
-  const [open, setOpen] = useState(false)
-
+export default function Sidebar({ view, onSelect, open = false, onClose }) {
   const select = (id) => {
     onSelect(id)
-    setOpen(false)
+    onClose?.()
   }
 
   return (
     <>
-      <button
-        className={`nav-toggle ${open ? 'hidden' : ''}`}
-        onClick={() => setOpen(true)}
-        aria-label="Open navigation"
-        aria-expanded={open}
-      >
-        {ICONS.menu}
-      </button>
-
-      {open && <div className="sidebar-overlay" onClick={() => setOpen(false)} />}
+      {open && <div className="sidebar-overlay" onClick={onClose} />}
 
       <aside className={`sidebar ${open ? 'open' : ''}`}>
         <div className="sidebar-head">
@@ -37,7 +26,7 @@ export default function Sidebar({ view, onSelect }) {
           </span>
           <button
             className="sidebar-close"
-            onClick={() => setOpen(false)}
+            onClick={onClose}
             aria-label="Close navigation"
           >
             {ICONS.close}

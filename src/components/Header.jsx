@@ -25,15 +25,27 @@ const HEADINGS = {
     title: 'Trending Stocks',
     logo: ICONS.trending,
     subtitle: 'Live NSE top gainers & losers, auto refreshed through the trading day.'
+  },
+  results: {
+    title: 'Upcoming Results',
+    logo: ICONS.results,
+    subtitle: 'Upcoming NSE board meetings to consider quarterly & annual financial results.'
   }
 }
 
-export default function Header({ view = 'ipos', source, count, theme, onToggleTheme }) {
+export default function Header({ view = 'ipos', source, count, theme, onToggleTheme, onOpenNav }) {
   const heading = HEADINGS[view] || HEADINGS.ipos
 
   return (
     <header>
       <div className="header-actions">
+        <button
+          className="nav-toggle"
+          onClick={onOpenNav}
+          aria-label="Open navigation"
+        >
+          {ICONS.menu}
+        </button>
         <ModelSelector />
         <button
           className="theme-toggle"

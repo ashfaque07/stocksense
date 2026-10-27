@@ -8,6 +8,7 @@ export const ICONS = {
   ai: '✨',
   ipos: '🚀',
   trending: '🔥',
+  results: '🗓️',
   stocks: '💹',
   light: '🌞',
   dark: '🌜',
