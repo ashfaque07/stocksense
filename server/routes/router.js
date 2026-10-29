@@ -3,9 +3,11 @@
 import { handleGetIpos } from '../controllers/ipoController.js'
 import { handleAnalyze } from '../controllers/analysisController.js'
 import { handleAnalyzeStock } from '../controllers/stockAnalysisController.js'
+import { handleAnalyzeSectorRotation } from '../controllers/sectorRotationController.js'
 import { handleAnalyzeTrending } from '../controllers/trendingAnalysisController.js'
 import { handleGetTrending, handleRefreshTrending } from '../controllers/trendingController.js'
 import { handleGetResults } from '../controllers/resultsController.js'
+import { handleGetResultsDetail } from '../controllers/resultsDetailController.js'
 import { handleAnalyzeResults } from '../controllers/resultsAnalysisController.js'
 import { handleGetModels } from '../controllers/modelsController.js'
 
@@ -50,6 +52,11 @@ export async function router(req, res) {
     return
   }
 
+  if (req.url.startsWith('/api/results-detail')) {
+    await handleGetResultsDetail(req, res)
+    return
+  }
+
   if (req.url.startsWith('/api/results')) {
     await handleGetResults(req, res)
     return
@@ -57,6 +64,11 @@ export async function router(req, res) {
 
   if (req.url.startsWith('/api/analyze-stock')) {
     await handleAnalyzeStock(req, res)
+    return
+  }
+
+  if (req.url.startsWith('/api/sector-rotation')) {
+    await handleAnalyzeSectorRotation(req, res)
     return
   }
 

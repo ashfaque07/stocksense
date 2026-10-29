@@ -7,9 +7,11 @@ import AnalysisModal from './components/AnalysisModal.jsx'
 import StockAnalyzer from './components/StockAnalyzer.jsx'
 import TrendingStocks from './components/TrendingStocks.jsx'
 import UpcomingResults from './components/UpcomingResults.jsx'
+import SectorRotation from './components/SectorRotation.jsx'
 import { useIpos } from './hooks/useIpos.js'
 import { useAnalysis } from './hooks/useAnalysis.js'
 import { useStockAnalysis } from './hooks/useStockAnalysis.js'
+import { useSectorRotation } from './hooks/useSectorRotation.js'
 import { useTheme } from './hooks/useTheme.js'
 import { useState, useEffect } from 'react'
 
@@ -17,6 +19,7 @@ export default function App() {
   const { ipos, source, loading, error, filter, setFilter, search, setSearch, filtered, counts } = useIpos()
   const { analysis, analyzing, streaming, analyze, close } = useAnalysis()
   const stockAnalysis = useStockAnalysis()
+  const sectorRotation = useSectorRotation()
   const { theme, toggle } = useTheme()
   const [navOpen, setNavOpen] = useState(false)
   const [view, setView] = useState(() => {
@@ -57,6 +60,8 @@ export default function App() {
 
       {view === 'stocks' ? (
         <StockAnalyzer {...stockAnalysis} />
+      ) : view === 'sectors' ? (
+        <SectorRotation {...sectorRotation} />
       ) : view === 'trending' ? (
         <TrendingStocks />
       ) : view === 'results' ? (

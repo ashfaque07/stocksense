@@ -7,7 +7,8 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { useResults } from '../hooks/useResults.js'
 import { useResultsAnalysis } from '../hooks/useResultsAnalysis.js'
-import TrendingSkeleton from './TrendingSkeleton.jsx'
+import { useResultsDetail } from '../hooks/useResultsDetail.js'
+import TableSkeleton from './TableSkeleton.jsx'
 import Modal from './Modal.jsx'
 import { ICONS } from '../constants/ui.js'
 import { MD_COMPONENTS } from '../constants/markdown.jsx'
@@ -28,6 +29,48 @@ const fmtDate = (iso) => {
 // IST calendar day key (YYYY-MM-DD) for the given ISO date.
 const dayKey = (iso) => (iso ? iso.slice(0, 10) : '')
 
+// Format NSE's "01-OCT-2024" day label as "01 Oct 2024".
+const fmtNseDay = (raw) => {
+  if (!raw) return '—'
+  const m = /^(\d{1,2})-([A-Za-z]{3})-(\d{4})/.exec(String(raw).trim())
+  if (!m) return raw
+  const month = m[2].charAt(0).toUpperCase() + m[2].slice(1).toLowerCase()
+  return `${m[1]} ${month} ${m[3]}`
+}
+
+// Map a quarter-end day label (e.g. "30-SEP-2026") to a short month-range label
+// like "Jul–Sep 2026" using the preceding three months.
+const MONTH_IDX = {
+  jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
+  jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11
+}
+const MONTH_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+const fmtQuarter = (periodTo) => {
+  const m = /^(\d{1,2})-([A-Za-z]{3})-(\d{4})/.exec(String(periodTo || '').trim())
+  if (!m) return periodTo || '—'
+  const endMonth = MONTH_IDX[m[2].toLowerCase()]
+  const endYear = Number(m[3])
+  if (endMonth === undefined) return periodTo
+  const startMonth = (endMonth + 10) % 12
+  // The start month belongs to the previous calendar year when the quarter
+  // wraps across January (e.g. Jan–Mar spans only one year, Nov is prior year).
+  const startYear = startMonth > endMonth ? endYear - 1 : endYear
+  const yearLabel = startYear === endYear ? `${endYear}` : `${startYear}–${endYear}`
+  return `${MONTH_SHORT[startMonth]}–${MONTH_SHORT[endMonth]} ${yearLabel}`
+}
+
+// Format a ₹ crore figure in the Indian numbering system.
+const fmtCr = (v) => {
+  if (v === null || v === undefined || Number.isNaN(v)) return '—'
+  return `₹${v.toLocaleString('en-IN', { maximumFractionDigits: 2 })} Cr`
+}
+
+// Format a plain number (e.g. EPS) or show a dash.
+const fmtNum = (v) => {
+  if (v === null || v === undefined || Number.isNaN(v)) return '—'
+  return v.toLocaleString('en-IN', { maximumFractionDigits: 2 })
+}
+
 const PAGE_SIZE = 20
 
 export default function UpcomingResults() {
@@ -47,6 +90,21 @@ export default function UpcomingResults() {
     analyze,
     reset
   } = useResultsAnalysis()
+
+  const {
+    stock: detailStock,
+    detail,
+    loading: detailLoading,
+    error: detailError,
+    open: openDetail,
+    close: closeDetail
+  } = useResultsDetail()
+
+  // Show quarters oldest-first (the service returns them newest-first).
+  const orderedQuarters = useMemo(
+    () => (detail?.quarters ? [...detail.quarters].reverse() : []),
+    [detail]
+  )
 
   // Close the preview modal on Escape.
   useEffect(() => {
@@ -160,7 +218,11 @@ export default function UpcomingResults() {
       )}
 
       {loading && !results.length ? (
-        <TrendingSkeleton />
+        <TableSkeleton
+          columns={['#', 'Symbol', 'Company', 'Result Date', 'Purpose', 'AI']}
+          leftAlign={['Symbol', 'Company', 'Purpose']}
+          rows={PAGE_SIZE}
+        />
       ) : (
         !!filtered.length && (
           <div className="trending-table-wrap">
@@ -179,7 +241,15 @@ export default function UpcomingResults() {
                 {paged.map((r, i) => (
                   <tr key={`${r.symbol}-${(currentPage - 1) * PAGE_SIZE + i}`}>
                     <td className="muted">{(currentPage - 1) * PAGE_SIZE + i + 1}</td>
-                    <td className="ta-left sym">{r.symbol}</td>
+                    <td className="ta-left sym">
+                      <button
+                        className="link-btn"
+                        onClick={() => openDetail(r)}
+                        title="View stock details & last two quarterly results"
+                      >
+                        {r.symbol}
+                      </button>
+                    </td>
                     <td className="ta-left" title={r.company}>{r.company || '—'}</td>
                     <td>{fmtDate(r.date)}</td>
                     <td className="ta-left reason" title={r.description || r.purpose}>
@@ -225,9 +295,90 @@ export default function UpcomingResults() {
         </div>
       )}
 
+      {detailStock && (
+        <Modal
+          title={`${detailStock.symbol} · Stock Details`}
+          onClose={closeDetail}
+        >
+          <div className="results-detail">
+            <dl className="detail-grid">
+              <div><dt>Symbol</dt><dd className="sym">{detailStock.symbol}</dd></div>
+              <div><dt>Company</dt><dd>{detailStock.company || '—'}</dd></div>
+              {detailStock.isin && <div><dt>ISIN</dt><dd>{detailStock.isin}</dd></div>}
+              {detail?.faceValue != null && (
+                <div><dt>Face Value</dt><dd>{fmtNum(detail.faceValue)}</dd></div>
+              )}
+              <div><dt>Next Result</dt><dd>{fmtDate(detailStock.date)}</dd></div>
+              <div><dt>Purpose</dt><dd>{detailStock.purpose || '—'}</dd></div>
+            </dl>
+
+            <h3 className="detail-heading">Last Two Quarterly Results</h3>
+
+            {detailLoading && (
+              <TableSkeleton
+                columns={['Metric', 'Quarter', 'Quarter']}
+                leftAlign={['Metric']}
+                rows={6}
+              />
+            )}
+            {detailError && <p className="error">{detailError}</p>}
+            {!detailLoading && !detailError && !detail?.quarters?.length && (
+              <p className="info">No recent quarterly results found for this stock.</p>
+            )}
+            {!detailLoading && !detailError && !!detail?.quarters?.length && (
+              <div className="trending-table-wrap">
+                <table className="trending-table">
+                  <thead>
+                    <tr>
+                      <th className="ta-left">Metric</th>
+                      {orderedQuarters.map((q, i) => (
+                        <th key={i}>
+                          <div className="q-period">
+                            {fmtQuarter(q.periodTo)}
+                          </div>
+                          {q.reportedOn && (
+                            <div className="q-reported">Filed {fmtNseDay(q.reportedOn)}</div>
+                          )}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="ta-left">Revenue</td>
+                      {orderedQuarters.map((q, i) => <td key={i}>{fmtCr(q.revenue)}</td>)}
+                    </tr>
+                    <tr>
+                      <td className="ta-left">Total Income</td>
+                      {orderedQuarters.map((q, i) => <td key={i}>{fmtCr(q.totalIncome)}</td>)}
+                    </tr>
+                    <tr>
+                      <td className="ta-left">Profit Before Tax</td>
+                      {orderedQuarters.map((q, i) => <td key={i}>{fmtCr(q.profitBeforeTax)}</td>)}
+                    </tr>
+                    <tr>
+                      <td className="ta-left">Net Profit</td>
+                      {orderedQuarters.map((q, i) => <td key={i}>{fmtCr(q.netProfit)}</td>)}
+                    </tr>
+                    <tr>
+                      <td className="ta-left">EPS (₹)</td>
+                      {orderedQuarters.map((q, i) => <td key={i}>{fmtNum(q.eps)}</td>)}
+                    </tr>
+                    <tr>
+                      <td className="ta-left">Audit Status</td>
+                      {orderedQuarters.map((q, i) => <td key={i}>{q.audited}</td>)}
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </Modal>
+      )}
+
       {(preview || analyzeError) && (
         <Modal
-          title={`${ICONS.ai} Results Preview · ${previewStock?.symbol || ''}`}
+          title={`Results Preview · ${previewStock?.symbol || ''}`}
           onClose={reset}
         >
           {analyzeError ? (

@@ -7,6 +7,14 @@ export async function fetchResults() {
   return res.json()
 }
 
+// Fetch stock details + the last two quarterly financial results for a symbol.
+export async function fetchResultsDetail(symbol) {
+  const res = await fetch(`/api/results-detail?symbol=${encodeURIComponent(symbol)}`, {
+    cache: 'no-store'
+  })
+  return res.json()
+}
+
 // Stream an AI "what to expect" preview for a single upcoming result via
 // /api/analyze-results. Calls onToken for each chunk of text as it arrives.
 export async function streamResultsAnalysis(stock, onToken, signal) {

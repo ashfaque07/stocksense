@@ -30,7 +30,7 @@ async function getCookies() {
 
 // Fetch an NSE JSON endpoint, trying without cookies first and falling back to
 // the cookie handshake only if the direct call fails or returns non-JSON.
-async function fetchNseJson(url) {
+export async function fetchNseJson(url) {
   try {
     const res = await fetch(url, { headers: BROWSER_HEADERS })
     if (res.ok) return await res.json()

@@ -4,12 +4,13 @@
 
 import { streamCompletion } from './analysisService.js'
 import { getNewsForQuery } from './newsService.js'
+import { getResultsDetail } from './resultsDetailService.js'
 import { RESULTS_SYSTEM_PROMPT, resultsUserPrompt } from './prompts.js'
 
-function buildMessages(facts, news) {
+function buildMessages(facts, news, quarters) {
   return [
     { role: 'system', content: RESULTS_SYSTEM_PROMPT },
-    { role: 'user', content: resultsUserPrompt(facts, news) }
+    { role: 'user', content: resultsUserPrompt(facts, news, quarters) }
   ]
 }
 
@@ -23,6 +24,15 @@ export async function* streamResultsAnalysis(stock, model) {
   }
   // Best-effort: pull recent headlines so the model reasons over fresh news.
   const news = await getNewsForQuery(facts.company || facts.symbol)
+  // Best-effort: pull the last couple of reported quarters so the model grounds
+  // its expectations in the company's most recent actuals.
+  let quarters = []
+  try {
+    const detail = await getResultsDetail(facts.symbol)
+    quarters = detail?.quarters || []
+  } catch {
+    /* preview still works without historical quarters */
+  }
   const key = `results:${String(facts.symbol).toLowerCase()}:${facts.resultDate}`
-  yield* streamCompletion(buildMessages(facts, news), key, model)
+  yield* streamCompletion(buildMessages(facts, news, quarters), key, model)
 }

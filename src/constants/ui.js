@@ -10,6 +10,7 @@ export const ICONS = {
   trending: '🔥',
   results: '🗓️',
   stocks: '💹',
+  sectors: '🔄',
   light: '🌞',
   dark: '🌜',
   close: '✕',

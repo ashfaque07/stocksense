@@ -7,8 +7,10 @@ import { connectLambda } from '@netlify/blobs'
 import { getIpos } from '../../server/services/ipoService.js'
 import { isAiConfigured, streamAnalysis } from '../../server/services/analysisService.js'
 import { streamStockAnalysis } from '../../server/services/stockAnalysisService.js'
+import { streamSectorRotation } from '../../server/services/sectorRotationService.js'
 import { streamTrendingAnalysis } from '../../server/services/trendingAnalysisService.js'
 import { getUpcomingResults } from '../../server/services/resultsService.js'
+import { getResultsDetail } from '../../server/services/resultsDetailService.js'
 import { streamResultsAnalysis } from '../../server/services/resultsAnalysisService.js'
 import {
   readTrending,
@@ -211,6 +213,35 @@ export const handler = async (event) => {
       }
     }
 
+    if (path.includes('/results-detail')) {
+      const symbol = event.queryStringParameters?.symbol
+      if (!symbol?.trim()) {
+        return {
+          statusCode: 400,
+          headers: { ...CORS, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ source: 'error', quarters: [], error: 'Missing stock symbol.' })
+        }
+      }
+      try {
+        const data = await getResultsDetail(symbol)
+        return {
+          statusCode: 200,
+          headers: { ...CORS, 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        }
+      } catch (err) {
+        return {
+          statusCode: 502,
+          headers: { ...CORS, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            source: 'error',
+            quarters: [],
+            error: `Could not fetch quarterly results from NSE: ${err.message}`
+          })
+        }
+      }
+    }
+
     if (path.includes('/results')) {
       try {
         const data = await getUpcomingResults()
@@ -282,6 +313,48 @@ export const handler = async (event) => {
         statusCode: 200,
         headers: { ...CORS, 'Content-Type': 'text/plain; charset=utf-8' },
         body: stockText
+      }
+    }
+
+    if (path.includes('/sector-rotation')) {
+      if (method !== 'POST') {
+        return { statusCode: 405, headers: CORS, body: 'Method not allowed' }
+      }
+      if (!isAiConfigured()) {
+        return {
+          statusCode: 503,
+          headers: { ...CORS, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ error: 'AI provider not configured. Set AI_API_KEY.' })
+        }
+      }
+
+      let sectorModel
+      try {
+        sectorModel = JSON.parse(event.body || '{}')?.model
+      } catch {
+        return {
+          statusCode: 400,
+          headers: { ...CORS, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ error: 'Invalid JSON body.' })
+        }
+      }
+
+      let sectorText = ''
+      try {
+        for await (const token of streamSectorRotation(sectorModel)) {
+          sectorText += token
+        }
+      } catch (err) {
+        return {
+          statusCode: 502,
+          headers: { ...CORS, 'Content-Type': 'text/plain; charset=utf-8' },
+          body: `${sectorText}\n\n[Analysis failed: ${err.message}]`
+        }
+      }
+      return {
+        statusCode: 200,
+        headers: { ...CORS, 'Content-Type': 'text/plain; charset=utf-8' },
+        body: sectorText
       }
     }
 

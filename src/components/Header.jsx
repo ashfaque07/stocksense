@@ -30,6 +30,11 @@ const HEADINGS = {
     title: 'Upcoming Results',
     logo: ICONS.results,
     subtitle: 'Upcoming NSE board meetings to consider quarterly & annual financial results.'
+  },
+  sectors: {
+    title: 'Sector Rotation',
+    logo: ICONS.sectors,
+    subtitle: 'AI analysis of which sectors money is rotating into and out of.'
   }
 }
 

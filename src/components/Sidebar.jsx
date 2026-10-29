@@ -6,7 +6,8 @@ const NAV_ITEMS = [
   { id: 'ipos', label: 'IPOs', icon: ICONS.ipos },
   { id: 'trending', label: 'Trending', icon: ICONS.trending },
   { id: 'results', label: 'Upcoming Results', icon: ICONS.results },
-  { id: 'stocks', label: 'Stock Analysis', icon: ICONS.stocks }
+  { id: 'stocks', label: 'Stock Analysis', icon: ICONS.stocks },
+  { id: 'sectors', label: 'Sector Rotation', icon: ICONS.sectors },
 ]
 
 export default function Sidebar({ view, onSelect, open = false, onClose }) {

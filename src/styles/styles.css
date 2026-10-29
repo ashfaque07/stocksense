@@ -537,6 +537,26 @@ h1 {
 .trending-table tbody tr:hover { background: rgba(99, 102, 241, 0.08); }
 .trending-table tbody tr:last-child td { border-bottom: none; }
 .trending-table .sym { font-weight: 700; color: var(--text); }
+.trending-table .sym .link-btn { font-weight: 700; }
+.link-btn {
+  background: none; border: none; padding: 0; cursor: pointer;
+  color: var(--accent, #6366f1); font: inherit; text-align: left;
+}
+.link-btn:hover { text-decoration: underline; }
+.results-detail .detail-grid {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 20px; margin: 0 0 18px;
+}
+.results-detail .detail-grid > div { display: flex; flex-direction: column; gap: 2px; }
+.results-detail .detail-grid dt { font-size: 12px; color: var(--text-faint); }
+.results-detail .detail-grid dd { margin: 0; font-size: 14px; color: var(--text); }
+.results-detail .detail-heading { margin: 8px 0 10px; font-size: 15px; }
+.results-detail .q-period { font-weight: 700; white-space: nowrap; }
+.results-detail .q-reported {
+  font-size: 11px; font-weight: 400; color: var(--text-faint); white-space: nowrap;
+}
+.results-detail .trending-table-wrap { overflow-x: visible; }
+.results-detail .trending-table { min-width: 0; }
 .trending-table .muted { color: var(--text-faint); }
 .pos { color: var(--up); font-weight: 700; }
 .neg { color: var(--down); font-weight: 700; }
