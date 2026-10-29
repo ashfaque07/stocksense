@@ -352,6 +352,7 @@ h1 {
   background: var(--surface-2); border: 1px solid var(--border);
   color: var(--text); font-size: 20px; line-height: 1;
   align-items: center; justify-content: center;
+  -webkit-tap-highlight-color: transparent; 
 }
 
 .sidebar-overlay {
