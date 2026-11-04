@@ -363,8 +363,7 @@ export function resultsUserPrompt(facts, news, quarters) {
       revenueCr: q.revenue,
       profitBeforeTaxCr: q.profitBeforeTax,
       netProfitCr: q.netProfit,
-      eps: q.eps,
-      audited: q.audited
+      eps: q.eps
     }));
     base += `\n\nRecent reported quarters (most recent first, ₹ crore):\n${JSON.stringify(reported, null, 2)}`;
   }

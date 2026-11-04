@@ -553,9 +553,6 @@ h1 {
 .results-detail .detail-grid dd { margin: 0; font-size: 14px; color: var(--text); }
 .results-detail .detail-heading { margin: 8px 0 10px; font-size: 15px; }
 .results-detail .q-period { font-weight: 700; white-space: nowrap; }
-.results-detail .q-reported {
-  font-size: 11px; font-weight: 400; color: var(--text-faint); white-space: nowrap;
-}
 .results-detail .trending-table-wrap { overflow-x: visible; }
 .results-detail .trending-table { min-width: 0; }
 .trending-table .muted { color: var(--text-faint); }

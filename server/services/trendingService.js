@@ -62,6 +62,27 @@ async function fetchNseJson(url) {
   return res.json()
 }
 
+// Parse a value NSE may send either as a plain number or as a pre-formatted
+// Indian-abbreviated string ("1,234", "17.97 L", "92.23 Cr", "4.5 K") into an
+// absolute number. Returns null for missing / unparseable values.
+function parseIndianAbbrev(value) {
+  if (value === null || value === undefined) return null
+  if (typeof value === 'number') return Number.isNaN(value) ? null : value
+
+  const s = String(value).trim()
+  if (s === '' || s === '-') return null
+
+  const match = s.replace(/,/g, '').match(/^([\d.]+)\s*(cr|l|k)?$/i)
+  if (!match) return null
+
+  const num = Number(match[1])
+  if (Number.isNaN(num)) return null
+
+  const unit = (match[2] || '').toLowerCase()
+  const multiplier = unit === 'cr' ? 1e7 : unit === 'l' ? 1e5 : unit === 'k' ? 1e3 : 1
+  return num * multiplier
+}
+
 // Map a raw NSE security row into a clean, UI-friendly object.
 function normalizeStock(row) {
   // NSE uses a literal "-" to mean "no value"; treat it as empty.
@@ -79,8 +100,12 @@ function normalizeStock(row) {
     prevClose: row.prev_price ?? null,
     change: row.net_price ?? null,
     percentChange: row.perChange ?? null,
-    volume: row.trade_quantity ?? null,
-    turnover: row.turnover ?? null,
+    // NSE now returns these as pre-formatted strings with Indian abbreviations
+    // (e.g. "17.97 L", "92.23 Cr") instead of plain numbers. Parse them back to
+    // numbers so the UI can sort/format them: volume as a share count, turnover
+    // as ₹ lakh (the unit fmtCompact expects).
+    volume: parseIndianAbbrev(row.trade_quantity),
+    turnover: (t => (t == null ? null : t / 1e5))(parseIndianAbbrev(row.turnover)),
     // Reason the stock is trending (corporate action / event), e.g.
     // "Dividend - Rs 5.25 Per Share", "Annual General Meeting".
     reason: clean(row.ca_purpose),

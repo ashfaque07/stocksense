@@ -52,7 +52,10 @@ const MONTHS = {
 }
 
 // Parse NSE's "10-Jan-2026" (or "10-Jan-2026 10:30") date into a UTC timestamp
-// pinned to IST midnight. Returns null when unparseable.
+// pinned to UTC midnight of that calendar day. Using UTC midnight (not IST)
+// keeps the ISO string's date portion equal to the NSE calendar day, so the
+// client/server date-range filters (which compare YYYY-MM-DD keys) don't shift
+// by a day. Returns null when unparseable.
 function parseNseDate(raw) {
   const s = (raw ?? '').toString().trim()
   const m = /^(\d{1,2})-([A-Za-z]{3})-(\d{4})/.exec(s)
@@ -61,8 +64,7 @@ function parseNseDate(raw) {
   const month = MONTHS[m[2].toLowerCase()]
   const year = Number(m[3])
   if (month === undefined || Number.isNaN(day) || Number.isNaN(year)) return null
-  // Treat the calendar day as IST (UTC+5:30) midnight.
-  return Date.UTC(year, month, day) - (5 * 60 + 30) * 60 * 1000
+  return Date.UTC(year, month, day)
 }
 
 // Calendar day key (YYYY-MM-DD) in IST, used to drop past meetings.

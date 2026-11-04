@@ -29,15 +29,6 @@ const fmtDate = (iso) => {
 // IST calendar day key (YYYY-MM-DD) for the given ISO date.
 const dayKey = (iso) => (iso ? iso.slice(0, 10) : '')
 
-// Format NSE's "01-OCT-2024" day label as "01 Oct 2024".
-const fmtNseDay = (raw) => {
-  if (!raw) return '—'
-  const m = /^(\d{1,2})-([A-Za-z]{3})-(\d{4})/.exec(String(raw).trim())
-  if (!m) return raw
-  const month = m[2].charAt(0).toUpperCase() + m[2].slice(1).toLowerCase()
-  return `${m[1]} ${month} ${m[3]}`
-}
-
 // Map a quarter-end day label (e.g. "30-SEP-2026") to a short month-range label
 // like "Jul–Sep 2026" using the preceding three months.
 const MONTH_IDX = {
@@ -336,9 +327,6 @@ export default function UpcomingResults() {
                           <div className="q-period">
                             {fmtQuarter(q.periodTo)}
                           </div>
-                          {q.reportedOn && (
-                            <div className="q-reported">Filed {fmtNseDay(q.reportedOn)}</div>
-                          )}
                         </th>
                       ))}
                     </tr>
@@ -347,10 +335,6 @@ export default function UpcomingResults() {
                     <tr>
                       <td className="ta-left">Revenue</td>
                       {orderedQuarters.map((q, i) => <td key={i}>{fmtCr(q.revenue)}</td>)}
-                    </tr>
-                    <tr>
-                      <td className="ta-left">Total Income</td>
-                      {orderedQuarters.map((q, i) => <td key={i}>{fmtCr(q.totalIncome)}</td>)}
                     </tr>
                     <tr>
                       <td className="ta-left">Profit Before Tax</td>
@@ -363,10 +347,6 @@ export default function UpcomingResults() {
                     <tr>
                       <td className="ta-left">EPS (₹)</td>
                       {orderedQuarters.map((q, i) => <td key={i}>{fmtNum(q.eps)}</td>)}
-                    </tr>
-                    <tr>
-                      <td className="ta-left">Audit Status</td>
-                      {orderedQuarters.map((q, i) => <td key={i}>{q.audited}</td>)}
                     </tr>
                   </tbody>
                 </table>

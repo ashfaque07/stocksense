@@ -117,12 +117,9 @@ async function fromYahoo(symbol) {
       periodFrom: quarterStart(endIso),
       periodTo: isoToNseDay(endIso),
       revenue: toCroreFromRupees(metric.quarterlyTotalRevenue),
-      totalIncome: null,
       profitBeforeTax: toCroreFromRupees(metric.quarterlyPretaxIncome),
       netProfit: toCroreFromRupees(metric.quarterlyNetIncome),
-      eps: num(metric.quarterlyBasicEPS),
-      audited: 'Un-Audited',
-      reportedOn: ''
+      eps: num(metric.quarterlyBasicEPS)
     }
   })
 
@@ -137,17 +134,13 @@ async function fromYahoo(symbol) {
 
 // Map a raw NSE results-comparision row into a clean quarter summary.
 function normalizeQuarter(row) {
-  const resType = stripTags(row?.re_res_type)
   return {
     periodFrom: stripTags(row?.re_from_dt),
     periodTo: stripTags(row?.re_to_dt),
     revenue: toCrore(row?.re_net_sale),
-    totalIncome: toCrore(row?.re_total_inc),
     profitBeforeTax: toCrore(row?.re_pro_loss_bef_tax),
     netProfit: toCrore(row?.re_net_profit),
-    eps: num(row?.re_basic_eps_for_cont_dic_opr ?? row?.re_diluted_eps),
-    audited: resType === 'A' ? 'Audited' : 'Un-Audited',
-    reportedOn: stripTags(row?.re_create_dt)
+    eps: num(row?.re_basic_eps_for_cont_dic_opr ?? row?.re_diluted_eps)
   }
 }
 

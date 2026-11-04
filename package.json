@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "server": "node server/index.js",
+    "server:debug": "node --inspect server/index.js",
     "start": "concurrently \"npm run server\" \"npm run dev\""
   },
   "dependencies": {

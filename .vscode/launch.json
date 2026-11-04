@@ -17,6 +17,23 @@
       "request": "attach",
       "port": 9229,
       "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Debug client (Vite)",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}",
+      "sourceMapPathOverrides": {
+        "webpack:///./src/*": "${workspaceFolder}/src/*",
+        "/src/*": "${workspaceFolder}/src/*"
+      }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Debug full stack (server + client)",
+      "configurations": ["Debug server (node)", "Debug client (Vite)"]
     }
   ]
 }
