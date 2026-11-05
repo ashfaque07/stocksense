@@ -76,17 +76,23 @@ function promptFacts(facts, sourceMap) {
 
 // Citation token the model emits in place of a real link: `[S<number>]`.
 // Some models (e.g. Qwen) emit fullwidth brackets `【S<number>】` instead of
-// ASCII ones, so accept either bracket style.
-const CITATION_RE = /[[【]S(\d+)[\]】]/g
+// ASCII ones, so accept either bracket style. An optional leading character is
+// captured so we can re-insert a space when the model glues the citation to the
+// previous word (e.g. `quarter[S3]` → `quarter [Entrackr](...)`).
+const CITATION_RE = /(.?)[[【]S(\d+)[\]】]/g
 
 // Swap every `[S<id>]` citation for the real markdown link `[source](link)`
 // using the recorded source map. Unknown ids are left as plain text (the id
-// stripped) so no dangling placeholder is shown.
+// stripped) so no dangling placeholder is shown. When the citation directly
+// follows a non-space, non-`(` character, a space is inserted so the link does
+// not stick to the preceding word.
 function replaceCitations(text, sourceMap) {
-  return text.replace(CITATION_RE, (match, n) => {
+  return text.replace(CITATION_RE, (match, prev, n) => {
     const entry = sourceMap.get(`S${n}`)
-    if (!entry) return ''
-    return `[${entry.source}](${entry.link})`
+    const link = entry ? `[${entry.source}](${entry.link})` : ''
+    if (!link) return prev
+    const sep = prev && !/\s|\(/.test(prev) ? `${prev} ` : prev
+    return `${sep}${link}`
   })
 }
 
@@ -103,7 +109,10 @@ async function* reinjectCitations(stream, sourceMap) {
   for await (const chunk of stream) {
     buffer += chunk
     const match = PARTIAL_CITATION_RE.exec(buffer)
-    const safeLen = match ? match.index : buffer.length
+    // When a partial citation is pending, keep the single character before it
+    // buffered too, so `replaceCitations` can see the preceding word and insert
+    // a space if the model glued the citation to it.
+    const safeLen = match ? Math.max(0, match.index - 1) : buffer.length
     if (safeLen > 0) {
       yield replaceCitations(buffer.slice(0, safeLen), sourceMap)
       buffer = buffer.slice(safeLen)
