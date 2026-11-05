@@ -4,14 +4,16 @@ const COLUMNS = [
   '#',
   'Symbol',
   'LTP (%)',
+  'Created',
+  'Modified',
   'Open',
   'Prev',
   'Day Range',
+  'Circuit',
+  'VWAP',
   'Vol',
   'Turnover',
-  'Reason (Trending)',
-  'Created',
-  'Modified'
+  'Reason (Trending)'
 ]
 
 export default function TrendingSkeleton({ rows = 10 }) {

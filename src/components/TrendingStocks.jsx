@@ -72,6 +72,7 @@ export default function TrendingStocks() {
       case 'prev': return s.prevClose
       case 'volume': return s.volume
       case 'turnover': return s.turnover
+      case 'vwap': return s.vwap
       case 'reason': return clean(s.reason).toLowerCase()
       case 'created': return s.createdAt ? new Date(s.createdAt).getTime() : null
       case 'modified': return s.modifiedAt ? new Date(s.modifiedAt).getTime() : null
@@ -179,6 +180,8 @@ export default function TrendingStocks() {
                   <th className="sortable" onClick={() => onSort('open')}>Open{sortIcon('open')}</th>
                   <th className="sortable" title="Previous Close" onClick={() => onSort('prev')}>Prev{sortIcon('prev')}</th>
                   <th title="Intraday High and Low">Day Range</th>
+                  <th title="Lower / Upper circuit (price band %)">Circuit</th>
+                  <th className="sortable" title="Volume-weighted average price (session)" onClick={() => onSort('vwap')}>VWAP{sortIcon('vwap')}</th>
                   <th className="sortable" title="Shares traded" onClick={() => onSort('volume')}>Vol{sortIcon('volume')}</th>
                   <th className="sortable" title="Traded value (₹)" onClick={() => onSort('turnover')}>Turnover{sortIcon('turnover')}</th>
                   <th className="ta-left sortable" onClick={() => onSort('reason')}>Reason (Trending){sortIcon('reason')}</th>
@@ -223,9 +226,22 @@ export default function TrendingStocks() {
                       <td className="muted">{fmtTime(s.modifiedAt)}</td>
                       <td>{fmtNum(s.open)}</td>
                       <td>{fmtNum(s.prevClose)}</td>
-                      <td className="day-range">
-                        <span className="pos" title="Day High">H {fmtNum(s.high)}</span>
-                        <span className="neg" title="Day Low">L {fmtNum(s.low)}</span>
+                      <td title="Intraday High / Low">
+                        <div className="day-range">
+                          <span className="pos" title="Day High">H {fmtNum(s.high)}</span>
+                          <span className="neg" title="Day Low">L {fmtNum(s.low)}</span>
+                        </div>
+                      </td>
+                      <td title={s.priceBand ? `Price band: ${s.priceBand}%` : 'Circuit limits'}>
+                        <div className="circuit">
+                          <span className="pos" title="Upper Circuit">U {fmtNum(s.upperCircuit)}</span>
+                          <span className="neg" title="Lower Circuit">L {fmtNum(s.lowerCircuit)}</span>
+                        </div>
+                      </td>
+                      <td title={s.vwap != null && s.ltp != null ? (s.ltp >= s.vwap ? 'Price above VWAP (bullish)' : 'Price below VWAP (bearish)') : 'Session VWAP'}>
+                        <span className={s.vwap == null || s.ltp == null ? '' : s.ltp >= s.vwap ? 'pos' : 'neg'}>
+                          {fmtNum(s.vwap)}
+                        </span>
                       </td>
                       <td>{fmtCount(s.volume)}</td>
                       <td>{fmtCompact(s.turnover)}</td>

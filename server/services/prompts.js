@@ -213,7 +213,10 @@ export const TRENDING_BEST_PICK_SYSTEM_PROMPT =
   "sharp swings).\n\n" +
   "Ranking rules: prefer stocks with strong fundamentals AND strong momentum; avoid " +
   "operator-driven pump-and-dump stocks; give extra weight to stocks likely to hit " +
-  "the upper circuit due to genuine buying pressure. Use live web data plus the " +
+  "the upper circuit due to genuine buying pressure. Each stock includes its exact " +
+  "`lowerCircuit` and `upperCircuit` prices for the day — use these actual values " +
+  "instead of assuming them (e.g. to judge how much room is left to the upper circuit " +
+  "or whether a stock is already locked at a limit). Use live web data plus the " +
   "supplied live intraday data. Cite your sources with publication dates. If a value " +
   'is genuinely unknown, write "N/A". Base your news assessment on the supplied `news` ' +
   "headlines; do not claim you have no access to news when headlines are provided. " +
@@ -262,6 +265,9 @@ export const TRENDING_BEST_PICK_SYSTEM_PROMPT =
 export function trendingBestPickUserPrompt(listLabel, facts) {
   return (
     `Here is the current NSE ${listLabel} list. Pick the best stock and rank them all:\n` +
+    "Each stock includes its exact circuit limits: `lowerCircuit` and `upperCircuit` are " +
+    "the day's lower/upper circuit prices — use these actual values instead of " +
+    "assuming them.\n" +
     `${JSON.stringify(facts, null, 2)}`
   );
 }
@@ -288,6 +294,19 @@ export function trendingBestSymbolsSystemPrompt(limit) {
     "Fundamentals won't drive today's move, but they screen out risky names.\n" +
     "- Red flags: operator-driven spikes on thin volume, ASM/GSM or T2T stocks, and stocks " +
     "locked at a circuit limit, where you may not be able to exit.\n" +
+    "- Circuit limits: each stock includes its exact `lowerCircuit` and `upperCircuit` " +
+    "prices for the day — use these actual values to judge how much room is left to the " +
+    "upper circuit, instead of assuming them.\n" +
+    "- Volume breakout factor: prioritise stocks where current volume is significantly " +
+    "higher than the average, indicating institutional accumulation. Discard low-volume " +
+    "gainers (liquidity traps).\n" +
+    "- Capital flow (turnover): high turnover indicates major cash deployment. Rank stocks " +
+    "with large turnover higher than those moving on low monetary values.\n" +
+    "- Price positioning: look for stocks closing at or very near their daily High (H), " +
+    "showing that buyers completely controlled the close.\n" +
+    "- Catalyst context: factor in corporate actions (e.g. upcoming AGMs, recent stock " +
+    "splits, dividends, or rights issues) that serve as fundamental triggers for retail " +
+    "and institutional interest.\n" +
     "- Trade plan: there must be a sensible entry, stop-loss, and target before buying. A " +
     "common rule of thumb is risking only 1-2% of capital per trade, with at least 1:1.5 " +
     "risk-reward. Factor in brokerage, taxes, and slippage, and plan to exit before the " +
@@ -303,6 +322,8 @@ export function trendingBestSymbolsSystemPrompt(limit) {
 export function trendingBestSymbolsUserPrompt(listLabel, facts) {
   return (
     `Here is the current NSE ${listLabel} list. Return the best symbols as a JSON array:\n` +
+    "Each stock includes its exact circuit limits: `lowerCircuit`/`upperCircuit` (day's " +
+    "circuit prices) — use these actual values instead of assuming them.\n" +
     `${JSON.stringify(facts, null, 2)}`
   );
 }

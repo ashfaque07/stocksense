@@ -56,6 +56,10 @@ export default function TrendingHistoryModal({ stock, onClose }) {
           <dd>{fmtCompact(stock.turnover)}</dd>
         </div>
         <div>
+          <dt>VWAP</dt>
+          <dd>{fmtNum(stock.vwap)}</dd>
+        </div>
+        <div>
           <dt>Created</dt>
           <dd>{fmtTime(stock.createdAt)}</dd>
         </div>
@@ -86,6 +90,7 @@ export default function TrendingHistoryModal({ stock, onClose }) {
                   <th>Time</th>
                   <th>Change (%)</th>
                   <th>LTP</th>
+                  <th>VWAP</th>
                 </tr>
               </thead>
               <tbody>
@@ -101,6 +106,11 @@ export default function TrendingHistoryModal({ stock, onClose }) {
                         </span>
                       </td>
                       <td>{fmtNum(h.ltp)}</td>
+                      <td>
+                        <span className={h.vwap == null || h.ltp == null ? '' : h.ltp >= h.vwap ? 'pos' : 'neg'}>
+                          {fmtNum(h.vwap)}
+                        </span>
+                      </td>
                     </tr>
                   )
                 })}

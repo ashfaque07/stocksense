@@ -309,7 +309,7 @@ export default function UpcomingResults() {
               <TableSkeleton
                 columns={['Metric', 'Quarter', 'Quarter']}
                 leftAlign={['Metric']}
-                rows={6}
+                rows={4}
               />
             )}
             {detailError && <p className="error">{detailError}</p>}

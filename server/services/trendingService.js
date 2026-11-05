@@ -113,6 +113,46 @@ function normalizeStock(row) {
   }
 }
 
+// Fetch extra per-symbol details from NSE's GetQuoteApi endpoint. The
+// gainers/losers list is sparse, so this fills in fields it omits:
+//   - circuit (price-band) limits: `priceInfo.priceBand` is the "lower-upper"
+//     circuit price string (e.g. "1020.30-1530.30") and `ppriceBand` the band %.
+//   - `metaData.averagePrice`: NSE's official session VWAP (updates on every
+//     trade while the market is live), preferred over computing it ourselves.
+// Add more fields here as needed. Best-effort: any failure yields nulls so the
+// stock still shows without the extra info.
+async function fetchSymbolDetails(symbol) {
+  try {
+    const json = await fetchNseJson(
+      `${NSE_BASE}/api/NextApi/apiClient/GetQuoteApi?functionName=getSymbolData&marketType=N&series=EQ&symbol=${encodeURIComponent(symbol)}`
+    )
+    const resp = json?.equityResponse?.[0] || {}
+    const p = resp.priceInfo || {}
+    const m = resp.metaData || {}
+    const toNum = (v) => {
+      const n = Number(String(v ?? '').replace(/,/g, '').trim())
+      return Number.isFinite(n) ? n : null
+    }
+    const [lower, upper] = String(p.priceBand ?? '').split('-')
+    return {
+      lowerCircuit: toNum(lower),
+      upperCircuit: toNum(upper),
+      priceBand: p.ppriceBand ?? null,
+      vwap: toNum(m.averagePrice)
+    }
+  } catch (err) {
+    console.error(`[trending] symbol details fetch failed for ${symbol}:`, err?.message)
+    return { lowerCircuit: null, upperCircuit: null, priceBand: null, vwap: null }
+  }
+}
+
+// Enrich each stock with extra per-symbol details, fetching all symbols in
+// parallel.
+async function enrichWithSymbolDetails(stocks) {
+  const details = await Promise.all(stocks.map((s) => fetchSymbolDetails(s.symbol)));
+  return stocks.map((s, i) => ({ ...s, ...details[i] }))
+}
+
 // Fetch the top gainers or losers ("All Securities" bucket) from NSE.
 export async function getTrendingStocks(rawType = 'gainers') {
   const type = NSE_INDEX[rawType] ? rawType : 'gainers'
@@ -123,13 +163,14 @@ export async function getTrendingStocks(rawType = 'gainers') {
 
   const bucket = json.allSec
   const rows = Array.isArray(bucket?.data) ? bucket.data : []
+  const stocks = await enrichWithSymbolDetails(rows.map(normalizeStock))
 
   return {
     source: 'live',
     type,
     timestamp: bucket?.timestamp || null,
     count: rows.length,
-    stocks: rows.map(normalizeStock)
+    stocks
   }
 }
 
@@ -243,7 +284,7 @@ export async function refreshTrending(rawType = 'gainers') {
       aiRecommendedAt: existing?.aiRecommendedAt || null,
       history: [
         ...prevHistory,
-        { time: now, percentChange: s.percentChange ?? null, ltp: s.ltp ?? null }
+        { time: now, percentChange: s.percentChange ?? null, ltp: s.ltp ?? null, vwap: s.vwap ?? null }
       ]
     }
   })

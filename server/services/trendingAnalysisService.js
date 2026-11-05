@@ -25,6 +25,13 @@ function stockFacts(s) {
     percentChange: s.percentChange ?? null,
     volume: s.volume ?? null,
     turnover: s.turnover ?? null,
+    // Session VWAP (volume-weighted average price); price above/below VWAP is a
+    // key intraday trend signal.
+    vwap: s.vwap ?? null,
+    // Circuit (price-band) limits so the model doesn't have to guess whether a
+    // stock is at/near its upper or lower circuit.
+    lowerCircuit: s.lowerCircuit ?? null,
+    upperCircuit: s.upperCircuit ?? null,
     // reason: s.reason || ''
   }
 }

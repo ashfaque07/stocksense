@@ -562,6 +562,10 @@ h1 {
   display: flex; flex-direction: column; gap: 2px;
   font-size: 12px; line-height: 1.3; white-space: nowrap;
 }
+.trending-table .circuit {
+  display: flex; flex-direction: column; gap: 2px;
+  font-size: 12px; line-height: 1.3; white-space: nowrap;
+}
 .trending-table .reason {
   color: var(--text-dim); max-width: 220px; white-space: normal;
   font-size: 12px; line-height: 1.35;
