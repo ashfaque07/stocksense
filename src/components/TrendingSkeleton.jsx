@@ -13,6 +13,7 @@ const COLUMNS = [
   'VWAP',
   'Vol',
   'Turnover',
+  'Mkt Cap',
   'Reason (Trending)'
 ]
 

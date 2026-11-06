@@ -129,6 +129,7 @@ async function fetchSymbolDetails(symbol) {
     const resp = json?.equityResponse?.[0] || {}
     const p = resp.priceInfo || {}
     const m = resp.metaData || {}
+    const t = resp.tradeInfo || {}
     const toNum = (v) => {
       const n = Number(String(v ?? '').replace(/,/g, '').trim())
       return Number.isFinite(n) ? n : null
@@ -138,11 +139,12 @@ async function fetchSymbolDetails(symbol) {
       lowerCircuit: toNum(lower),
       upperCircuit: toNum(upper),
       priceBand: p.ppriceBand ?? null,
-      vwap: toNum(m.averagePrice)
+      vwap: toNum(m.averagePrice),
+      marketCap: toNum(t.totalMarketCap)
     }
   } catch (err) {
     console.error(`[trending] symbol details fetch failed for ${symbol}:`, err?.message)
-    return { lowerCircuit: null, upperCircuit: null, priceBand: null, vwap: null }
+    return { lowerCircuit: null, upperCircuit: null, priceBand: null, vwap: null, marketCap: null }
   }
 }
 

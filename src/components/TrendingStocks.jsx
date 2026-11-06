@@ -72,6 +72,7 @@ export default function TrendingStocks() {
       case 'prev': return s.prevClose
       case 'volume': return s.volume
       case 'turnover': return s.turnover
+      case 'marketCap': return s.marketCap
       case 'vwap': return s.vwap
       case 'reason': return clean(s.reason).toLowerCase()
       case 'created': return s.createdAt ? new Date(s.createdAt).getTime() : null
@@ -184,6 +185,7 @@ export default function TrendingStocks() {
                   <th className="sortable" title="Volume-weighted average price (session)" onClick={() => onSort('vwap')}>VWAP{sortIcon('vwap')}</th>
                   <th className="sortable" title="Shares traded" onClick={() => onSort('volume')}>Vol{sortIcon('volume')}</th>
                   <th className="sortable" title="Traded value (₹)" onClick={() => onSort('turnover')}>Turnover{sortIcon('turnover')}</th>
+                  <th className="sortable" title="Total market capitalisation (₹)" onClick={() => onSort('marketCap')}>Mkt Cap{sortIcon('marketCap')}</th>
                   <th className="ta-left sortable" onClick={() => onSort('reason')}>Reason (Trending){sortIcon('reason')}</th>
                 </tr>
               </thead>
@@ -245,6 +247,7 @@ export default function TrendingStocks() {
                       </td>
                       <td>{fmtCount(s.volume)}</td>
                       <td>{fmtCompact(s.turnover)}</td>
+                      <td>{fmtCount(s.marketCap)}</td>
                       <td className="ta-left reason" title={reason ? (exDate ? `${reason} · Ex-date: ${exDate}` : reason) : 'No reason found'}>
                         <span className="reason-text">{reason || '—'}</span>
                       </td>
