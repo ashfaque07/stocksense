@@ -20,7 +20,7 @@ export default function TableSkeleton({ columns = [], rows = 8, leftAlign = [] }
             <tr key={r} className="skeleton-row">
               {columns.map((_col, c) => (
                 <td key={c}>
-                  <div className="skeleton skeleton-line" style={{ height: 24 }} />
+                  <div className="skeleton skeleton-line" style={{ height: 24, marginBottom: 0 }} />
                 </td>
               ))}
             </tr>

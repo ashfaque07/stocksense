@@ -35,7 +35,7 @@ export default function TrendingSkeleton({ rows = 10 }) {
             <tr key={r} className="skeleton-row">
               {COLUMNS.map((_col, c) => (
                 <td key={c}>
-                  <div className="skeleton skeleton-line" style={{ height: 30 }} />
+                  <div className="skeleton skeleton-line" style={{ height: 33, marginBottom: 0 }} />
                 </td>
               ))}
             </tr>

@@ -1,5 +1,6 @@
 // Side navigation with a mobile hamburger drawer.
 
+import { useEffect } from 'react'
 import { ICONS } from '../constants/ui.js'
 
 const NAV_ITEMS = [
@@ -11,6 +12,12 @@ const NAV_ITEMS = [
 ]
 
 export default function Sidebar({ view, onSelect, open = false, onClose }) {
+  // Lock page scroll while the mobile drawer is open.
+  useEffect(() => {
+    document.body.classList.toggle('no-scroll', open)
+    return () => document.body.classList.remove('no-scroll')
+  }, [open])
+
   const select = (id) => {
     onSelect(id)
     onClose?.()
