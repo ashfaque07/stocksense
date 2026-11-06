@@ -33,10 +33,21 @@ export default function TrendingHistoryModal({ stock, onClose }) {
           </dd>
         </div>
         <div>
+          <dt>VWAP</dt>
+          <dd>{fmtNum(stock.vwap)}</dd>
+        </div>
+        <div>
           <dt>Day Range</dt>
           <dd>
-            <span className="pos" title="Day High">H {fmtNum(stock.high)}</span>{' '}
+            <span className="pos" title="Day High">H {fmtNum(stock.high)}</span>{' - '}
             <span className="neg" title="Day Low">L {fmtNum(stock.low)}</span>
+          </dd>
+        </div>
+        <div>
+          <dt>Circuit</dt>
+          <dd>
+            <span className="pos" title="Circuit High">H {fmtNum(stock.upperCircuit)}</span>{' - '}
+            <span className="neg" title="Circuit Low">L {fmtNum(stock.lowerCircuit)}</span>
           </dd>
         </div>
         <div>
@@ -56,16 +67,16 @@ export default function TrendingHistoryModal({ stock, onClose }) {
           <dd>{fmtCompact(stock.turnover)}</dd>
         </div>
         <div>
-          <dt>VWAP</dt>
-          <dd>{fmtNum(stock.vwap)}</dd>
-        </div>
-        <div>
           <dt>Created</dt>
           <dd>{fmtTime(stock.createdAt)}</dd>
         </div>
         <div>
           <dt>Modified</dt>
           <dd>{fmtTime(stock.modifiedAt)}</dd>
+        </div>
+        <div>
+          <dt>Market Cap</dt>
+          <dd>{fmtCount(stock.marketCap)}</dd>
         </div>
         <div>
           <dt>Reason (Trending)</dt>

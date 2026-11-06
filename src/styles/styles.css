@@ -64,6 +64,8 @@ iframe { display: none;}
 
 html {
   scroll-behavior: smooth;
+  /* Reserve scrollbar space so hiding it (e.g. open mobile drawer) doesn't shift layout */
+  scrollbar-gutter: stable;
   /* Prevent mobile browsers (e.g. Chrome on OnePlus) from auto-inflating font sizes */
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
@@ -613,6 +615,7 @@ h1 {
   .sidebar.open ~ .sidebar-overlay,
   .sidebar-overlay { display: block; }
   .sidebar-close { display: inline-flex; align-items: center; }
+  body.no-scroll { overflow: hidden; }
 
   .subtitle { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 6px; }
   .badge { flex: 0 0 auto; }
