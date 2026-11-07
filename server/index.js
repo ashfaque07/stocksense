@@ -1,12 +1,13 @@
-// Proxy server entry point: fetches the InvestorGain "Live IPO GMP" report and
-// returns normalized JSON. The browser can't call InvestorGain directly (CORS),
-// so this small Node server does the fetching/parsing server-side.
+// Proxy server entry point: fetches third-party stock/IPO data (InvestorGain,
+// NSE, Yahoo Finance) and returns normalized JSON, plus AI analysis endpoints.
+// The browser can't call these sources directly (CORS), so this small Node
+// server does the fetching/parsing server-side.
 //
 // Run with: npm run server   (needs Node 18+ for global fetch)
 
 import 'dotenv/config'
 import http from 'node:http'
-import { PORT, REPORT_ID } from './config/index.js'
+import { PORT } from './config/index.js'
 import { router } from './routes/router.js'
 
 const server = http.createServer(router)
@@ -20,6 +21,6 @@ server.on('error', (err) => {
 })
 
 server.listen(PORT, () => {
-  console.log(`StockSense proxy running at http://localhost:${PORT}/api/ipos`)
-  console.log(`Source: InvestorGain Live IPO GMP (report ${REPORT_ID})`)
+  console.log(`StockSense proxy running at http://localhost:${PORT}`)
+  console.log('Sources: InvestorGain (IPOs), NSE (trending/results), Yahoo Finance (quarterlies)')
 })

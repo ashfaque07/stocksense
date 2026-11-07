@@ -12,6 +12,7 @@ import TableSkeleton from './TableSkeleton.jsx'
 import Modal from './Modal.jsx'
 import { ICONS } from '../constants/ui.js'
 import { MD_COMPONENTS } from '../constants/markdown.jsx'
+import { fmtCount } from '../utils/format.js'
 
 // Show an ISO date as a readable IST calendar date (e.g. "10 Jan 2026").
 const fmtDate = (iso) => {
@@ -64,6 +65,10 @@ const fmtNum = (v) => {
 
 const PAGE_SIZE = 20
 
+// Number of recent quarters shown in the stock-details view (matches the
+// server's QUARTERS_TO_SHOW).
+const QUARTERS_TO_SHOW = 4
+
 export default function UpcomingResults() {
   const { results, timestamp, loading, error } = useResults()
 
@@ -91,9 +96,9 @@ export default function UpcomingResults() {
     close: closeDetail
   } = useResultsDetail()
 
-  // Show quarters oldest-first (the service returns them newest-first).
+  // Show quarters newest-first (the service already returns them that way).
   const orderedQuarters = useMemo(
-    () => (detail?.quarters ? [...detail.quarters].reverse() : []),
+    () => detail?.quarters ?? [],
     [detail]
   )
 
@@ -236,7 +241,7 @@ export default function UpcomingResults() {
                       <button
                         className="link-btn"
                         onClick={() => openDetail(r)}
-                        title="View stock details & last two quarterly results"
+                        title={`View stock details & last ${QUARTERS_TO_SHOW} quarterly results`}
                       >
                         {r.symbol}
                       </button>
@@ -303,11 +308,25 @@ export default function UpcomingResults() {
               <div><dt>Purpose</dt><dd>{detailStock.purpose || '—'}</dd></div>
             </dl>
 
-            <h3 className="detail-heading">Last Two Quarterly Results</h3>
+            {detail?.quote && (
+              <dl className="trending-details">
+                <div><dt>LTP</dt><dd>{fmtNum(detail.quote.ltp)}</dd></div>
+                <div><dt>Market Cap</dt><dd>{fmtCount(detail.quote.marketCap)}</dd></div>
+                <div>
+                  <dt>52W Range</dt>
+                  <dd>
+                    <span className="neg" title="52-week Low">L {fmtNum(detail.quote.yearLow)}</span>{' - '}
+                    <span className="pos" title="52-week High">H {fmtNum(detail.quote.yearHigh)}</span>
+                  </dd>
+                </div>
+              </dl>
+            )}
+
+            <h3 className="detail-heading">Recent Quarterly Results</h3>
 
             {detailLoading && (
               <TableSkeleton
-                columns={['Metric', 'Quarter', 'Quarter']}
+                columns={['Metric', ...Array(QUARTERS_TO_SHOW).fill('Quarter')]}
                 leftAlign={['Metric']}
                 rows={4}
               />

@@ -8,43 +8,10 @@
 // today or later (IST), normalized, and returned sorted by soonest date.
 
 import { stripTags } from '../utils/html.js'
+import { NSE_BASE, NSE_PATHS } from '../config/index.js'
+import { fetchNseJson } from './nseClient.js'
 
-const NSE_BASE = 'https://www.nseindia.com'
-const NSE_REFERER = `${NSE_BASE}/companies-listing/corporate-filings-event-calendar`
-const RESULTS_URL = `${NSE_BASE}/api/event-calendar`
-
-const BROWSER_HEADERS = {
-  'User-Agent':
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122 Safari/537.36',
-  Accept: 'application/json, text/plain, */*',
-  'Accept-Language': 'en-US,en;q=0.9',
-  Referer: NSE_REFERER
-}
-
-// Grab a fresh cookie jar from NSE by loading a normal page.
-async function getCookies() {
-  const res = await fetch(NSE_REFERER, { headers: BROWSER_HEADERS })
-  const cookies = res.headers.getSetCookie?.() || []
-  return cookies.map((c) => c.split(';')[0]).join('; ')
-}
-
-// Fetch an NSE JSON endpoint, trying without cookies first and falling back to
-// the cookie handshake only if the direct call fails or returns non-JSON.
-export async function fetchNseJson(url) {
-  try {
-    const res = await fetch(url, { headers: BROWSER_HEADERS })
-    if (res.ok) return await res.json()
-  } catch {
-    /* fall through to cookie handshake */
-  }
-
-  const cookie = await getCookies()
-  const res = await fetch(url, { headers: { ...BROWSER_HEADERS, Cookie: cookie } })
-  if (!res.ok) {
-    throw new Error(`NSE responded with status ${res.status}`)
-  }
-  return res.json()
-}
+const RESULTS_URL = `${NSE_BASE}${NSE_PATHS.eventCalendar}`
 
 const MONTHS = {
   jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,

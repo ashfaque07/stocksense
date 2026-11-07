@@ -4,10 +4,10 @@ import { useEffect } from 'react'
 import { ICONS } from '../constants/ui.js'
 
 const NAV_ITEMS = [
-  { id: 'ipos', label: 'IPOs', icon: ICONS.ipos },
   { id: 'trending', label: 'Trending', icon: ICONS.trending },
-  { id: 'results', label: 'Upcoming Results', icon: ICONS.results },
   { id: 'stocks', label: 'Stock Analysis', icon: ICONS.stocks },
+  { id: 'results', label: 'Upcoming Results', icon: ICONS.results },
+  { id: 'ipos', label: 'IPOs', icon: ICONS.ipos },
   { id: 'sectors', label: 'Sector Rotation', icon: ICONS.sectors },
 ]
 
