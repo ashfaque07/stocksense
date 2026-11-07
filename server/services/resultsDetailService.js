@@ -8,14 +8,16 @@
 // Yahoo is unavailable, since that NSE endpoint can lag by several quarters.
 
 import { stripTags } from '../utils/html.js'
-import { fetchNseJson } from './resultsService.js'
+import { fetchNseJson } from './nseClient.js'
+import { NSE_BASE, NSE_PATHS, YAHOO_TIMESERIES_URL } from '../config/index.js'
 
-const NSE_BASE = 'https://www.nseindia.com'
+// How many recent quarterly results to show in the stock-details view.
+const QUARTERS_TO_SHOW = 4
+
 const COMPARE_URL = (symbol) =>
-  `${NSE_BASE}/api/results-comparision?symbol=${encodeURIComponent(symbol)}`
+  `${NSE_BASE}${NSE_PATHS.resultsComparision}?symbol=${encodeURIComponent(symbol)}`
 
-const YF_BASE =
-  'https://query1.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries'
+const YF_BASE = YAHOO_TIMESERIES_URL
 const YF_TYPES = [
   'quarterlyTotalRevenue',
   'quarterlyPretaxIncome',
@@ -108,7 +110,7 @@ async function fromYahoo(symbol) {
     }
   }
 
-  const dates = [...byDate.keys()].sort((a, b) => b.localeCompare(a)).slice(0, 2)
+  const dates = [...byDate.keys()].sort((a, b) => b.localeCompare(a)).slice(0, QUARTERS_TO_SHOW)
   if (!dates.length) return null
 
   const quarters = dates.map((endIso) => {
@@ -153,7 +155,34 @@ async function fromNse(symbol) {
     timestamp: new Date().toISOString(),
     symbol,
     faceValue: rows.length ? num(rows[0]?.re_face_val) : null,
-    quarters: rows.slice(0, 2).map(normalizeQuarter)
+    quarters: rows.slice(0, QUARTERS_TO_SHOW).map(normalizeQuarter)
+  }
+}
+
+// Fetch live market details for a symbol from NSE's GetQuoteApi endpoint
+// (same source the Trending view uses). We only expose LTP, market cap and the
+// 52-week range. Best-effort — any failure returns null so the detail modal
+// still renders the quarterly results.
+async function fetchLiveQuote(symbol) {
+  try {
+    const json = await fetchNseJson(`${NSE_BASE}${NSE_PATHS.equityInfo}${encodeURIComponent(symbol)}`);
+    const resp = json?.equityResponse?.[0]
+    if (!resp) return null
+    const p = resp.priceInfo || {}
+    const t = resp.tradeInfo || {}
+    const toNum = (v) => {
+      const n = Number(String(v ?? '').replace(/,/g, '').trim())
+      return Number.isFinite(n) ? n : null
+    }
+    return {
+      ltp: toNum(t.lastPrice),
+      marketCap: toNum(t.totalMarketCap),
+      yearHigh: toNum(p.yearHigh),
+      yearLow: toNum(p.yearLow)
+    }
+  } catch (err) {
+    console.error(`[results-detail] live quote fetch failed for ${symbol}:`, err?.message)
+    return null
   }
 }
 
@@ -163,12 +192,18 @@ export async function getResultsDetail(symbol) {
   const sym = String(symbol || '').trim().toUpperCase()
   if (!sym) throw new Error('Missing stock symbol.')
 
+  // Fetch the live NSE quote alongside the quarterly results.
+  const quotePromise = fetchLiveQuote(sym)
+
+  let detail
   try {
     const yf = await fromYahoo(sym)
-    if (yf?.quarters?.length) return yf
+    if (yf?.quarters?.length) detail = yf
   } catch (err) {
     console.error('[results-detail] Yahoo failed, falling back to NSE:', err.message)
   }
 
-  return fromNse(sym)
+  if (!detail) detail = await fromNse(sym)
+
+  return { ...detail, quote: (await quotePromise) || null }
 }

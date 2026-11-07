@@ -54,6 +54,33 @@ export const NSE_HOLIDAYS = new Set([
   '2026-12-25' // Christmas
 ])
 
+// NSE (National Stock Exchange of India) site base URL. Shared by every
+// service that calls an NSE endpoint (trending, results, holidays, etc.) so
+// the host only needs to change in one place.
+export const NSE_BASE = 'https://www.nseindia.com'
+
+// NSE page/API sub-paths, centralised so routes only change in one place.
+// `referer` paths are normal website pages (used for the cookie handshake);
+// `api` paths are JSON endpoints. Placeholders are filled in by the services.
+export const NSE_PATHS = {
+  // Referer (website) pages.
+  home: '/',
+  topGainersLosers: '/market-data/top-gainers-losers',
+  eventCalendarPage: '/companies-listing/corporate-filings-event-calendar',
+  // JSON API endpoints.
+  holidayMaster: '/api/holiday-master?type=trading',
+  eventCalendar: '/api/event-calendar',
+  liveAnalysisVariations: '/api/live-analysis-variations',
+  resultsComparision: '/api/results-comparision',
+  quote: '/api/NextApi/apiClient/GetQuoteApi',
+  equityInfo: '/api/NextApi/apiClient/GetQuoteApi?functionName=getSymbolData&marketType=N&series=EQ&symbol=',
+}
+
+// Yahoo Finance fundamentals-timeseries API. Primary source for a listed
+// company's recent quarterly results (NSE is only a fallback).
+export const YAHOO_TIMESERIES_URL =
+  'https://query1.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries'
+
 // InvestorGain report API.
 // Path: /cloud/v2/report/data-read/{reportId}/{page}/{month}/{year}/{financialYear}/{sort}/{param}
 export const API_HOST = 'https://webnodejs.investorgain.com'

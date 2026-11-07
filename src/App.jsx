@@ -15,6 +15,8 @@ import { useSectorRotation } from './hooks/useSectorRotation.js'
 import { useTheme } from './hooks/useTheme.js'
 import { useState, useEffect } from 'react'
 
+const DEFAULT_VIEW = 'trending'
+
 export default function App() {
   const { ipos, source, loading, error, filter, setFilter, search, setSearch, filtered, counts } = useIpos()
   const { analysis, analyzing, streaming, analyze, close } = useAnalysis()
@@ -24,9 +26,9 @@ export default function App() {
   const [navOpen, setNavOpen] = useState(false)
   const [view, setView] = useState(() => {
     try {
-      return localStorage.getItem('view') || 'ipos'
+      return localStorage.getItem('view') || DEFAULT_VIEW
     } catch {
-      return 'ipos'
+      return DEFAULT_VIEW
     }
   })
 

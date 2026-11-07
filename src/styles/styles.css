@@ -555,8 +555,8 @@ h1 {
 .results-detail .detail-grid dd { margin: 0; font-size: 14px; color: var(--text); }
 .results-detail .detail-heading { margin: 8px 0 10px; font-size: 15px; }
 .results-detail .q-period { font-weight: 700; white-space: nowrap; }
-.results-detail .trending-table-wrap { overflow-x: visible; }
-.results-detail .trending-table { min-width: 0; }
+.results-detail .trending-table-wrap { overflow-x: auto; max-width: 100%; }
+.results-detail .trending-table { min-width: 420px; }
 .trending-table .muted { color: var(--text-faint); }
 .pos { color: var(--up); font-weight: 700; }
 .neg { color: var(--down); font-weight: 700; }

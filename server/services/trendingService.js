@@ -12,55 +12,17 @@
 import {
   IST_OFFSET_MIN,
   MARKET_OPEN_MIN,
-  MARKET_CLOSE_MIN
+  MARKET_CLOSE_MIN,
+  NSE_BASE,
+  NSE_PATHS
 } from '../config/index.js'
 import { readSnapshot, writeSnapshot } from '../repositories/trendingRepository.js'
 import { ensureHolidays, isHoliday } from './holidayService.js'
 import { recommendBestSymbols } from './trendingAnalysisService.js'
-
-const NSE_BASE = 'https://www.nseindia.com'
-const NSE_REFERER = `${NSE_BASE}/market-data/top-gainers-losers`
-
-const BROWSER_HEADERS = {
-  'User-Agent':
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122 Safari/537.36',
-  Accept: 'application/json, text/plain, */*',
-  'Accept-Language': 'en-US,en;q=0.9',
-  Referer: NSE_REFERER
-}
+import { fetchNseJson } from './nseClient.js'
 
 // Public type -> NSE `index` query value. NSE spells losers as "loosers".
 const NSE_INDEX = { gainers: 'gainers', losers: 'loosers' }
-
-// Grab a fresh cookie jar from NSE by loading a normal page.
-async function getCookies() {
-  const res = await fetch(NSE_REFERER, { headers: BROWSER_HEADERS })
-  const cookies = res.headers.getSetCookie?.() || []
-  return cookies.map((c) => c.split(';')[0]).join('; ')
-}
-
-// Fetch an NSE JSON endpoint, trying without cookies first and falling back to
-// the cookie handshake only if the direct call fails or returns non-JSON.
-async function fetchNseJson(url) {
-  // Attempt 1: direct, no cookies (cheap — avoids the heavy HTML page).
-  try {
-    const res = await fetch(url, { headers: BROWSER_HEADERS })
-    if (res.ok) {
-      const json = await res.json()
-      return json
-    }
-  } catch {
-    /* fall through to cookie handshake */
-  }
-
-  // Attempt 2: with a fresh cookie jar (for IPs NSE challenges).
-  const cookie = await getCookies()
-  const res = await fetch(url, { headers: { ...BROWSER_HEADERS, Cookie: cookie } })
-  if (!res.ok) {
-    throw new Error(`NSE responded with status ${res.status}`)
-  }
-  return res.json()
-}
 
 // Parse a value NSE may send either as a plain number or as a pre-formatted
 // Indian-abbreviated string ("1,234", "17.97 L", "92.23 Cr", "4.5 K") into an
@@ -123,9 +85,7 @@ function normalizeStock(row) {
 // stock still shows without the extra info.
 async function fetchSymbolDetails(symbol) {
   try {
-    const json = await fetchNseJson(
-      `${NSE_BASE}/api/NextApi/apiClient/GetQuoteApi?functionName=getSymbolData&marketType=N&series=EQ&symbol=${encodeURIComponent(symbol)}`
-    )
+    const json = await fetchNseJson(`${NSE_BASE}${NSE_PATHS.equityInfo}${encodeURIComponent(symbol)}`);
     const resp = json?.equityResponse?.[0] || {}
     const p = resp.priceInfo || {}
     const m = resp.metaData || {}
@@ -160,7 +120,7 @@ export async function getTrendingStocks(rawType = 'gainers') {
   const type = NSE_INDEX[rawType] ? rawType : 'gainers'
 
   const json = await fetchNseJson(
-    `${NSE_BASE}/api/live-analysis-variations?index=${NSE_INDEX[type]}`
+    `${NSE_BASE}${NSE_PATHS.liveAnalysisVariations}?index=${NSE_INDEX[type]}`
   )
 
   const bucket = json.allSec
