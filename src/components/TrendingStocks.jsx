@@ -10,7 +10,7 @@ import TrendingSkeleton from './TrendingSkeleton.jsx'
 import Modal from './Modal.jsx'
 import { ICONS } from '../constants/ui.js'
 import { MD_COMPONENTS } from '../constants/markdown.jsx'
-import { fmtNum, fmtCount, fmtCompact, fmtTime } from '../utils/format.js'
+import { fmtNum, fmtCount, fmtCompact, fmtTime, fmtDate } from '../utils/format.js'
 
 // NSE returns a literal "-" when a field has no value; treat it as empty.
 const clean = (v) => {
@@ -121,11 +121,11 @@ export default function TrendingStocks() {
         <div className="trending-meta">
           {loading ? (
             <>
-              <span className="skeleton skeleton-pill" />
+              <span className="skeleton skeleton-pill" style={{ height: 16 }} />
               <div className="trending-times">
-                <span className="skeleton skeleton-pill" style={{ width: 86 }} />
-                <span className="skeleton skeleton-pill" style={{ width: 86 }} />
-                <span className="skeleton skeleton-pill" style={{ width: 70 }} />
+                <span className="skeleton skeleton-pill" style={{ width: 86, height: 16 }} />
+                <span className="skeleton skeleton-pill" style={{ width: 86, height: 16 }} />
+                <span className="skeleton skeleton-pill" style={{ width: 70, height: 16 }} />
               </div>
             </>
           ) : (
@@ -193,7 +193,7 @@ export default function TrendingStocks() {
                 {sortedStocks.map((s, i) => {
                   const up = (s.percentChange ?? 0) >= 0
                   const reason = clean(s.reason)
-                  const exDate = clean(s.reasonExDate)
+                  const exDate = fmtDate(clean(s.reasonExDate), '')
                   return (
                     <tr
                       key={s.symbol}

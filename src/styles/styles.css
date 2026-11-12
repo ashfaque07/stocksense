@@ -377,6 +377,7 @@ h1 {
   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
 }
 .sidebar-brand .logo { -webkit-text-fill-color: initial; }
+.sidebar-brand .logo-img { width: 24px; height: 24px; }
 .sidebar-close {
   display: none; background: none; border: none; cursor: pointer;
   color: var(--text-dim); font-size: 18px; line-height: 1; padding: 4px;
@@ -519,6 +520,9 @@ h1 {
   overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
+.trending-table-wrap::-webkit-scrollbar {
+  display: none;
+}
 .trending-table {
   width: 100%; border-collapse: collapse; font-size: 13px; min-width: 780px;
   background: linear-gradient(180deg, var(--card-grad-top), var(--card-grad-bottom));
@@ -555,7 +559,16 @@ h1 {
 .results-detail .detail-grid dd { margin: 0; font-size: 14px; color: var(--text); }
 .results-detail .detail-heading { margin: 8px 0 10px; font-size: 15px; }
 .results-detail .q-period { font-weight: 700; white-space: nowrap; }
-.results-detail .trending-table-wrap { overflow-x: auto; max-width: 100%; }
+.results-detail .trending-table-wrap { 
+  overflow-x: auto; 
+  max-width: 100%;   
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge legacy */ 
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+.results-detail .trending-table-wrap::-webkit-scrollbar {
+  display: none;
+}
 .results-detail .trending-table { min-width: 420px; }
 .trending-table .muted { color: var(--text-faint); }
 .pos { color: var(--up); font-weight: 700; }

@@ -10,6 +10,7 @@ import { streamStockAnalysis } from '../../server/services/stockAnalysisService.
 import { streamSectorRotation } from '../../server/services/sectorRotationService.js'
 import { streamTrendingAnalysis } from '../../server/services/trendingAnalysisService.js'
 import { getUpcomingResults } from '../../server/services/resultsService.js'
+import { getReport } from '../../server/services/reportService.js'
 import { getResultsDetail } from '../../server/services/resultsDetailService.js'
 import { streamResultsAnalysis } from '../../server/services/resultsAnalysisService.js'
 import {
@@ -53,6 +54,27 @@ export const handler = async (event) => {
         statusCode: 200,
         headers: { ...CORS, 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
+      }
+    }
+
+    if (path.includes('/report')) {
+      try {
+        return {
+          statusCode: 200,
+          headers: { ...CORS, 'Content-Type': 'application/json' },
+          body: JSON.stringify(await getReport())
+        }
+      } catch (err) {
+        return {
+          statusCode: 502,
+          headers: { ...CORS, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            source: 'error',
+            count: 0,
+            records: [],
+            error: `Could not load report: ${err.message}`
+          })
+        }
       }
     }
 

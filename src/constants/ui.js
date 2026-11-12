@@ -6,11 +6,13 @@ export const FILTERS = ['All', 'Open', 'Mainboard', 'SME', 'Closing Today', 'Upc
 // Change an icon here once to update it everywhere it is used.
 export const ICONS = {
   ai: '✨',
+  favicon: '/favicon.svg',
   ipos: '🚀',
   trending: '🔥',
   results: '🗓️',
   stocks: '💹',
   sectors: '🔄',
+  report: '📊',
   light: '🌞',
   dark: '🌜',
   close: '✕',

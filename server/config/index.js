@@ -25,6 +25,13 @@ export const TRENDING_FILE = IS_SERVERLESS
   ? '/tmp/trending.json'
   : join(__dirname, '..', 'data', 'trending.json')
 
+// JSON file where the end-of-day top-gainers report is appended (one batch of
+// TOP_GAINERS_REPORT_COUNT stocks per trading day).
+export const REPORT_FILE = IS_SERVERLESS
+  ? '/tmp/report.json'
+  : join(__dirname, '..', 'data', 'report.json')
+export const TOP_GAINERS_REPORT_COUNT = 3
+
 // Indian market (NSE) hours in IST used to gate the scheduled refresh.
 export const IST_OFFSET_MIN = 5 * 60 + 30 // UTC+5:30
 export const MARKET_OPEN_MIN = 9 * 60 + 15 // 09:15 IST — day start

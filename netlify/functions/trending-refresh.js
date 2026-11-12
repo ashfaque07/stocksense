@@ -1,8 +1,9 @@
 // Scheduled Netlify Function: refreshes the trending-stocks snapshot.
 //
-// Schedule (UTC cron): every 15 minutes between 03:00 and 10:00 UTC, which
-// covers the NSE trading window 09:00–15:30 IST (IST = UTC+5:30). The handler
-// additionally gates on `isMarketOpen()` so it only fetches during market hours.
+// Schedule (UTC cron): every 15 minutes between 03:00 and 10:45 UTC. Runs
+// inside NSE market hours (09:15–15:30 IST, IST = UTC+5:30) fetch fresh data.
+// Runs after the close are cheap: `refreshTrending()` serves the cached snapshot
+// and, for gainers, records the end-of-day report if the 15:30 run missed it.
 //
 // Uses the `schedule()` wrapper from @netlify/functions (the correct pairing
 // for a legacy `export const handler`), so Netlify registers the cron.
@@ -13,19 +14,17 @@
 
 import { schedule } from '@netlify/functions'
 import { connectLambda } from '@netlify/blobs'
-import { refreshTrending, isMarketOpen, loadHolidays } from '../../server/services/trendingService.js'
+import { refreshTrending, loadHolidays } from '../../server/services/trendingService.js'
 
 export const handler = schedule('*/15 3-10 * * *', async (event) => {
   // Legacy (v1) functions don't auto-configure Netlify Blobs; wire it in so the
   // snapshot persists durably instead of falling back to ephemeral /tmp.
   connectLambda(event)
 
-  // Load the dynamic NSE holiday list (cached) before gating on market hours.
+  // Load the dynamic NSE holiday list (cached) before the market-hours checks
+  // inside `refreshTrending()`. Outside market hours it never fetches or resets
+  // the snapshot, so it is safe to call on every run.
   await loadHolidays()
-
-  if (!isMarketOpen()) {
-    return { statusCode: 200, body: 'Outside NSE market hours — skipped.' }
-  }
 
   const results = []
   for (const type of ['gainers', 'losers']) {
