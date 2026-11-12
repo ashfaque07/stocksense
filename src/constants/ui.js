@@ -13,6 +13,7 @@ export const ICONS = {
   stocks: '💹',
   sectors: '🔄',
   report: '📊',
+  guide: 'ℹ️',
   light: '🌞',
   dark: '🌜',
   close: '✕',

@@ -9,6 +9,7 @@ import TrendingStocks from './components/TrendingStocks.jsx'
 import UpcomingResults from './components/UpcomingResults.jsx'
 import SectorRotation from './components/SectorRotation.jsx'
 import Report from './components/Report.jsx'
+import Guide from './components/Guide.jsx'
 import { useIpos } from './hooks/useIpos.js'
 import { useAnalysis } from './hooks/useAnalysis.js'
 import { useStockAnalysis } from './hooks/useStockAnalysis.js'
@@ -71,6 +72,8 @@ export default function App() {
         <UpcomingResults />
       ) : view === 'report' ? (
         <Report />
+      ) : view === 'guide' ? (
+        <Guide />
       ) : (
         <>
           <Toolbar search={search} onSearch={setSearch} filter={filter} onFilter={setFilter} counts={counts} />

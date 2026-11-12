@@ -1,7 +1,91 @@
 {
-  "updatedAt": "2026-11-11T10:00:05.000Z",
-  "count": 9,
+  "updatedAt": "2026-11-12T10:00:05.000Z",
+  "count": 15,
   "records": [
+    {
+      "date": "2026-11-12", "rank": 1, "capturedAt": "2026-11-12T10:00:05.000Z",
+      "symbol": "SMALLUPC", "series": "EQ", "ltp": 52.5, "open": 52.5, "high": 52.5, "low": 51.8,
+      "prevClose": 50.0, "change": 2.5, "percentChange": 5.0, "volume": 60000, "turnover": 31.5,
+      "reason": "-", "reasonExDate": "", "lowerCircuit": 47.5, "upperCircuit": 52.5,
+      "priceBand": "5", "vwap": 52.3, "marketCap": 2000000000,
+      "createdAt": "2026-11-12T03:50:00.000Z", "modifiedAt": "2026-11-12T09:58:00.000Z", "stale": false,
+      "aiRecommended": false, "aiRecommendedAt": null,
+      "history": [
+        { "time": "2026-11-12T03:50:00.000Z", "percentChange": 2.0, "ltp": 51.0, "vwap": 51.0, "turnover": 4.2 },
+        { "time": "2026-11-12T07:00:00.000Z", "percentChange": 4.0, "ltp": 52.0, "vwap": 51.8, "turnover": 18.6 },
+        { "time": "2026-11-12T09:58:00.000Z", "percentChange": 5.0, "ltp": 52.5, "vwap": 52.3, "turnover": 31.5 }
+      ]
+    },
+    {
+      "date": "2026-11-12", "rank": 2, "capturedAt": "2026-11-12T10:00:05.000Z",
+      "symbol": "MICROROCKET", "series": "EQ", "ltp": 144.0, "open": 128.0, "high": 144.0, "low": 127.2,
+      "prevClose": 120.0, "change": 24.0, "percentChange": 20.0, "volume": 12000000, "turnover": 16560.0,
+      "reason": "Order Win", "reasonExDate": "", "lowerCircuit": 96.0, "upperCircuit": 144.0,
+      "priceBand": "20", "vwap": 138.4, "marketCap": 18000000000,
+      "createdAt": "2026-11-12T03:50:00.000Z", "modifiedAt": "2026-11-12T09:58:00.000Z", "stale": false,
+      "aiRecommended": true, "aiRecommendedAt": "2026-11-12T04:30:00.000Z",
+      "history": [
+        { "time": "2026-11-12T03:50:00.000Z", "percentChange": 6.7, "ltp": 128.0, "vwap": 128.1, "turnover": 900.0 },
+        { "time": "2026-11-12T07:00:00.000Z", "percentChange": 14.0, "ltp": 136.8, "vwap": 133.0, "turnover": 9800.0 },
+        { "time": "2026-11-12T09:58:00.000Z", "percentChange": 20.0, "ltp": 144.0, "vwap": 138.4, "turnover": 16560.0 }
+      ]
+    },
+    {
+      "date": "2026-11-12", "rank": 3, "capturedAt": "2026-11-12T10:00:05.000Z",
+      "symbol": "BLUECHIPX", "series": "EQ", "ltp": 2550.4, "open": 2470.0, "high": 2556.0, "low": 2462.0,
+      "prevClose": 2450.0, "change": 100.4, "percentChange": 4.1, "volume": 8500000, "turnover": 214200.0,
+      "reason": "Financial Results", "reasonExDate": "", "lowerCircuit": 1960.0, "upperCircuit": 2940.0,
+      "priceBand": "20", "vwap": 2512.3, "marketCap": 950000000000,
+      "createdAt": "2026-11-12T03:50:00.000Z", "modifiedAt": "2026-11-12T09:58:00.000Z", "stale": false,
+      "aiRecommended": true, "aiRecommendedAt": "2026-11-12T05:10:00.000Z",
+      "history": [
+        { "time": "2026-11-12T03:50:00.000Z", "percentChange": 0.8, "ltp": 2469.6, "vwap": 2468.0, "turnover": 15000.0 },
+        { "time": "2026-11-12T07:00:00.000Z", "percentChange": 2.9, "ltp": 2521.0, "vwap": 2495.0, "turnover": 120000.0 },
+        { "time": "2026-11-12T09:58:00.000Z", "percentChange": 4.1, "ltp": 2550.4, "vwap": 2512.3, "turnover": 214200.0 }
+      ]
+    },
+    {
+      "date": "2026-11-12", "rank": 4, "capturedAt": "2026-11-12T10:00:05.000Z",
+      "symbol": "FADEPHARMA", "series": "EQ", "ltp": 2190.0, "open": 2080.0, "high": 2310.0, "low": 2075.0,
+      "prevClose": 1925.0, "change": 265.0, "percentChange": 13.77, "volume": 2400000, "turnover": 52800.0,
+      "reason": "Board Meeting", "reasonExDate": "", "lowerCircuit": 1540.0, "upperCircuit": 2310.0,
+      "priceBand": "20", "vwap": 2205.0, "marketCap": 80000000000,
+      "createdAt": "2026-11-12T03:50:00.000Z", "modifiedAt": "2026-11-12T09:58:00.000Z", "stale": false,
+      "aiRecommended": false, "aiRecommendedAt": null,
+      "history": [
+        { "time": "2026-11-12T03:50:00.000Z", "percentChange": 8.0, "ltp": 2079.0, "vwap": 2078.0, "turnover": 3000.0 },
+        { "time": "2026-11-12T07:00:00.000Z", "percentChange": 20.0, "ltp": 2310.0, "vwap": 2190.0, "turnover": 31000.0 },
+        { "time": "2026-11-12T09:58:00.000Z", "percentChange": 13.77, "ltp": 2190.0, "vwap": 2205.0, "turnover": 52800.0 }
+      ]
+    },
+    {
+      "date": "2026-11-12", "rank": 5, "capturedAt": "2026-11-12T10:00:05.000Z",
+      "symbol": "QUIETMID", "series": "EQ", "ltp": 321.5, "open": 312.0, "high": 326.0, "low": 311.0,
+      "prevClose": 310.0, "change": 11.5, "percentChange": 3.71, "volume": 800000, "turnover": 2544.0,
+      "reason": "Dividend - Rs 3 Per Share", "reasonExDate": "18-Nov-2026", "lowerCircuit": 248.0, "upperCircuit": 372.0,
+      "priceBand": "20", "vwap": 319.8, "marketCap": 70000000000,
+      "createdAt": "2026-11-12T03:50:00.000Z", "modifiedAt": "2026-11-12T09:58:00.000Z", "stale": false,
+      "aiRecommended": false, "aiRecommendedAt": null,
+      "history": [
+        { "time": "2026-11-12T03:50:00.000Z", "percentChange": 0.6, "ltp": 311.9, "vwap": 311.8, "turnover": 210.0 },
+        { "time": "2026-11-12T07:00:00.000Z", "percentChange": 2.4, "ltp": 317.4, "vwap": 315.5, "turnover": 1400.0 },
+        { "time": "2026-11-12T09:58:00.000Z", "percentChange": 3.71, "ltp": 321.5, "vwap": 319.8, "turnover": 2544.0 }
+      ]
+    },
+    {
+      "date": "2026-11-12", "rank": 6, "capturedAt": "2026-11-12T10:00:05.000Z",
+      "symbol": "HEAVYCHURN", "series": "EQ", "ltp": 85.2, "open": 81.0, "high": 87.0, "low": 80.5,
+      "prevClose": 80.0, "change": 5.2, "percentChange": 6.5, "volume": 23500000, "turnover": 19740.0,
+      "reason": "-", "reasonExDate": "", "lowerCircuit": 72.0, "upperCircuit": 88.0,
+      "priceBand": "10", "vwap": 84.0, "marketCap": 3000000000,
+      "createdAt": "2026-11-12T03:50:00.000Z", "modifiedAt": "2026-11-12T09:58:00.000Z", "stale": false,
+      "aiRecommended": false, "aiRecommendedAt": null,
+      "history": [
+        { "time": "2026-11-12T03:50:00.000Z", "percentChange": 1.3, "ltp": 81.04, "vwap": 80.9, "turnover": 1500.0 },
+        { "time": "2026-11-12T07:00:00.000Z", "percentChange": 4.5, "ltp": 83.6, "vwap": 82.3, "turnover": 11000.0 },
+        { "time": "2026-11-12T09:58:00.000Z", "percentChange": 6.5, "ltp": 85.2, "vwap": 84.0, "turnover": 19740.0 }
+      ]
+    },
     {
       "date": "2026-11-11", "rank": 1, "capturedAt": "2026-11-11T10:00:05.000Z",
       "symbol": "ALPHATECH", "series": "EQ", "ltp": 482.35, "open": 440.1, "high": 485.0, "low": 438.2,

@@ -40,6 +40,11 @@ const HEADINGS = {
     title: 'Top Gainers Report',
     logo: ICONS.report,
     subtitle: 'Top 3 gainers captured at the 3:30 PM close, one batch per trading day.'
+  },
+  guide: {
+    title: 'Guide',
+    logo: ICONS.guide,
+    subtitle: 'What the report fields, verdict statements, categories and colours mean.'
   }
 }
 

@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { id: 'ipos', label: 'IPOs', icon: ICONS.ipos },
   { id: 'sectors', label: 'Sector Rotation', icon: ICONS.sectors },
   { id: 'report', label: 'Report', icon: ICONS.report },
+  { id: 'guide', label: 'Guide', icon: ICONS.guide },
 ]
 
 export default function Sidebar({ view, onSelect, open = false, onClose }) {

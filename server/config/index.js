@@ -32,6 +32,20 @@ export const REPORT_FILE = IS_SERVERLESS
   : join(__dirname, '..', 'data', 'report.json')
 export const TOP_GAINERS_REPORT_COUNT = 3
 
+// Thresholds used to turn a report stock's numbers into verdict statements
+// (see services/verdictService.js). Market cap is in ₹ crore, turnover in
+// ₹ lakh (as stored), volume in shares.
+export const VERDICT_THRESHOLDS = {
+  marketCapCr: { micro: 500, small: 5000, large: 20000 },
+  turnoverLakh: { low: 1000, high: 10000, veryHigh: 50000 }, // ₹10 Cr / ₹100 Cr / ₹500 Cr
+  volume: { low: 100000, high: 10000000 }, // 1 L / 1 Cr shares
+  churnPercent: 5, // turnover as % of market cap
+  nearCircuitPercent: 1, // LTP within this % of the circuit limit
+  nearHighRangePercent: 10, // LTP within top X% of the day's range
+  strongMovePercent: 10, // day change considered a strong rally
+  gapPercent: 3 // open vs previous close
+}
+
 // Indian market (NSE) hours in IST used to gate the scheduled refresh.
 export const IST_OFFSET_MIN = 5 * 60 + 30 // UTC+5:30
 export const MARKET_OPEN_MIN = 9 * 60 + 15 // 09:15 IST — day start

@@ -16,6 +16,29 @@ const dash = (v) => (v === null || v === undefined || v === '' ? '—' : v)
 const COLUMNS = [
   { key: 'date', label: 'Date', cell: (r) => fmtDate(r.date), csv: (r) => fmtDate(r.date) },
   { key: 'symbol', label: 'Symbol', left: true, cell: (r) => r.symbol },
+  {
+    key: 'category',
+    label: 'Category',
+    left: true,
+    cell: (r) => (r.verdict?.category ? <span className="verdict-category">{r.verdict.category}</span> : '—'),
+    csv: (r) => r.verdict?.category ?? ''
+  },
+  {
+    key: 'verdict',
+    label: 'Verdict',
+    left: true,
+    cell: (r) =>
+      r.verdict?.statements?.length ? (
+        <ul className="verdict-list">
+          {r.verdict.statements.map((s) => (
+            <li key={s.code} className={`verdict-${s.tone}`}>{s.text}</li>
+          ))}
+        </ul>
+      ) : (
+        '—'
+      ),
+    csv: (r) => (r.verdict?.statements ?? []).map((s) => s.text).join(' | ')
+  },
   { key: 'ltp', label: 'LTP', cell: (r) => fmtNum(r.ltp) },
   {
     key: 'percentChange',
@@ -46,6 +69,27 @@ const COLUMNS = [
 export default function Report() {
   const { records, loading, error, reload } = useReport()
   const [selected, setSelected] = useState(null)
+  const [copied, setCopied] = useState(false)
+
+  // Copy the full stored records (including intraday history) as pretty JSON.
+  const onCopyJson = async () => {
+    const text = JSON.stringify(records, null, 2)
+    try {
+      await navigator.clipboard.writeText(text)
+    } catch {
+      // Clipboard API needs a secure context; fall back to a hidden textarea.
+      const ta = document.createElement('textarea')
+      ta.value = text
+      ta.style.position = 'fixed'
+      ta.style.opacity = '0'
+      document.body.appendChild(ta)
+      ta.select()
+      document.execCommand('copy')
+      ta.remove()
+    }
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1500)
+  }
 
   const onDownload = () => {
     const stamp = fmtDate(new Date().toISOString())
@@ -58,9 +102,12 @@ export default function Report() {
         <div className="trending-meta">
           {!loading && <span className="trending-time">{records.length} record(s)</span>}
         </div>
-        <div className="trend-actions">
+        <div className="trend-actions report-actions">
           <button className="trend-refresh" onClick={reload} disabled={loading}>
             {loading ? 'Loading…' : '↻ Reload'}
+          </button>
+          <button className="trend-refresh" onClick={onCopyJson} disabled={loading || !records.length}>
+            {copied ? '✔ Copied' : '⧉ Copy JSON'}
           </button>
           <button className="trend-ai-btn" onClick={onDownload} disabled={loading || !records.length}>
             ⬇ Download CSV

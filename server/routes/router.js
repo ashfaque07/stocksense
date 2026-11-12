@@ -28,6 +28,10 @@ export async function router(req, res) {
     return
   }
 
+  if (req.url.startsWith('/api/ipos')) {
+    await handleGetIpos(req, res)
+    return
+  }
 
   if (req.url.startsWith('/api/report')) {
     await handleGetReport(req, res)

@@ -4,6 +4,12 @@ import { SITE_HOST, STATUS_MAP } from '../config/index.js'
 import { stripTags } from '../utils/html.js'
 import { parseGmp, parseRating } from '../utils/parsers.js'
 
+// InvestorGain appends the GMP seen on that date to each date cell, e.g.
+// "30-Oct<br><small><b>GMP: 10</b></small>". Keep just the date.
+function parseDate(cell) {
+  return stripTags(String(cell || '').replace(/<small[\s\S]*?<\/small>/gi, '')) || ''
+}
+
 export function normalizeRow(row) {
   const gmp = parseGmp(row['GMP'])
   const rating = parseRating(row['Rating'])
@@ -29,10 +35,10 @@ export function normalizeRow(row) {
     lotSize: stripTags(row['Lot']) || '—',
     pe: stripTags(row['~P/E']) || '—',
     anchor,
-    openDate: stripTags(row['Open']) || '',
-    closeDate: stripTags(row['Close']) || '',
-    boaDate: stripTags(row['BoA Dt']) || '',
-    listingDate: stripTags(row['Listing']) || '',
+    openDate: parseDate(row['Open']),
+    closeDate: parseDate(row['Close']),
+    boaDate: parseDate(row['BoA Dt']),
+    listingDate: parseDate(row['Listing']),
     updatedOn: stripTags(row['Updated-On']) || '',
     detailUrl: row['~urlrewrite_folder_name']
       ? SITE_HOST + row['~urlrewrite_folder_name']

@@ -7,6 +7,7 @@
 
 import { TOP_GAINERS_REPORT_COUNT } from '../config/index.js'
 import { readReport, writeReport } from '../repositories/reportRepository.js'
+import { withVerdicts } from './verdictService.js'
 
 // True when a report batch already exists for the given IST date (YYYY-MM-DD).
 export async function hasReportForDate(date) {
@@ -36,5 +37,5 @@ export async function captureTopGainers(stocks, date, capturedAt = new Date().to
 export async function getReport() {
   const records = await readReport()
   records.sort((a, b) => (a.date === b.date ? a.rank - b.rank : a.date < b.date ? 1 : -1))
-  return { source: 'cache', count: records.length, records }
+  return { source: 'cache', count: records.length, records: withVerdicts(records) }
 }
