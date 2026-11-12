@@ -19,6 +19,7 @@ import {
 import { readSnapshot, writeSnapshot } from '../repositories/trendingRepository.js'
 import { ensureHolidays, isHoliday } from './holidayService.js'
 import { recommendBestSymbols } from './trendingAnalysisService.js'
+import { captureTopGainers, hasReportForDate } from './reportService.js'
 import { fetchNseJson } from './nseClient.js'
 
 // Public type -> NSE `index` query value. NSE spells losers as "loosers".
@@ -189,6 +190,18 @@ export function isMarketOpen(date = new Date()) {
   return mins >= MARKET_OPEN_MIN && mins <= MARKET_CLOSE_MIN
 }
 
+// Append today's top gainers to the end-of-day report. Best-effort: a failure
+// here must never break the trending refresh.
+async function recordDailyReport(stocks, { onlyIfMissing = false } = {}) {
+  try {
+    const date = istHolidayKey()
+    if (onlyIfMissing && (await hasReportForDate(date))) return
+    await captureTopGainers(stocks, date)
+  } catch (err) {
+    console.error('[report] capture failed:', err?.message)
+  }
+}
+
 // Fetch live data and merge it into the persisted snapshot. Stocks already in
 // the snapshot keep their original `createdAt`; new ones get `createdAt = now`.
 // Stocks that were present earlier today but are missing from the latest live
@@ -208,6 +221,19 @@ export async function refreshTrending(rawType = 'gainers') {
   await loadHolidays()
   if (!isMarketOpen()) {
     const prev = await readSnapshot(type)
+
+    // Catch-up: if the 15:30 call was missed (late/failed run) the report for
+    // today is still recorded from the last stored snapshot of the day.
+    if (
+      type === 'gainers' &&
+      isTradingDay() &&
+      istMinutes() > MARKET_CLOSE_MIN &&
+      prev?.dayStartedAt &&
+      istDayKey(new Date(prev.dayStartedAt)) === istDayKey()
+    ) {
+      await recordDailyReport(prev.stocks, { onlyIfMissing: true })
+    }
+
     return {
       source: 'cache',
       marketOpen: false,
@@ -246,7 +272,7 @@ export async function refreshTrending(rawType = 'gainers') {
       aiRecommendedAt: existing?.aiRecommendedAt || null,
       history: [
         ...prevHistory,
-        { time: now, percentChange: s.percentChange ?? null, ltp: s.ltp ?? null, vwap: s.vwap ?? null }
+        { time: now, percentChange: s.percentChange ?? null, ltp: s.ltp ?? null, vwap: s.vwap ?? null, turnover: s.turnover ?? null }
       ]
     }
   })
@@ -284,6 +310,13 @@ export async function refreshTrending(rawType = 'gainers') {
   }
 
   await writeSnapshot(type, snapshot)
+
+  // The refresh that lands on the 15:30 IST close is the day's last call: record
+  // the top gainers for the end-of-day report.
+  if (type === 'gainers' && istMinutes() >= MARKET_CLOSE_MIN) {
+    await recordDailyReport(stocks)
+  }
+
   return { source: 'live', marketOpen: isMarketOpen(), ...snapshot }
 }
 

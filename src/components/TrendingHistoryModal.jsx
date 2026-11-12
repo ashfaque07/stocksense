@@ -3,7 +3,7 @@
 
 import { ICONS } from '../constants/ui.js'
 import Modal from './Modal.jsx'
-import { fmtNum, fmtCount, fmtCompact, fmtTime } from '../utils/format.js'
+import { fmtNum, fmtCount, fmtCompact, fmtTime, fmtDate } from '../utils/format.js'
 
 // NSE returns a literal "-" when a field has no value; treat it as empty.
 const clean = (v) => {
@@ -18,7 +18,7 @@ export default function TrendingHistoryModal({ stock, onClose }) {
   const history = stock.history || []
   const up = (stock.percentChange ?? 0) >= 0
   const reason = clean(stock.reason)
-  const exDate = clean(stock.reasonExDate)
+  const exDate = fmtDate(clean(stock.reasonExDate), '')
 
   return (
     <Modal title={`${stock.symbol} · Details`} onClose={onClose}>
@@ -39,15 +39,15 @@ export default function TrendingHistoryModal({ stock, onClose }) {
         <div>
           <dt>Day Range</dt>
           <dd>
-            <span className="pos" title="Day High">H {fmtNum(stock.high)}</span>{' - '}
-            <span className="neg" title="Day Low">L {fmtNum(stock.low)}</span>
+            <span className="neg" title="Day Low">L {fmtNum(stock.low)}</span>{' - '}
+            <span className="pos" title="Day High">H {fmtNum(stock.high)}</span>
           </dd>
         </div>
         <div>
           <dt>Circuit</dt>
           <dd>
-            <span className="pos" title="Circuit High">H {fmtNum(stock.upperCircuit)}</span>{' - '}
-            <span className="neg" title="Circuit Low">L {fmtNum(stock.lowerCircuit)}</span>
+            <span className="neg" title="Circuit Low">L {fmtNum(stock.lowerCircuit)}</span>{' - '}
+            <span className="pos" title="Circuit High">H {fmtNum(stock.upperCircuit)}</span>
           </dd>
         </div>
         <div>
@@ -89,7 +89,7 @@ export default function TrendingHistoryModal({ stock, onClose }) {
         </div>
       </dl>
 
-      <h4 className="trending-details-head">% Change History</h4>
+      <h4 className="trending-details-head">History</h4>
       {!history.length ? (
         <p className="info">No history recorded yet for this stock.</p>
       ) : (
@@ -102,6 +102,7 @@ export default function TrendingHistoryModal({ stock, onClose }) {
                   <th>Change (%)</th>
                   <th>LTP</th>
                   <th>VWAP</th>
+                  <th>Turnover (₹ L)</th>
                 </tr>
               </thead>
               <tbody>
@@ -122,6 +123,7 @@ export default function TrendingHistoryModal({ stock, onClose }) {
                           {fmtNum(h.vwap)}
                         </span>
                       </td>
+                      <td>{h.turnover == null ? '—' : fmtCompact(h.turnover)}</td>
                     </tr>
                   )
                 })}

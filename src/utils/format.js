@@ -38,3 +38,34 @@ export const fmtTime = (iso) => {
     timeZone: 'Asia/Kolkata'
   })
 }
+
+const MONTH_NUM = {
+  jan: '01', feb: '02', mar: '03', apr: '04', may: '05', jun: '06',
+  jul: '07', aug: '08', sep: '09', oct: '10', nov: '11', dec: '12'
+}
+
+// Show a date as DD-MM-YYYY (IST). Accepts a plain "YYYY-MM-DD", an NSE-style
+// "14-Nov-2026", or any ISO timestamp. Returns `fallback` when empty/unparseable.
+export const fmtDate = (value, fallback = '—') => {
+  if (!value) return fallback
+  const s = String(value).trim()
+
+  const plain = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s)
+  if (plain) return `${plain[3]}-${plain[2]}-${plain[1]}`
+
+  const nse = /^(\d{1,2})-([A-Za-z]{3})-(\d{4})$/.exec(s)
+  if (nse && MONTH_NUM[nse[2].toLowerCase()]) {
+    return `${nse[1].padStart(2, '0')}-${MONTH_NUM[nse[2].toLowerCase()]}-${nse[3]}`
+  }
+
+  const d = new Date(s)
+  if (Number.isNaN(d.getTime())) return fallback
+  return d
+    .toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      timeZone: 'Asia/Kolkata'
+    })
+    .replace(/\//g, '-')
+}

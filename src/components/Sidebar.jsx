@@ -9,6 +9,8 @@ const NAV_ITEMS = [
   { id: 'results', label: 'Upcoming Results', icon: ICONS.results },
   { id: 'ipos', label: 'IPOs', icon: ICONS.ipos },
   { id: 'sectors', label: 'Sector Rotation', icon: ICONS.sectors },
+  { id: 'report', label: 'Report', icon: ICONS.report },
+  { id: 'guide', label: 'Guide', icon: ICONS.guide },
 ]
 
 export default function Sidebar({ view, onSelect, open = false, onClose }) {
@@ -30,7 +32,7 @@ export default function Sidebar({ view, onSelect, open = false, onClose }) {
       <aside className={`sidebar ${open ? 'open' : ''}`}>
         <div className="sidebar-head">
           <span className="sidebar-brand">
-            <span className="logo">{ICONS.stocks}</span> StockSense
+            <img className="logo logo-img" src={ICONS.favicon} alt="" /> StockSense
           </span>
           <button
             className="sidebar-close"
