@@ -598,6 +598,35 @@ h1 {
 .verdict-list .verdict-positive { color: var(--up); }
 .verdict-list .verdict-negative { color: var(--down); }
 .verdict-list .verdict-neutral { color: var(--text-dim); }
+
+/* Report table: grouped columns keep rows short. */
+.report-table td { vertical-align: top; padding: 10px 14px; }
+/* Data columns hug their content; the Verdict column absorbs the leftover width. */
+.report-table th, .report-table td { width: 1%; }
+.report-table th.col-verdict, .report-table td.col-verdict { width: auto; }
+.report-table th:first-child, .report-table td:first-child { padding-right: 4px; }
+.report-table .stock-cell { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-width: 150px; }
+.report-table .stock-cell .sym { font-size: 15px; letter-spacing: 0.01em; }
+.report-table .stock-cell .muted { font-size: 12px; color: var(--text-dim); }
+.report-table .stock-cell .verdict-category {
+  margin-top: 2px; padding: 3px 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
+  white-space: nowrap; border: 1px solid transparent;
+  --tone: var(--text-dim);
+  color: var(--tone);
+  background: color-mix(in srgb, var(--tone) 14%, transparent);
+  border-color: color-mix(in srgb, var(--tone) 35%, transparent);
+}
+.report-table .verdict-category[data-tone='up'] { --tone: var(--up); }
+.report-table .verdict-category[data-tone='down'] { --tone: var(--down); }
+.report-table .verdict-category[data-tone='warn'] { --tone: #f59e0b; }
+.report-table .verdict-category[data-tone='brand'] { --tone: var(--brand); }
+.report-table .price { font-weight: 700; font-size: 14px; }
+.report-table .kv { display: contents; }
+.report-table .kv .k { color: var(--text-faint); font-size: 11px; line-height: 1.7; }
+.report-table .kv .v { text-align: right; font-variant-numeric: tabular-nums; line-height: 1.7; }
+.report-table .kv-grid { display: grid; grid-template-columns: auto auto; column-gap: 16px; align-items: baseline; }
+.report-table td.col-verdict { white-space: normal; min-width: 300px; }
+
 .guide-card .verdict-positive { color: var(--up); font-weight: 600; }
 .guide-card .verdict-negative { color: var(--down); font-weight: 600; }
 .guide-card .verdict-neutral { color: var(--text-dim); font-weight: 600; }
@@ -689,9 +718,8 @@ h1 {
   .trend-actions .trend-ai-btn,
   .trend-actions .trend-refresh { gap: 12px 5px; }
 
-  /* Report: Reload + Copy JSON share a row; Download CSV takes its own row. */
+  /* Report: Copy JSON and Download CSV share a row. */
   .trend-actions.report-actions { grid-auto-flow: row; grid-template-columns: 1fr 1fr; }
-  .trend-actions.report-actions .trend-ai-btn { grid-column: 1 / -1; }
   .trending-meta, .trending-time { font-size: 11px; }
   .trending-meta { margin: auto; }
   .trending-table { font-size: 12px; }

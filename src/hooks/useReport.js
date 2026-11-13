@@ -28,5 +28,5 @@ export function useReport(today = false) {
     load()
   }, [load])
 
-  return { records, loading, error, reload: load }
+  return { records, loading, error }
 }
