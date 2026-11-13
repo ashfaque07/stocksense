@@ -9,13 +9,25 @@ export const TONES = [
 ]
 
 export const CATEGORIES = [
-  { name: 'Large-cap Leader', when: 'Large cap with high or very high turnover/volume.', action: 'Strongest and easiest to exit. Track for pullback or continuation.' },
-  { name: 'Upper Circuit', when: 'Hit the upper circuit and is not a small/micro cap.', action: 'Strong demand. Check the next-day open; a locked circuit can block buying or selling.' },
-  { name: 'Low-cap Upper Circuit', when: 'Hit the upper circuit and is a small/micro cap.', action: 'High reward, high risk. Easy to get in, hard to get out. Avoid chasing.' },
-  { name: 'Low-cap Momentum', when: 'Small/micro cap with high turnover/volume.', action: 'Speculative. Needs a clear reason and a strict stop-loss.' },
-  { name: 'High-activity Mover', when: 'Mid cap (or unknown cap) with high turnover/volume.', action: 'Real participation. Look for a news or results trigger.' },
-  { name: 'Thin Mover (Low Liquidity)', when: 'Low turnover or volume.', action: 'Treat as a trap or untradable. Moves can reverse without warning.' },
-  { name: 'Regular Mover', when: 'None of the above.', action: 'Nothing special. Ignore unless another signal stands out.' }
+  { name: 'Large-cap Leader', tone: 'brand', when: 'Large cap with high or very high turnover/volume.', action: 'Strongest and easiest to exit. Track for pullback or continuation.' },
+  { name: 'Upper Circuit', tone: 'up', when: 'Hit the upper circuit and is not a small/micro cap.', action: 'Strong demand. Check the next-day open; a locked circuit can block buying or selling.' },
+  { name: 'Low-cap Upper Circuit', tone: 'up', when: 'Hit the upper circuit and is a small/micro cap.', action: 'High reward, high risk. Easy to get in, hard to get out. Avoid chasing.' },
+  { name: 'Low-cap Momentum', tone: 'warn', when: 'Small/micro cap with high turnover/volume.', action: 'Speculative. Needs a clear reason and a strict stop-loss.' },
+  { name: 'High-activity Mover', tone: 'brand', when: 'Mid cap (or unknown cap) with high turnover/volume.', action: 'Real participation. Look for a news or results trigger.' },
+  { name: 'Thin Mover (Low Liquidity)', tone: 'down', when: 'Low turnover or volume.', action: 'Treat as a trap or untradable. Moves can reverse without warning.' },
+  { name: 'Regular Mover', tone: 'neutral', when: 'None of the above.', action: 'Nothing special. Ignore unless another signal stands out.' }
+]
+
+// Category name -> pill colour tone (used by the Report table and this guide).
+export const CATEGORY_TONE = Object.fromEntries(CATEGORIES.map((c) => [c.name, c.tone]))
+
+// Meaning of the category pill colours.
+export const CATEGORY_COLOURS = [
+  { tone: 'up', label: 'Green', meaning: 'Upper circuit hit: the strongest demand signal.' },
+  { tone: 'brand', label: 'Indigo', meaning: 'Strong move backed by high turnover/volume, without a circuit hit.' },
+  { tone: 'warn', label: 'Amber', meaning: 'Speculative: small/micro cap with high activity.' },
+  { tone: 'down', label: 'Red', meaning: 'Thin liquidity: may be hard to trade.' },
+  { tone: 'neutral', label: 'Grey', meaning: 'Regular Mover: nothing special.' }
 ]
 
 export const STATEMENTS = [
@@ -39,21 +51,29 @@ export const STATEMENTS = [
   { group: 'Other', tone: 'positive', text: 'Recommended by AI during the day', rule: 'The stock was flagged as an AI pick.' }
 ]
 
+export const VIEWS = [
+  { name: 'Stored report (Today off)', meaning: 'Top 3 gainers recorded at the 3:30 PM close, one batch per trading day. Earlier days stay listed, newest first.' },
+  { name: 'Today (switch on)', meaning: 'Every stock in the latest stored gainers snapshot, sorted by % change. It updates about every 15 minutes while the market is open. Outside market hours it shows the last trading day. Stocks that dropped out of the live list stay with their last-known values. The switch setting is remembered in the browser.' }
+]
+
+// `column` is where the field appears in the Report table.
 export const FIELDS = [
-  { name: 'Symbol', meaning: 'NSE trading symbol.' },
-  { name: 'LTP', meaning: 'Last traded price at capture time (15:30 IST close).' },
-  { name: 'Change (%) / Change (₹)', meaning: 'Move versus the previous close.' },
-  { name: 'Open / High / Low', meaning: 'First price, highest price and lowest price of the day.' },
-  { name: 'Prev Close', meaning: 'Closing price of the previous trading day.' },
-  { name: 'VWAP', meaning: 'Volume-weighted average price. Above it means buyers are in control; below it means sellers are.' },
-  { name: 'Volume', meaning: 'Number of shares traded in the day.' },
-  { name: 'Turnover (₹ L)', meaning: 'Total money traded in the day, in lakh (shown as L / Cr).' },
-  { name: 'Mkt Cap', meaning: 'Market capitalisation in rupees: price x shares outstanding. Shows company size.' },
-  { name: 'Lower / Upper Circuit', meaning: 'Daily price limits. The stock cannot trade beyond them.' },
-  { name: 'Price Band', meaning: 'Circuit limit as a percentage (for example 5, 10, 20).' },
-  { name: 'AI Pick', meaning: 'Marked when AI recommended the stock during the day.' },
-  { name: 'Category', meaning: 'One summary label for the stock (see Categories).' },
-  { name: 'Verdict', meaning: 'List of plain statements describing the stock (see Verdict statements).' }
+  { name: 'Symbol', column: 'Stock', meaning: 'NSE trading symbol. A star next to it means AI recommended the stock during the day.' },
+  { name: 'Category', column: 'Stock', meaning: 'One summary label for the stock (see Categories).' },
+  { name: 'LTP', column: 'Price', meaning: 'Last traded price. In the stored report it is the price at the 15:30 IST close; in the Today view it is the latest stored price.' },
+  { name: 'Change (%)', column: 'Price', meaning: 'Move versus the previous close.' },
+  { name: 'Verdict', column: 'Verdict', meaning: 'List of plain statements describing the stock (see Verdict statements). Up to 9 can apply.' },
+  { name: 'Open / High / Low', column: 'Day Range', meaning: 'First price, highest price and lowest price of the day.' },
+  { name: 'Prev Close', column: 'Day Range', meaning: 'Closing price of the previous trading day.' },
+  { name: 'VWAP', column: 'Day Range', meaning: 'Volume-weighted average price. Above it means buyers are in control; below it means sellers are.' },
+  { name: 'Volume', column: 'Activity & Circuit', meaning: 'Number of shares traded in the day.' },
+  { name: 'Turnover', column: 'Activity & Circuit', meaning: 'Total money traded in the day, shown in lakh (L) or crore (Cr).' },
+  { name: 'Mkt Cap', column: 'Activity & Circuit', meaning: 'Market capitalisation in rupees: price x shares outstanding. Shows company size.' },
+  { name: 'Lower / Upper', column: 'Activity & Circuit', meaning: 'Lower and upper circuit prices. The stock cannot trade beyond them.' },
+  { name: 'Date', column: 'Date & Time', meaning: 'Trading day the row belongs to (DD-MM-YYYY).' },
+  { name: 'Created', column: 'Date & Time', meaning: 'Time (IST) the stock first appeared in the gainers list that day.' },
+  { name: 'Modified', column: 'Date & Time', meaning: 'Time (IST) of its last data update.' },
+  { name: 'Change (₹) / Price Band', column: 'CSV only', meaning: 'Rupee change and circuit band percentage. Not shown in the table but included in the CSV download.' }
 ]
 
 export const ROUTINE = [

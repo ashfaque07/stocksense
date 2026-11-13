@@ -1,9 +1,10 @@
-// Hook: loads the stored end-of-day top-gainers report records.
+// Hook: loads the stored end-of-day top-gainers report records, or (when
+// `today` is set) the latest stored trending gainers.
 
 import { useCallback, useEffect, useState } from 'react'
 import { fetchReport } from '../services/reportApi.js'
 
-export function useReport() {
+export function useReport(today = false) {
   const [records, setRecords] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -12,7 +13,7 @@ export function useReport() {
     setLoading(true)
     setError(null)
     try {
-      const data = await fetchReport()
+      const data = await fetchReport(today)
       if (data.error) throw new Error(data.error)
       setRecords(data.records || [])
     } catch (err) {
@@ -21,11 +22,11 @@ export function useReport() {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [today])
 
   useEffect(() => {
     load()
   }, [load])
 
-  return { records, loading, error, reload: load }
+  return { records, loading, error }
 }

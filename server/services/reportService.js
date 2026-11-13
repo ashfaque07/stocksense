@@ -7,6 +7,7 @@
 
 import { TOP_GAINERS_REPORT_COUNT } from '../config/index.js'
 import { readReport, writeReport } from '../repositories/reportRepository.js'
+import { readSnapshot } from '../repositories/trendingRepository.js'
 import { withVerdicts } from './verdictService.js'
 
 // True when a report batch already exists for the given IST date (YYYY-MM-DD).
@@ -31,6 +32,21 @@ export async function captureTopGainers(stocks, date, capturedAt = new Date().to
   await writeReport([...existing.filter((r) => r.date !== date), ...batch])
   console.log(`[report] captured top ${batch.length} gainers for ${date}`)
   return batch
+}
+
+// The latest stored trending gainers snapshot (no live fetch) with every stock,
+// by % change, shaped like report records so the UI renders them in the same table.
+export async function getLatestGainers() {
+  const snap = await readSnapshot('gainers')
+  const stamp = snap?.dayStartedAt || snap?.updatedAt
+  const date = stamp ? new Date(stamp).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' }) : null
+  const capturedAt = snap?.updatedAt || null
+  const pct = (s) => (Number.isFinite(Number(s.percentChange)) ? Number(s.percentChange) : -Infinity)
+  const all = (snap?.stocks || [])
+    .slice()
+    .sort((a, b) => pct(b) - pct(a))
+    .map((s, i) => ({ date, rank: i + 1, capturedAt, ...s }))
+  return { source: 'cache', count: all.length, records: withVerdicts(all) }
 }
 
 // All stored report records, newest day first (rank ascending within a day).
