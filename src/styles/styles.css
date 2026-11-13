@@ -608,18 +608,20 @@ h1 {
 .report-table .stock-cell { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-width: 150px; }
 .report-table .stock-cell .sym { font-size: 15px; letter-spacing: 0.01em; }
 .report-table .stock-cell .muted { font-size: 12px; color: var(--text-dim); }
-.report-table .stock-cell .verdict-category {
-  margin-top: 2px; padding: 3px 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
+.report-table .stock-cell .verdict-category { margin-top: 2px; padding: 3px 10px; }
+/* Colour-coded category pill (Report table and Guide). */
+.verdict-category[data-tone] {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
   white-space: nowrap; border: 1px solid transparent;
   --tone: var(--text-dim);
   color: var(--tone);
   background: color-mix(in srgb, var(--tone) 14%, transparent);
   border-color: color-mix(in srgb, var(--tone) 35%, transparent);
 }
-.report-table .verdict-category[data-tone='up'] { --tone: var(--up); }
-.report-table .verdict-category[data-tone='down'] { --tone: var(--down); }
-.report-table .verdict-category[data-tone='warn'] { --tone: #f59e0b; }
-.report-table .verdict-category[data-tone='brand'] { --tone: var(--brand); }
+.verdict-category[data-tone='up'] { --tone: var(--up); }
+.verdict-category[data-tone='down'] { --tone: var(--down); }
+.verdict-category[data-tone='warn'] { --tone: #f59e0b; }
+.verdict-category[data-tone='brand'] { --tone: var(--brand); }
 .report-table .price { font-weight: 700; font-size: 14px; }
 .report-table .kv { display: contents; }
 .report-table .kv .k { color: var(--text-faint); font-size: 11px; line-height: 1.7; }
@@ -644,6 +646,7 @@ h1 {
 }
 .guide-steps { margin: 0; padding-left: 20px; line-height: 1.7; font-size: 14px; }
 .guide-note { margin: 12px 0 0; font-size: 12px; color: var(--text-faint); }
+.guide-colours { list-style: none; margin: 12px 0 0; padding: 0; font-size: 13px; color: var(--text-dim); display: grid; gap: 8px; }
 .trending-table .day-range {
   display: flex; flex-direction: column; gap: 2px;
   font-size: 12px; line-height: 1.3; white-space: nowrap;

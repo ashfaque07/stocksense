@@ -4,10 +4,11 @@
 import { useEffect, useState } from 'react'
 import { useReport } from '../hooks/useReport.js'
 import TrendingHistoryModal from './TrendingHistoryModal.jsx'
-import TrendingSkeleton from './TrendingSkeleton.jsx'
+import ReportSkeleton from './ReportSkeleton.jsx'
 import { ICONS } from '../constants/ui.js'
 import { toCsv, downloadCsv } from '../utils/csv.js'
 import { fmtNum, fmtCount, fmtCompact, fmtTime, fmtDate } from '../utils/format.js'
+import { CATEGORY_TONE } from '../constants/guide.js'
 
 
 // Full flat columns, used only for the CSV export. `csv` (optional) overrides the
@@ -43,16 +44,6 @@ const kv = (k, v) => (
     <span className="v">{v}</span>
   </div>
 )
-
-// Pill colour per verdict category (see buildVerdict on the server).
-const CATEGORY_TONE = {
-  'Upper Circuit': 'up',
-  'Low-cap Upper Circuit': 'up',
-  'Large-cap Leader': 'brand',
-  'High-activity Mover': 'brand',
-  'Low-cap Momentum': 'warn',
-  'Thin Mover (Low Liquidity)': 'down'
-}
 
 // Compact on-screen columns: related fields are grouped into one cell so each
 // row stays short.
@@ -107,10 +98,10 @@ const TABLE_COLUMNS = [
     label: 'Day Range',
     cell: (r) => (
       <div className="kv-grid">
-        {kv('Open', fmtNum(r.open))}
-        {kv('High', fmtNum(r.high))}
-        {kv('Low', fmtNum(r.low))}
         {kv('Prev Close', fmtNum(r.prevClose))}
+        {kv('Open', fmtNum(r.open))}
+        {kv('Low', fmtNum(r.low))}
+        {kv('High', fmtNum(r.high))}
         {kv('VWAP', fmtNum(r.vwap))}
       </div>
     )
@@ -122,9 +113,9 @@ const TABLE_COLUMNS = [
       <div className="kv-grid">
         {kv('Volume', fmtCount(r.volume))}
         {kv('Turnover', fmtCompact(r.turnover))}
-        {kv('Mkt Cap', fmtCount(r.marketCap))}
         {kv('Lower', fmtNum(r.lowerCircuit))}
         {kv('Upper', fmtNum(r.upperCircuit))}
+        {kv('Mkt Cap', fmtCount(r.marketCap))}
       </div>
     )
   },
@@ -209,7 +200,7 @@ export default function Report() {
       )}
 
       {loading && !records.length ? (
-        <TrendingSkeleton />
+        <ReportSkeleton />
       ) : (
         !!records.length && (
           <div className="trending-table-wrap">
