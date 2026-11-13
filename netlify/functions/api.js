@@ -10,7 +10,7 @@ import { streamStockAnalysis } from '../../server/services/stockAnalysisService.
 import { streamSectorRotation } from '../../server/services/sectorRotationService.js'
 import { streamTrendingAnalysis } from '../../server/services/trendingAnalysisService.js'
 import { getUpcomingResults } from '../../server/services/resultsService.js'
-import { getReport } from '../../server/services/reportService.js'
+import { getReport, getLatestGainers } from '../../server/services/reportService.js'
 import { getResultsDetail } from '../../server/services/resultsDetailService.js'
 import { streamResultsAnalysis } from '../../server/services/resultsAnalysisService.js'
 import {
@@ -62,7 +62,9 @@ export const handler = async (event) => {
         return {
           statusCode: 200,
           headers: { ...CORS, 'Content-Type': 'application/json' },
-          body: JSON.stringify(await getReport())
+          body: JSON.stringify(
+            event.queryStringParameters?.today === '1' ? await getLatestGainers() : await getReport()
+          )
         }
       } catch (err) {
         return {

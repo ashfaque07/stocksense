@@ -1,7 +1,7 @@
 // End-of-day report: the top 3 gainers captured at the 15:30 IST close, one
 // batch per trading day, shown as a table with CSV download.
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useReport } from '../hooks/useReport.js'
 import TrendingHistoryModal from './TrendingHistoryModal.jsx'
 import TrendingSkeleton from './TrendingSkeleton.jsx'
@@ -66,8 +66,14 @@ const COLUMNS = [
   { key: 'modifiedAt', label: 'Modified', cell: (r) => fmtTime(r.modifiedAt) }
 ]
 
+const TODAY_KEY = 'stocksense-report-today'
+
 export default function Report() {
-  const { records, loading, error, reload } = useReport()
+  const [todayOnly, setTodayOnly] = useState(() => localStorage.getItem(TODAY_KEY) === '1')
+  useEffect(() => {
+    localStorage.setItem(TODAY_KEY, todayOnly ? '1' : '0')
+  }, [todayOnly])
+  const { records, loading, error, reload } = useReport(todayOnly)
   const [selected, setSelected] = useState(null)
   const [copied, setCopied] = useState(false)
 
@@ -100,6 +106,16 @@ export default function Report() {
     <section className="trending">
       <div className="trending-head">
         <div className="trending-meta">
+          <label className="switch" title="Show the latest trending gainers">
+            <input
+              type="checkbox"
+              role="switch"
+              checked={todayOnly}
+              onChange={(e) => setTodayOnly(e.target.checked)}
+            />
+            <span className="switch-track" aria-hidden="true" />
+            <span className="switch-label">Today</span>
+          </label>
           {!loading && <span className="trending-time">{records.length} record(s)</span>}
         </div>
         <div className="trend-actions report-actions">

@@ -470,6 +470,20 @@ h1 {
   display: inline-flex; align-items: center; justify-content: center; white-space: nowrap;
 }
 .trending-time { color: var(--text-faint); font-size: 12px; }
+.switch { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-dim); user-select: none; }
+.switch input { position: absolute; opacity: 0; width: 0; height: 0; }
+.switch-track {
+  position: relative; width: 36px; height: 20px; border-radius: 999px;
+  background: var(--surface-2); border: 1px solid var(--border); transition: all 0.15s ease;
+}
+.switch-track::after {
+  content: ''; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px;
+  border-radius: 50%; background: var(--text-faint); transition: all 0.15s ease;
+}
+.switch input:checked + .switch-track { background: var(--brand); border-color: var(--brand); }
+.switch input:checked + .switch-track::after { left: 18px; background: #fff; }
+.switch input:focus-visible + .switch-track { outline: 2px solid var(--brand); outline-offset: 2px; }
+.switch input:checked ~ .switch-label { color: var(--text); }
 .market-status { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; }
 .market-status .market-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
 .market-status.closed { color: #dc2626; }
