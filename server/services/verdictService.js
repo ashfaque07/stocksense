@@ -107,7 +107,7 @@ export function buildVerdict(stock) {
   const lowCap = cap === 'micro' || cap === 'small'
   const highActivity = activity === 'high' || activity === 'veryHigh'
   let category = 'Regular Mover'
-  if (circuit === 'hit') category = lowCap ? 'Low-cap Upper Circuit' : 'Upper Circuit'
+  if (circuit === 'hit') category = lowCap ? 'Upper Circuit (Small/Micro Cap)' : 'Upper Circuit (Mid/Large Cap)'
   else if (lowCap && highActivity) category = 'Low-cap Momentum'
   else if (cap === 'large' && highActivity) category = 'Large-cap Leader'
   else if (highActivity) category = 'High-activity Mover'

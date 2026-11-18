@@ -8,9 +8,11 @@ export function useStockAnalysis() {
   const [streaming, setStreaming] = useState(false)
   const [error, setError] = useState(null)
   const [query, setQuery] = useState('')
+  const [mode, setMode] = useState('analysis')
   const abortRef = useRef(null)
 
-  async function analyze(rawQuery) {
+  // mode: 'analysis' (fundamentals) or 'forecast' (1-4 week price outlook).
+  async function analyze(rawQuery, nextMode = 'analysis') {
     const q = rawQuery.trim()
     if (!q) return
 
@@ -20,6 +22,7 @@ export function useStockAnalysis() {
     abortRef.current = controller
 
     setQuery(q)
+    setMode(nextMode)
     setError(null)
     setStreaming(true)
     setResult({ provider: 'gemini', summary: '' })
@@ -30,7 +33,8 @@ export function useStockAnalysis() {
         (chunk) => {
           setResult((prev) => ({ ...prev, summary: (prev?.summary || '') + chunk }))
         },
-        controller.signal
+        controller.signal,
+        nextMode === 'forecast' ? '/api/forecast-stock' : '/api/analyze-stock'
       )
       setResult(final)
     } catch (err) {
@@ -51,5 +55,5 @@ export function useStockAnalysis() {
     setQuery('')
   }
 
-  return { result, streaming, error, query, analyze, reset }
+  return { result, streaming, error, query, mode, analyze, reset }
 }

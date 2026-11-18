@@ -10,7 +10,7 @@ import { dirname } from 'node:path'
 import { REPORT_FILE, IS_SERVERLESS } from '../config/index.js'
 
 // Same blob store as the trending snapshot (see trendingRepository.js).
-const BLOB_STORE = 'ipo-analyzer'
+const BLOB_STORE = 'stocksense'
 const BLOB_KEY = 'report:top-gainers'
 
 // Created fresh on every call (not memoized) to avoid expired request-scoped

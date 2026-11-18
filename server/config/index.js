@@ -102,6 +102,10 @@ export const NSE_PATHS = {
 export const YAHOO_TIMESERIES_URL =
   'https://query1.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries'
 
+// Yahoo Finance chart API (daily candles) used to compute technical indicators
+// for the stock price forecast. Append `/{SYMBOL}.NS?range=1y&interval=1d`.
+export const YAHOO_CHART_URL = 'https://query1.finance.yahoo.com/v8/finance/chart'
+
 // InvestorGain report API.
 // Path: /cloud/v2/report/data-read/{reportId}/{page}/{month}/{year}/{financialYear}/{sort}/{param}
 export const API_HOST = 'https://webnodejs.investorgain.com'

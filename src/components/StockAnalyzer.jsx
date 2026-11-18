@@ -6,12 +6,12 @@ import remarkGfm from 'remark-gfm'
 import { ICONS } from '../constants/ui.js'
 import { MD_COMPONENTS } from '../constants/markdown.jsx'
 
-export default function StockAnalyzer({ result, streaming, error, query, analyze }) {
+export default function StockAnalyzer({ result, streaming, error, query, mode, analyze }) {
   const [input, setInput] = useState('')
 
   function onSubmit(e) {
     e.preventDefault()
-    analyze(input)
+    analyze(input, 'analysis')
   }
 
   return (
@@ -26,7 +26,15 @@ export default function StockAnalyzer({ result, streaming, error, query, analyze
           aria-label="Stock name or ticker"
         />
         <button type="submit" className="stock-btn" disabled={streaming || !input.trim()}>
-          {streaming ? 'Analyzing…' : `${ICONS.search} Analyze`}
+          {streaming && mode === 'analysis' ? 'Analyzing…' : `${ICONS.search} Analyze`}
+        </button>
+        <button
+          type="button"
+          className="stock-btn"
+          disabled={streaming || !input.trim()}
+          onClick={() => analyze(input, 'forecast')}
+        >
+          {streaming && mode === 'forecast' ? 'Forecasting…' : `${ICONS.ai} Forecast`}
         </button>
       </form>
 
@@ -34,14 +42,14 @@ export default function StockAnalyzer({ result, streaming, error, query, analyze
 
       {!result && !error && (
         <p className="info stock-hint">
-          Enter a company name or ticker symbol to get an AI fundamental analysis.
+          Enter a company name or ticker symbol to get an AI fundamental analysis or a 1–4 week price forecast.
         </p>
       )}
 
       {result && (
         <div className="stock-result">
           <div className="modal-head">
-            <h2>AI Analysis · {query}</h2>
+            <h2>{mode === 'forecast' ? 'AI Forecast' : 'AI Analysis'} · {query}</h2>
           </div>
           {streaming && !result.summary && <p className="info">{ICONS.ai} Analyzing in real time…</p>}
           <div className="summary markdown">

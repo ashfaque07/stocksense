@@ -3,10 +3,10 @@
 
 import { getSelectedModel } from './modelApi.js'
 
-export async function streamStockAnalysis(query, onToken, signal) {
+export async function streamStockAnalysis(query, onToken, signal, endpoint = '/api/analyze-stock') {
   let res
   try {
-    res = await fetch('/api/analyze-stock', {
+    res = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query, model: getSelectedModel() }),

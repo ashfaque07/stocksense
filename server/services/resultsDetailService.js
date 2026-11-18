@@ -163,7 +163,7 @@ async function fromNse(symbol) {
 // (same source the Trending view uses). We only expose LTP, market cap and the
 // 52-week range. Best-effort — any failure returns null so the detail modal
 // still renders the quarterly results.
-async function fetchLiveQuote(symbol) {
+export async function fetchLiveQuote(symbol) {
   try {
     const json = await fetchNseJson(`${NSE_BASE}${NSE_PATHS.equityInfo}${encodeURIComponent(symbol)}`);
     const resp = json?.equityResponse?.[0]

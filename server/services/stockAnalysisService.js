@@ -3,9 +3,10 @@
 
 import { streamCompletion } from './analysisService.js'
 import { getNewsForQuery } from './newsService.js'
+import { fetchLiveQuote } from './resultsDetailService.js'
 import { STOCK_SYSTEM_PROMPT, stockUserPrompt } from './prompts.js'
 
-function buildMessages(query, news) {
+function buildMessages(query, news, quote) {
   return [
     {
       role: 'system',
@@ -13,7 +14,7 @@ function buildMessages(query, news) {
     },
     {
       role: 'user',
-      content: stockUserPrompt(query, news)
+      content: stockUserPrompt(query, news, quote)
     }
   ]
 }
@@ -22,6 +23,10 @@ function buildMessages(query, news) {
 export async function* streamStockAnalysis(query, model) {
   const normalized = String(query).trim()
   // Best-effort: pull recent headlines so the model reasons over fresh news.
-  const news = await getNewsForQuery(normalized)
-  yield* streamCompletion(buildMessages(normalized, news), `stock:${normalized.toLowerCase()}`, model)
+  // Live NSE quote is only attempted for ticker-like input (no spaces).
+  const [news, quote] = await Promise.all([
+    getNewsForQuery(normalized),
+    /\s/.test(normalized) ? null : fetchLiveQuote(normalized.toUpperCase())
+  ])
+  yield* streamCompletion(buildMessages(normalized, news, quote), `stock:${normalized.toLowerCase()}`, model)
 }
