@@ -689,6 +689,9 @@ h1 {
   .app { padding: 20px 16px 40px; }
   h1 { font-size: 26px; margin-top: 15px; }
 
+  .stock-analyzer .stock-input { flex: 1 1 100%; }
+  .stock-analyzer .stock-btn { flex: 1 1 0; min-width: 0; padding: 12px 10px; }
+
   .nav-toggle { display: inline-flex; }
 
   /* header { padding-left: 54px; min-height: 44px; } */

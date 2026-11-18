@@ -7,6 +7,7 @@ import { connectLambda } from '@netlify/blobs'
 import { getIpos } from '../../server/services/ipoService.js'
 import { isAiConfigured, streamAnalysis } from '../../server/services/analysisService.js'
 import { streamStockAnalysis } from '../../server/services/stockAnalysisService.js'
+import { streamStockForecast } from '../../server/services/stockForecastService.js'
 import { streamSectorRotation } from '../../server/services/sectorRotationService.js'
 import { streamTrendingAnalysis } from '../../server/services/trendingAnalysisService.js'
 import { getUpcomingResults } from '../../server/services/resultsService.js'
@@ -337,6 +338,58 @@ export const handler = async (event) => {
         statusCode: 200,
         headers: { ...CORS, 'Content-Type': 'text/plain; charset=utf-8' },
         body: stockText
+      }
+    }
+
+    if (path.includes('/forecast-stock')) {
+      if (method !== 'POST') {
+        return { statusCode: 405, headers: CORS, body: 'Method not allowed' }
+      }
+      if (!isAiConfigured()) {
+        return {
+          statusCode: 503,
+          headers: { ...CORS, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ error: 'AI provider not configured. Set AI_API_KEY.' })
+        }
+      }
+
+      let query
+      let forecastModel
+      try {
+        const parsed = JSON.parse(event.body || '{}')
+        query = parsed?.query?.trim()
+        forecastModel = parsed?.model
+      } catch {
+        return {
+          statusCode: 400,
+          headers: { ...CORS, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ error: 'Invalid JSON body.' })
+        }
+      }
+      if (!query) {
+        return {
+          statusCode: 400,
+          headers: { ...CORS, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ error: 'Missing stock name or ticker.' })
+        }
+      }
+
+      let forecastText = ''
+      try {
+        for await (const token of streamStockForecast(query, forecastModel)) {
+          forecastText += token
+        }
+      } catch (err) {
+        return {
+          statusCode: 502,
+          headers: { ...CORS, 'Content-Type': 'text/plain; charset=utf-8' },
+          body: `${forecastText}\n\n[Forecast failed: ${err.message}]`
+        }
+      }
+      return {
+        statusCode: 200,
+        headers: { ...CORS, 'Content-Type': 'text/plain; charset=utf-8' },
+        body: forecastText
       }
     }
 

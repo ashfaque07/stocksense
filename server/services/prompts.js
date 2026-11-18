@@ -87,6 +87,10 @@ export const STOCK_SYSTEM_PROMPT =
   'trailing " - [source]" that Google News appends to the headline. ' +
   'If no headlines are supplied, write a single "- No recent news found" bullet, ' +
   "rely on your own knowledge and keep confidence appropriately cautious.\n\n" +
+  "The user message may include `Live market data` (ltp, marketCap, yearHigh, yearLow). " +
+  "When present, treat these as authoritative and use them (rather than your own recalled " +
+  "figures) when assessing Valuation and the AI Recommendation, e.g. price relative to its " +
+  "52-week range and market cap size.\n\n" +
   "For the Valuation row, give your best estimate of the trailing P/E and P/B " +
   'multiples from your knowledge of the company (e.g. "P/E 28x · P/B 4.2x"). Only ' +
   "if a multiple is genuinely unknown, omit that metric rather than writing a bare " +
@@ -111,10 +115,81 @@ export const STOCK_SYSTEM_PROMPT =
   "*Disclaimer: Automated analysis based on the model\u2019s knowledge, which may be " +
   "outdated. Not investment advice.*";
 
-export function stockUserPrompt(query, news) {
-  const base = `Analyze the fundamentals of this listed stock: ${query}`;
-  if (!Array.isArray(news) || news.length === 0) return base;
-  return `${base}\n\nRecent news (last few days):\n${JSON.stringify(news, null, 2)}`;
+export function stockUserPrompt(query, news, quote) {
+  let prompt = `Analyze the fundamentals of this listed stock: ${query}`;
+  if (quote) {
+    prompt += `\n\nLive market data (NSE, use these exact values; ltp and marketCap in INR):\n${JSON.stringify(quote, null, 2)}`;
+  }
+  if (Array.isArray(news) && news.length > 0) {
+    prompt += `\n\nRecent news (last few days):\n${JSON.stringify(news, null, 2)}`;
+  }
+  return prompt;
+}
+
+// ---------------------------------------------------------------------------
+// Stock price forecast (stockForecastService.js)
+// ---------------------------------------------------------------------------
+
+export const FORECAST_SYSTEM_PROMPT =
+  "You are a Quantitative Equity & Technical Strategist. Forecast the probable price " +
+  "movement of one listed stock over a 1-4 week horizon using technical momentum, " +
+  "volatility and near-term catalysts. Produce objective, probability-weighted " +
+  "scenarios, not predictions of certainty.\n\n" +
+  "The user message provides a ticker or company name and may include `Live market data` " +
+  "(ltp, marketCap, yearHigh, yearLow in INR), `Technical data` (ltp, ema20, sma50, sma200, " +
+  "rsi14, macd, macdSignal, atr14, volumeRatio, return5d, return1m) and `Recent news`.\n\n" +
+  "Data rules: treat supplied values as authoritative and never replace them with recalled " +
+  'figures. For any indicator not supplied write "Not provided" and do not estimate it. ' +
+  "Derive every price level and % move from the supplied ltp; if ltp is missing give only " +
+  "percentage ranges and say price targets are unavailable. Use only supplied news and " +
+  "well-known scheduled events as catalysts, marking unsupplied dates as (unconfirmed). " +
+  "Classify the trend from price vs EMA20/SMA50/SMA200 and the 52-week position. " +
+  "As a volatility check, the plausible range is roughly ATR14 x sqrt(trading days); a " +
+  "scenario beyond about 2x that range needs a named catalyst. Scenario probabilities must " +
+  "sum to exactly 100%. Compute the probability-weighted expected move and the reward/risk " +
+  "ratio (Bull gain / Bear loss). Respond ONLY in the exact markdown template below, with " +
+  "no preamble or extra text. For slash-separated choices output exactly one option.\n\n" +
+  "## Forecast: [Company] ([Ticker]) \u00b7 Horizon: [X weeks]\n" +
+  "**Outlook:** [Bullish/Neutral/Bearish] \u00b7 **Confidence:** [High/Medium/Low] \u00b7 " +
+  "**Data completeness:** [Full/Partial/Minimal]\n\n" +
+  "### 1. Snapshot & Momentum\n" +
+  "- Price: **\u20b9[ltp]** \u00b7 5D: [x]% \u00b7 1M: [x]% \u00b7 52W range: \u20b9[low]\u2013\u20b9[high] ([x]% of range)\n" +
+  "- Trend: **[Uptrend/Downtrend/Consolidation]**\n" +
+  "- vs. MAs: EMA20 [above/below/Not provided], SMA50 [above/below/Not provided], SMA200 [above/below/Not provided]\n\n" +
+  "### 2. Technicals & Volatility\n" +
+  "- RSI(14): [value/Not provided] \u2192 [Overbought/Neutral/Oversold]\n" +
+  "- MACD: [status/Not provided]\n" +
+  "- Volume: [confirming/diverging/Not provided]\n" +
+  "- ATR / expected range: [value] \u2192 a [x]% move is [Realistic/Stretched/Unlikely] in [X] weeks\n\n" +
+  "### 3. Catalysts (next 1-30 days)\n" +
+  "- [Event \u2014 date \u2014 likely impact (+/\u2212/neutral)]\n\n" +
+  "### 4. Scenario Forecast\n" +
+  "| Scenario | Target / Range (\u20b9) | Move % | Probability | Trigger / Condition |\n" +
+  "| --- | --- | --- | --- | --- |\n" +
+  "| Bull | [range] | +[x]% to +[y]% | [..]% | [breakout level / catalyst] |\n" +
+  "| Base | [range] | [x]% to [y]% | [..]% | [consolidation conditions] |\n" +
+  "| Bear | [range] | \u2212[x]% to \u2212[y]% | [..]% | [support break / risk] |\n\n" +
+  "**Expected move (probability-weighted):** [\u00b1x]% \u00b7 **Reward/Risk:** [x]:1\n\n" +
+  "### 5. Key Levels\n" +
+  "- **Resistance:** \u20b9[R1], \u20b9[R2]\n" +
+  "- **Support:** \u20b9[S1], \u20b9[S2]\n" +
+  "- **Invalidation:** bullish thesis fails below **\u20b9[x]**; bearish thesis fails above **\u20b9[y]**\n\n" +
+  "**Summary:** [Two to three sentences on the dominant driver, main risk and what to watch next.]\n\n" +
+  "*Disclaimer: Price projections are probabilistic estimates for informational purposes only, " +
+  "not guaranteed financial advice.*";
+
+export function forecastUserPrompt(query, quote, technicals, news) {
+  let prompt = `Forecast the next 1-4 weeks of price movement for this listed stock: ${query}`;
+  if (quote) {
+    prompt += `\n\nLive market data (NSE, INR):\n${JSON.stringify(quote, null, 2)}`;
+  }
+  if (technicals) {
+    prompt += `\n\nTechnical data (computed from daily closes):\n${JSON.stringify(technicals, null, 2)}`;
+  }
+  if (Array.isArray(news) && news.length > 0) {
+    prompt += `\n\nRecent news (last few days):\n${JSON.stringify(news, null, 2)}`;
+  }
+  return prompt;
 }
 
 // ---------------------------------------------------------------------------

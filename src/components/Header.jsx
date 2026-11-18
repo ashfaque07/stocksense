@@ -17,9 +17,9 @@ const HEADINGS = {
     )
   },
   stocks: {
-    title: 'Stock Analysis',
+    title: 'Stock Insights',
     logo: ICONS.stocks,
-    subtitle: 'AI-powered fundamental analysis for any listed stock.'
+    subtitle: 'AI-powered fundamental analysis and 1–4 week price forecast for any listed stock.'
   },
   trending: {
     title: 'Trending Stocks',
