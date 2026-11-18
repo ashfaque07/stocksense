@@ -11,6 +11,14 @@ const clean = (v) => {
   return s === '-' ? '' : s
 }
 
+// Turnover (₹ lakh) with its share of market cap (₹), e.g. "92.23Cr (4.5%)".
+const fmtTurnover = (turnover, marketCap) => {
+  if (turnover == null) return '—'
+  const text = fmtCompact(turnover)
+  if (!marketCap) return text
+  return `${text} (${((turnover * 1e5 / marketCap) * 100).toFixed(2)}%)`
+}
+
 export default function TrendingHistoryModal({ stock, onClose }) {
   if (!stock) return null
 
@@ -63,8 +71,8 @@ export default function TrendingHistoryModal({ stock, onClose }) {
           <dd>{fmtCount(stock.volume)}</dd>
         </div>
         <div>
-          <dt>Turnover (₹ L)</dt>
-          <dd>{fmtCompact(stock.turnover)}</dd>
+          <dt title="Turnover (₹) and Turnover / Market Cap %">TO (TO/MC)</dt>
+          <dd>{fmtTurnover(stock.turnover, stock.marketCap)}</dd>
         </div>
         <div>
           <dt>Created</dt>
@@ -77,6 +85,10 @@ export default function TrendingHistoryModal({ stock, onClose }) {
         <div>
           <dt>Market Cap</dt>
           <dd>{fmtCount(stock.marketCap)}</dd>
+        </div>
+        <div>
+          <dt>Recommended At</dt>
+          <dd>{stock.aiRecommendedAt ? fmtTime(stock.aiRecommendedAt) : '—'}</dd>
         </div>
         <div>
           <dt>Reason (Trending)</dt>
@@ -99,10 +111,9 @@ export default function TrendingHistoryModal({ stock, onClose }) {
                 <tr>
                   <th>#</th>
                   <th>Time</th>
-                  <th>Change (%)</th>
-                  <th>LTP</th>
+                  <th>LTP (Change %)</th>
                   <th>VWAP</th>
-                  <th>Turnover (₹ L)</th>
+                  <th title="Turnover (₹) and Turnover / Market Cap %">TO (TO/MC)</th>
                 </tr>
               </thead>
               <tbody>
@@ -113,17 +124,17 @@ export default function TrendingHistoryModal({ stock, onClose }) {
                       <td className="muted">{i + 1}</td>
                       <td>{fmtTime(h.time)}</td>
                       <td>
+                        {fmtNum(h.ltp)}{' '}
                         <span className={up ? 'pos' : 'neg'}>
-                          {up ? ICONS.up : ICONS.down} {fmtNum(h.percentChange)}%
+                          ({up ? ICONS.up : ICONS.down} {fmtNum(h.percentChange)}%)
                         </span>
                       </td>
-                      <td>{fmtNum(h.ltp)}</td>
                       <td>
                         <span className={h.vwap == null || h.ltp == null ? '' : h.ltp >= h.vwap ? 'pos' : 'neg'}>
                           {fmtNum(h.vwap)}
                         </span>
                       </td>
-                      <td>{h.turnover == null ? '—' : fmtCompact(h.turnover)}</td>
+                      <td>{fmtTurnover(h.turnover, stock.marketCap)}</td>
                     </tr>
                   )
                 })}

@@ -10,7 +10,7 @@ const COLUMNS = [
   { key: 'verdict', label: 'Verdict', left: true, lines: ['85%', '70%', '90%', '60%'] },
   { key: 'range', label: 'Day Range', lines: [110, 110, 110, 110, 110] },
   { key: 'activity', label: 'Activity & Circuit', lines: [110, 110, 110, 110, 110] },
-  { key: 'datetime', label: 'Date & Time', lines: [110, 110, 110] }
+  { key: 'datetime', label: 'Date & Time', lines: [110, 110, 110, 110] }
 ]
 
 export default function ReportSkeleton({ rows = 4 }) {

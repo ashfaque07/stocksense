@@ -27,14 +27,15 @@ const CSV_COLUMNS = [
   { key: 'prevClose', label: 'Prev Close' },
   { key: 'vwap', label: 'VWAP' },
   { key: 'volume', label: 'Volume' },
-  { key: 'turnover', label: 'Turnover (₹ L)' },
+  { key: 'turnover', label: 'Turnover (₹)' },
   { key: 'marketCap', label: 'Mkt Cap' },
   { key: 'lowerCircuit', label: 'Lower Circuit' },
   { key: 'upperCircuit', label: 'Upper Circuit' },
   { key: 'priceBand', label: 'Price Band' },
   { key: 'aiRecommended', label: 'AI Pick', csv: (r) => (r.aiRecommended ? 'Yes' : 'No') },
   { key: 'createdAt', label: 'Created' },
-  { key: 'modifiedAt', label: 'Modified' }
+  { key: 'modifiedAt', label: 'Modified' },
+  { key: 'aiRecommendedAt', label: 'Recommended' }
 ]
 
 // A small "label value" line used inside the grouped cells.
@@ -127,6 +128,7 @@ const TABLE_COLUMNS = [
         {kv('Date', fmtDate(r.date))}
         {kv('Created', fmtTime(r.createdAt))}
         {kv('Modified', fmtTime(r.modifiedAt))}
+        {kv('Recommended', r.aiRecommendedAt ? fmtTime(r.aiRecommendedAt) : '—')}
       </div>
     )
   }

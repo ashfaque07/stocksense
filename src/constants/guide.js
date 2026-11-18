@@ -10,8 +10,8 @@ export const TONES = [
 
 export const CATEGORIES = [
   { name: 'Large-cap Leader', tone: 'brand', when: 'Large cap with high or very high turnover/volume.', action: 'Strongest and easiest to exit. Track for pullback or continuation.' },
-  { name: 'Upper Circuit', tone: 'up', when: 'Hit the upper circuit and is not a small/micro cap.', action: 'Strong demand. Check the next-day open; a locked circuit can block buying or selling.' },
-  { name: 'Low-cap Upper Circuit', tone: 'up', when: 'Hit the upper circuit and is a small/micro cap.', action: 'High reward, high risk. Easy to get in, hard to get out. Avoid chasing.' },
+  { name: 'Upper Circuit (Mid/Large Cap)', tone: 'up', when: 'Hit the upper circuit and is a mid/large cap (or cap unknown).', action: 'Strong demand. Check the next-day open; a locked circuit can block buying or selling.' },
+  { name: 'Upper Circuit (Small/Micro Cap)', tone: 'up', when: 'Hit the upper circuit and is a small/micro cap.', action: 'High reward, high risk. Easy to get in, hard to get out. Avoid chasing.' },
   { name: 'Low-cap Momentum', tone: 'warn', when: 'Small/micro cap with high turnover/volume.', action: 'Speculative. Needs a clear reason and a strict stop-loss.' },
   { name: 'High-activity Mover', tone: 'brand', when: 'Mid cap (or unknown cap) with high turnover/volume.', action: 'Real participation. Look for a news or results trigger.' },
   { name: 'Thin Mover (Low Liquidity)', tone: 'down', when: 'Low turnover or volume.', action: 'Treat as a trap or untradable. Moves can reverse without warning.' },
