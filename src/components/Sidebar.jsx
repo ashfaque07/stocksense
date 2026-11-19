@@ -6,6 +6,7 @@ import { ICONS } from '../constants/ui.js'
 const NAV_ITEMS = [
   { id: 'trending', label: 'Trending', icon: ICONS.trending },
   { id: 'stocks', label: 'Stock Insights', icon: ICONS.stocks },
+  { id: 'intraday', label: 'Intraday Stocks', icon: ICONS.intraday },
   { id: 'results', label: 'Upcoming Results', icon: ICONS.results },
   { id: 'ipos', label: 'IPOs', icon: ICONS.ipos },
   { id: 'sectors', label: 'Sector Rotation', icon: ICONS.sectors },

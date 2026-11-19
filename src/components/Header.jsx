@@ -21,6 +21,11 @@ const HEADINGS = {
     logo: ICONS.stocks,
     subtitle: 'AI-powered fundamental analysis and 1–4 week price forecast for any listed stock.'
   },
+  intraday: {
+    title: 'Intraday Stocks',
+    logo: ICONS.intraday,
+    subtitle: 'Stocks suited for same-day intraday trading.'
+  },
   trending: {
     title: 'Trending Stocks',
     logo: ICONS.trending,
