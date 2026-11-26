@@ -26,6 +26,11 @@ const HEADINGS = {
     logo: ICONS.intraday,
     subtitle: 'Stocks suited for same-day intraday trading.'
   },
+  trading: {
+    title: 'Auto Trading',
+    logo: ICONS.trading,
+    subtitle: 'Automated intraday trades on AI-recommended gainers (paper mode by default).'
+  },
   trending: {
     title: 'Trending Stocks',
     logo: ICONS.trending,

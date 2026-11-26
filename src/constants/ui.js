@@ -12,6 +12,7 @@ export const ICONS = {
   results: '🗓️',
   stocks: '💹',
   intraday: '⚡',
+  trading: '🤖',
   sectors: '🔄',
   report: '📊',
   guide: 'ℹ️',

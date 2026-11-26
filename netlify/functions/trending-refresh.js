@@ -16,7 +16,7 @@ import { schedule } from '@netlify/functions'
 import { connectLambda } from '@netlify/blobs'
 import { refreshTrending, loadHolidays } from '../../server/services/trendingService.js'
 
-export const handler = schedule('*/15 3-10 * * *', async (event) => {
+export const handler = schedule('* 3-10 * * *', async (event) => {
   // Legacy (v1) functions don't auto-configure Netlify Blobs; wire it in so the
   // snapshot persists durably instead of falling back to ephemeral /tmp.
   connectLambda(event)

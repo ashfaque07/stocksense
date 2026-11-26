@@ -7,6 +7,7 @@ import AnalysisModal from './components/AnalysisModal.jsx'
 import StockAnalyzer from './components/StockAnalyzer.jsx'
 import TrendingStocks from './components/TrendingStocks.jsx'
 import IntradayStocks from './components/IntradayStocks.jsx'
+import AutoTrading from './components/AutoTrading.jsx'
 import UpcomingResults from './components/UpcomingResults.jsx'
 import SectorRotation from './components/SectorRotation.jsx'
 import Report from './components/Report.jsx'
@@ -71,6 +72,8 @@ export default function App() {
         <TrendingStocks />
       ) : view === 'intraday' ? (
         <IntradayStocks />
+      ) : view === 'trading' ? (
+        <AutoTrading />
       ) : view === 'results' ? (
         <UpcomingResults />
       ) : view === 'report' ? (
