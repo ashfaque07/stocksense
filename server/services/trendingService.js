@@ -22,6 +22,9 @@ import { recommendBestSymbols } from './trendingAnalysisService.js'
 import { captureTopGainers, hasReportForDate } from './reportService.js'
 import { fetchNseJson } from './nseClient.js'
 
+// Minimum minutes between AI best-pick runs.
+const AI_PICK_INTERVAL_MIN = 5
+
 // Public type -> NSE `index` query value. NSE spells losers as "loosers".
 const NSE_INDEX = { gainers: 'gainers', losers: 'loosers' }
 
@@ -101,11 +104,12 @@ async function fetchSymbolDetails(symbol) {
       upperCircuit: toNum(upper),
       priceBand: p.ppriceBand ?? null,
       vwap: toNum(m.averagePrice),
-      marketCap: toNum(t.totalMarketCap)
+      marketCap: toNum(t.totalMarketCap),
+      isin: m.isinCode ?? m.isin ?? null
     }
   } catch (err) {
     console.error(`[trending] symbol details fetch failed for ${symbol}:`, err?.message)
-    return { lowerCircuit: null, upperCircuit: null, priceBand: null, vwap: null, marketCap: null }
+    return { lowerCircuit: null, upperCircuit: null, priceBand: null, vwap: null, marketCap: null, isin: null }
   }
 }
 
@@ -153,13 +157,13 @@ function istDayKey(date = new Date()) {
 }
 
 // Minutes since IST midnight, used to gate market hours.
-function istMinutes(date = new Date()) {
+export function istMinutes(date = new Date()) {
   const d = toIst(date)
   return d.getUTCHours() * 60 + d.getUTCMinutes()
 }
 
 // Zero-padded IST date key (YYYY-MM-DD) matching the holiday-list format.
-function istHolidayKey(date = new Date()) {
+export function istHolidayKey(date = new Date()) {
   const d = toIst(date)
   const mm = String(d.getUTCMonth() + 1).padStart(2, '0')
   const dd = String(d.getUTCDate()).padStart(2, '0')
@@ -281,7 +285,12 @@ export async function refreshTrending(rawType = 'gainers') {
   // Existing recommendations are preserved; newly picked stocks are flagged and
   // stamped with the time they were recommended. Best-effort: if the AI is
   // unconfigured or fails, nothing new is flagged and the refresh still succeeds.
-  const recommended = new Set(await recommendBestSymbols(type, fresh, 3))
+  // The AI call only runs every AI_PICK_INTERVAL_MIN minutes (it is the slow,
+  // costly step); in between, refreshes just update prices.
+  const aiDue =
+    isNewDay || !prev?.aiRunAt || Date.now() - new Date(prev.aiRunAt).getTime() >= AI_PICK_INTERVAL_MIN * 60 * 1000
+  const aiRunAt = aiDue ? now : prev?.aiRunAt || null
+  const recommended = new Set(aiDue ? await recommendBestSymbols(type, fresh, 3) : [])
   for (const s of fresh) {
     if (recommended.has(String(s.symbol).toUpperCase())) {
       s.aiRecommended = true
@@ -304,6 +313,7 @@ export async function refreshTrending(rawType = 'gainers') {
     type,
     dayStartedAt: isNewDay ? now : prev.dayStartedAt,
     updatedAt: now,
+    aiRunAt,
     timestamp: live.timestamp,
     count: stocks.length,
     stocks

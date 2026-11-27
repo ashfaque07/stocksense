@@ -745,3 +745,63 @@ h1 {
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* Intraday screener */
+.intraday-input { width: 100%; height: 140px; box-sizing: border-box; padding: 10px; font-family: Consolas, monospace; font-size: 12px; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 10px; }
+.intraday-opts { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 10px 0; font-size: 13px; color: var(--text-dim); }
+.intraday-opts input[type=number] { width: 60px; }
+.intraday-opts input, .intraday-opts select { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 3px 6px; }
+.intraday-btn { padding: 7px 14px; border: 0; border-radius: 8px; background: var(--brand); color: #fff; cursor: pointer; }
+.intraday-btn.secondary { background: var(--text-faint); }
+.intraday-btn:disabled { opacity: 0.5; cursor: default; }
+.intraday-info, .intraday-sub { font-size: 12px; color: var(--text-dim); }
+.intraday-picks h3 { margin: 12px 0 6px; }
+.intraday-pick { background: var(--surface); border-left: 5px solid #90caf9; padding: 6px 10px; margin: 4px 0; border-radius: 6px; font-size: 13px; }
+.intraday-pick.IMMINENT { border-left-color: #ff9800; }
+.intraday-pick.COILING { border-left-color: #fdd835; }
+.intraday-table-wrap { overflow-x: auto; margin-top: 10px; }
+.intraday-table { border-collapse: collapse; width: 100%; font-size: 13px; background: var(--surface); }
+.intraday-table th, .intraday-table td { padding: 6px 8px; border-bottom: 1px solid var(--border-soft); text-align: right; white-space: nowrap; }
+.intraday-table th { cursor: pointer; color: var(--text-dim); }
+.intraday-table th:first-child, .intraday-table td:first-child, .intraday-table th:last-child, .intraday-table td:last-child { text-align: left; }
+.intraday-table tbody tr { cursor: pointer; }
+.intraday-table tr.watch td { background: rgba(74, 222, 128, 0.12); }
+.intraday-table tr.detail td { white-space: normal; text-align: left; font-size: 12px; cursor: default; }
+.intraday .pos { color: var(--up); }
+.intraday .neg { color: var(--down); }
+.intraday .tag { display: inline-block; padding: 1px 6px; margin: 1px; border-radius: 3px; font-size: 11px; background: var(--border); }
+.intraday .tag.p { background: rgba(74, 222, 128, 0.25); }
+.intraday .tag.n { background: rgba(248, 113, 113, 0.25); }
+.intraday .stg { padding: 1px 6px; border-radius: 3px; font-size: 11px; font-weight: bold; background: var(--border); }
+.intraday .stg.HIT { background: #1b5e20; color: #fff; }
+.intraday .stg.IMMINENT { background: #ff9800; color: #fff; }
+.intraday .stg.COILING { background: #fdd835; color: #222; }
+.intraday .stg.CANDIDATE { background: #bbdefb; color: #222; }
+.intraday .stg.AVOID { background: #ef5350; color: #fff; }
+
+/* Intraday screener - cards replace the wide table on small screens */
+.intraday-cards { display: none; }
+.intraday-card { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--border); border-radius: 10px; padding: 10px 12px; margin: 8px 0; font-size: 13px; cursor: pointer; }
+.intraday-card.watch { border-left-color: var(--up); }
+.intraday-card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.intraday-card-score { margin-left: auto; color: var(--text-dim); font-size: 12px; }
+.intraday-card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px 12px; color: var(--text-dim); font-size: 12px; }
+.intraday-card-grid b { color: var(--text); margin-left: 2px; }
+.intraday-card-grid b.pos { color: var(--up); }
+.intraday-card-grid b.neg { color: var(--down); }
+.intraday-card-tags { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border-soft); }
+
+@media (max-width: 700px) {
+  .intraday-table-wrap { display: none; }
+  .intraday-cards { display: block; }
+  .intraday-opts { gap: 10px; }
+  .intraday-opts .intraday-btn { flex: 1 1 100%; padding: 10px 14px; }
+  .intraday-opts input[type=number], .intraday-opts select { font-size: 16px; padding: 6px 8px; }
+  .intraday-info { flex: 1 1 100%; }
+  .intraday-pick { font-size: 12px; line-height: 1.5; }
+}
+
+@media (max-width: 700px) {
+  .intraday-opts > label { white-space: nowrap; }
+  .intraday-opts > label:nth-of-type(2) { margin-left: auto; }
+}

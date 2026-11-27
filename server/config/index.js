@@ -223,3 +223,33 @@ export const STATUS_MAP = {
   LP: 'Listed',
   LN: 'Listed'
 }
+
+// ---------------------------------------------------------------------------
+// Auto trading (Upstox via VM relay). Defaults to PAPER mode: no broker call
+// is made unless AUTO_TRADE_MODE=live. Scheduled runs also require
+// AUTO_TRADE_ENABLED=true.
+// ---------------------------------------------------------------------------
+const envNum = (name, fallback) => {
+  const n = Number(process.env[name])
+  return Number.isFinite(n) && process.env[name] !== '' && process.env[name] !== undefined ? n : fallback
+}
+
+export const AUTO_TRADE = {
+  enabled: process.env.AUTO_TRADE_ENABLED === 'true',
+  live: process.env.AUTO_TRADE_MODE === 'live',
+  capitalPerTrade: envNum('AUTO_TRADE_CAPITAL', 1000), // INR per trade
+  maxPositions: envNum('AUTO_TRADE_MAX_POSITIONS', 3),
+  stopLossPercent: envNum('AUTO_TRADE_SL_PERCENT', 5),
+  targetPercent: envNum('AUTO_TRADE_TARGET_PERCENT', 3),
+  squareOffMin: 15 * 60 + 15, // 15:15 IST, no new entries, exit everything
+  entryStartMin: 9 * 60 + 30, // wait for the opening volatility to settle
+  // Intraday screener stages treated as an AI "BUY" verdict.
+  buyStages: (process.env.AUTO_TRADE_STAGES || 'IMMINENT,COILING').split(',').map((s) => s.trim().toUpperCase()),
+  relayUrl: process.env.VM_RELAY_URL || '',
+  relaySecret: process.env.VM_RELAY_SECRET || '',
+  adminKey: process.env.TRADE_ADMIN_KEY || '',
+  // Daily token refresh via Upstox's TOTP login (needs TOTP enabled on the account).
+  upstoxApiKey: process.env.UPSTOX_API_KEY || '',
+  upstoxPin: process.env.UPSTOX_PIN || '',
+  upstoxTotpSecret: process.env.UPSTOX_TOTP_SECRET || ''
+}

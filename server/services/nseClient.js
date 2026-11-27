@@ -16,9 +16,12 @@ export const NSE_HEADERS = {
   Referer: `${NSE_BASE}${NSE_PATHS.home}`
 }
 
+const NSE_TIMEOUT_MS = 10000
+const nseFetch = (url, options) => fetch(url, { ...options, signal: AbortSignal.timeout(NSE_TIMEOUT_MS) })
+
 // Grab a fresh cookie jar from NSE by loading a normal page.
 async function getCookies() {
-  const res = await fetch(`${NSE_BASE}${NSE_PATHS.home}`, { headers: NSE_HEADERS })
+  const res = await nseFetch(`${NSE_BASE}${NSE_PATHS.home}`, { headers: NSE_HEADERS })
   const cookies = res.headers.getSetCookie?.() || []
   return cookies.map((c) => c.split(';')[0]).join('; ')
 }
@@ -29,7 +32,7 @@ async function getCookies() {
 export async function fetchNseJson(url) {
   // Attempt 1: direct, no cookies.
   try {
-    const res = await fetch(url, { headers: NSE_HEADERS })
+    const res = await nseFetch(url, { headers: NSE_HEADERS })
     if (res.ok) return await res.json()
   } catch {
     /* fall through to cookie handshake */
@@ -37,7 +40,7 @@ export async function fetchNseJson(url) {
 
   // Attempt 2: with a fresh cookie jar.
   const cookie = await getCookies()
-  const res = await fetch(url, { headers: { ...NSE_HEADERS, Cookie: cookie } })
+  const res = await nseFetch(url, { headers: { ...NSE_HEADERS, Cookie: cookie } })
   if (!res.ok) {
     throw new Error(`NSE responded with status ${res.status}`)
   }

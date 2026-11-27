@@ -21,11 +21,12 @@ import {
   isMarketOpen
 } from '../../server/services/trendingService.js'
 import { AI_MODEL_NAMES, DEFAULT_MODEL } from '../../server/config/index.js'
+import { handleTradeRequest } from '../../server/controllers/tradeController.js'
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type'
+  'Access-Control-Allow-Headers': 'Content-Type, x-admin-key'
 }
 
 export const handler = async (event) => {
@@ -41,6 +42,36 @@ export const handler = async (event) => {
   }
 
   try {
+    const tradeKind = path.includes('/trade-run')
+      ? 'run'
+      : path.includes('/trade-token')
+        ? 'token'
+        : path.includes('/trades')
+          ? 'status'
+          : null
+    if (tradeKind) {
+      let tradeBody = {}
+      try {
+        tradeBody = event.body ? JSON.parse(event.body) : {}
+      } catch {
+        return {
+          statusCode: 400,
+          headers: { ...CORS, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ error: 'Invalid JSON body.' })
+        }
+      }
+      const out = await handleTradeRequest(tradeKind, {
+        method,
+        adminKey: event.headers?.['x-admin-key'],
+        body: tradeBody
+      })
+      return {
+        statusCode: out.status,
+        headers: { ...CORS, 'Content-Type': 'application/json' },
+        body: JSON.stringify(out.body)
+      }
+    }
+
     if (path.includes('/models')) {
       return {
         statusCode: 200,

@@ -6,7 +6,7 @@
 [build.environment]
   # These keys are non-secret config values (defaults also live in source),
   # so exclude them from Netlify's secrets scanner to avoid false positives.
-  SECRETS_SCAN_OMIT_KEYS = "PORT,AI_MODEL,AI_MODELS,AI_BASE_URL"
+  SECRETS_SCAN_OMIT_KEYS = "PORT,AI_MODEL,AI_MODELS,AI_BASE_URL,GROQ_MODELS,GEMINI_MODELS,NVIDIA_MODELS"
 
 [functions]
   node_bundler = "esbuild"

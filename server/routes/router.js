@@ -12,15 +12,31 @@ import { handleGetResults } from '../controllers/resultsController.js'
 import { handleGetResultsDetail } from '../controllers/resultsDetailController.js'
 import { handleAnalyzeResults } from '../controllers/resultsAnalysisController.js'
 import { handleGetModels } from '../controllers/modelsController.js'
+import { handleTradeNode } from '../controllers/tradeController.js'
 
 export async function router(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-admin-key')
 
   if (req.method === 'OPTIONS') {
     res.statusCode = 204
     res.end()
+    return
+  }
+
+  if (req.url.startsWith('/api/trade-run')) {
+    await handleTradeNode('run', req, res)
+    return
+  }
+
+  if (req.url.startsWith('/api/trade-token')) {
+    await handleTradeNode('token', req, res)
+    return
+  }
+
+  if (req.url.startsWith('/api/trades')) {
+    await handleTradeNode('status', req, res)
     return
   }
 
