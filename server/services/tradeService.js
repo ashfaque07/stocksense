@@ -38,7 +38,9 @@ async function getAccessToken() {
 
 async function getLastPrice(symbol) {
   const json = await fetchNseJson(`${NSE_BASE}${NSE_PATHS.equityInfo}${encodeURIComponent(symbol)}`)
-  const price = Number(json?.equityResponse?.[0]?.priceInfo?.lastPrice)
+  const quote = json?.equityResponse?.[0]
+  // NSE's quote API moved the last price from priceInfo into tradeInfo/orderBook.
+  const price = Number(quote?.tradeInfo?.lastPrice ?? quote?.orderBook?.lastPrice ?? quote?.priceInfo?.lastPrice)
   return Number.isFinite(price) && price > 0 ? price : null
 }
 
