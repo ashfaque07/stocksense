@@ -8,6 +8,7 @@ import { schedule } from '@netlify/functions'
 import { connectLambda } from '@netlify/blobs'
 import { AUTO_TRADE } from '../../server/config/index.js'
 import { runCycle } from '../../server/services/tradeService.js'
+import { ensureFreshToken } from '../../server/services/upstoxAuthService.js'
 
 export const handler = schedule('* 3-9 * * 1-5', async (event) => {
   connectLambda(event)
@@ -17,6 +18,7 @@ export const handler = schedule('* 3-9 * * 1-5', async (event) => {
   }
 
   try {
+    await ensureFreshToken()
     const out = await runCycle()
     if (out.results?.length) console.log('[trade]', JSON.stringify(out.results))
     return { statusCode: 200, body: JSON.stringify(out) }

@@ -105,7 +105,7 @@ async function fetchSymbolDetails(symbol) {
       priceBand: p.ppriceBand ?? null,
       vwap: toNum(m.averagePrice),
       marketCap: toNum(t.totalMarketCap),
-      isin: m.isin ?? null
+      isin: m.isinCode ?? m.isin ?? null
     }
   } catch (err) {
     console.error(`[trending] symbol details fetch failed for ${symbol}:`, err?.message)
