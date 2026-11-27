@@ -71,12 +71,13 @@ export async function reserveTrade(t) {
   return rows[0]?.id ?? null
 }
 
-export async function markEntry(id, { status, entryOrderId, entryPrice, error }) {
+export async function markEntry(id, { status, entryOrderId, entryPrice, qty, error }) {
   const sql = await db()
   await sql`
     UPDATE trade_orders
     SET status = ${status}, entry_order_id = ${entryOrderId ?? null},
-        entry_price = COALESCE(${entryPrice ?? null}, entry_price), error = ${error ?? null}
+        entry_price = COALESCE(${entryPrice ?? null}, entry_price),
+        qty = COALESCE(${qty ?? null}, qty), error = ${error ?? null}
     WHERE id = ${id}`
 }
 

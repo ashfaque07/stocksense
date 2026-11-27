@@ -44,3 +44,21 @@ export async function placeMarketOrder(accessToken, { instrumentKey, qty, side, 
   if (!id) throw new Error('Upstox did not return an order id.')
   return id
 }
+
+// Current state of an order: { status, filledQty, avgPrice, message }. `status` is
+// the lower-cased Upstox status (e.g. complete, rejected, cancelled, open).
+export async function getOrderStatus(accessToken, orderId) {
+  const data = await relay(`/v2/order/details?order_id=${encodeURIComponent(orderId)}`, 'GET', accessToken)
+  const o = data?.data || {}
+  return {
+    status: String(o.status || '').toLowerCase(),
+    filledQty: Number(o.filled_quantity) || 0,
+    avgPrice: Number(o.average_price) || null,
+    message: o.status_message || ''
+  }
+}
+
+// Best-effort cancel of a pending order.
+export async function cancelOrder(accessToken, orderId) {
+  await relay(`/v3/order/cancel?order_id=${encodeURIComponent(orderId)}`, 'DELETE', accessToken)
+}

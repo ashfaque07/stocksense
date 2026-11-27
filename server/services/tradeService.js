@@ -10,7 +10,7 @@ import { AUTO_TRADE, NSE_BASE, NSE_PATHS } from '../config/index.js'
 import { fetchNseJson } from './nseClient.js'
 import { readTrending, loadHolidays, isMarketOpen, istMinutes, istHolidayKey } from './trendingService.js'
 import { analyzeStore, mergeData } from '../../src/utils/intradayScreener.js'
-import { placeMarketOrder } from './upstoxClient.js'
+import { placeMarketOrder, getOrderStatus, cancelOrder } from './upstoxClient.js'
 import {
   reserveTrade,
   markEntry,
@@ -27,6 +27,36 @@ const TURNOVER_UNIT = 1e5 // trending turnover is in rupees lakh
 const SCORE_THRESHOLD = 10
 
 const round2 = (n) => Math.round(n * 100) / 100
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
+// After a live BUY, confirm Upstox actually filled it. Returns { filledQty, avgPrice,
+// message, unconfirmed }. An order still pending after a few polls is cancelled so we
+// never track a position we don't hold. If the status can't be read at all, the order
+// is assumed filled (`unconfirmed: true`) because it may well have been.
+async function confirmEntryFill(token, orderId, qty) {
+  const TERMINAL = ['complete', 'rejected', 'cancelled']
+  try {
+    let st = null
+    for (let i = 0; i < 4; i++) {
+      await sleep(1500)
+      st = await getOrderStatus(token, orderId)
+      if (TERMINAL.includes(st.status)) break
+    }
+    if (!TERMINAL.includes(st.status)) {
+      try {
+        await cancelOrder(token, orderId)
+      } catch (err) {
+        console.error(`[trade] cancel of unfilled entry ${orderId} failed:`, err?.message)
+      }
+      await sleep(1000)
+      st = await getOrderStatus(token, orderId)
+    }
+    return { ...st, unconfirmed: false }
+  } catch (err) {
+    console.error(`[trade] could not confirm entry fill for order ${orderId}:`, err?.message)
+    return { filledQty: qty, avgPrice: null, message: 'fill unconfirmed', unconfirmed: true }
+  }
+}
 
 export async function saveAccessToken(token) {
   await setSetting(TOKEN_KEY, token)
@@ -50,8 +80,10 @@ export async function findSignals() {
   const day = istHolidayKey(snap?.dayStartedAt ? new Date(snap.dayStartedAt) : new Date())
   if (day !== istHolidayKey()) return [] // snapshot is from a previous session
 
+  // Only regular EQ-series stocks can be traded intraday (MIS). BE/BZ/SM etc. are
+  // trade-for-trade or restricted, so they would be rejected or leave a bad position.
   const picks = (snap?.stocks || [])
-    .filter((s) => !s.stale && s.aiRecommended && s.isin)
+    .filter((s) => !s.stale && s.aiRecommended && s.isin && s.series === 'EQ')
     .map((s) => ({ ...s, date: day }))
   if (!picks.length) return []
 
@@ -91,13 +123,23 @@ async function enter(signal, tradeDate) {
 
   try {
     let orderId = null
+    let filledQty = qty
+    let fillPrice = ltp
+    let note = null
     if (mode === 'live') {
       const token = await getAccessToken()
       if (!token) throw new Error('No Upstox access token set.')
       orderId = await placeMarketOrder(token, { instrumentKey, qty, side: 'BUY', tag: `ss-${id}` })
+      const fill = await confirmEntryFill(token, orderId, qty)
+      if (!fill.filledQty) {
+        throw new Error(`Entry not filled (${fill.status || 'unknown'}): ${fill.message || 'no reason given'}`)
+      }
+      filledQty = fill.filledQty
+      fillPrice = fill.avgPrice || ltp
+      if (fill.unconfirmed) note = fill.message
     }
-    await markEntry(id, { status: 'OPEN', entryOrderId: orderId, entryPrice: ltp })
-    return { symbol: stock.symbol, action: 'entered', mode, qty, price: ltp }
+    await markEntry(id, { status: 'OPEN', entryOrderId: orderId, entryPrice: fillPrice, qty: filledQty, error: note })
+    return { symbol: stock.symbol, action: 'entered', mode, qty: filledQty, price: fillPrice }
   } catch (err) {
     console.error(`[trade] entry failed for ${stock.symbol}:`, err?.message)
     await markEntry(id, { status: 'REJECTED', error: err?.message })
