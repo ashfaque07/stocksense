@@ -24,7 +24,7 @@ import {
 
 const TOKEN_KEY = 'upstox_access_token'
 const TURNOVER_UNIT = 1e5 // trending turnover is in rupees lakh
-const SCORE_THRESHOLD = 10
+const SCORE_THRESHOLD = 60
 
 const round2 = (n) => Math.round(n * 100) / 100
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))

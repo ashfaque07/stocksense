@@ -51,7 +51,7 @@ const gapPct = (p) => ((p.ltp - p.vwap) / p.vwap) * 100
 
 export default function IntradayStocks() {
   const { stocks, loading, refreshing, error, reload, dayStartedAt } = useTrending()
-  const [thr, setThr] = useState(10)
+  const [thr, setThr] = useState(60)
   const [onlyWatch, setOnlyWatch] = useState(false)
   const [sort, setSort] = useState({ key: 'score', dir: -1 })
   const [open, setOpen] = useState(null)

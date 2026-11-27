@@ -2,8 +2,11 @@
 
 export const STAGE_ORDER = ['NONE', 'CANDIDATE', 'COILING', 'IMMINENT', 'HIT', 'AVOID']
 
-// Highest reachable score: sum of every positive signal (momentum counts once, max 3).
-export const MAX_SCORE = 15
+// Highest reachable score: sum of every positive signal's maximum.
+export const MAX_SCORE = 100
+
+const CRORE = 1e7
+const MIN = 60000
 
 function normalize(s) {
   if (!Array.isArray(s.history) || !s.history.length) {
@@ -55,30 +58,93 @@ export function scoreAt(s, i, unit) {
     tags.push([pts, txt])
   }
   const pc = last.percentChange
-  if (pc >= 6 && pc < 12) add(2, 'Momentum 6-12%')
-  else if (pc >= 12 && pc < 18) add(3, 'Momentum 12-18%')
-  if (last.vwap && (last.ltp - last.vwap) / last.vwap > 0.01) add(2, 'LTP > VWAP 1%+')
-  if (n > 3 && last.vwap && h[n - 4].vwap && last.vwap > h[n - 4].vwap) add(1, 'VWAP rising')
-  if (n > 2 && last.turnover >= h[n - 3].turnover * 1.05) add(2, 'Turnover growing')
-  const hi = Math.max(...h.map((x) => x.ltp))
-  if ((hi - last.ltp) / hi < 0.02) add(1, 'Near day high')
+  const lastT = new Date(last.time).getTime()
+  const atOrBefore = (mins) => {
+    for (let k = n - 2; k >= 0; k--) {
+      if (lastT - new Date(h[k].time).getTime() >= mins * MIN) return h[k]
+    }
+    return null
+  }
   const turnRs = last.turnover * unit
-  if (s.marketCap && turnRs / s.marketCap > 0.02) add(2, 'Turnover/MCap > 2%')
-  if (s.marketCap >= 1.5e10 && s.marketCap <= 1.5e11) add(1, 'Cap 1.5k-15k Cr')
-  if (n >= 3 && h[n - 1].percentChange >= h[n - 2].percentChange && h[n - 2].percentChange >= h[n - 3].percentChange) {
-    add(1, 'Staircase')
+  const atUC = s.upperCircuit && last.ltp >= s.upperCircuit - 1e-9
+  const toUC = s.upperCircuit ? ((s.upperCircuit - last.ltp) / s.upperCircuit) * 100 : null
+
+  // Early gain with headroom
+  if (pc >= 6 && pc < 12) add(12, 'Early gain 6-12%')
+  else if (pc >= 12 && pc < 16) add(6, 'Gain 12-16%')
+
+  // VWAP premium
+  if (last.vwap) {
+    const prem = ((last.ltp - last.vwap) / last.vwap) * 100
+    if (prem >= 1) add(12, 'VWAP premium 1%+')
+    else if (prem >= 0.3) add(8, 'VWAP premium 0.3%+')
+    else if (prem > 0) add(4, 'Above VWAP')
   }
-  const toUC = (s.upperCircuit - last.ltp) / s.upperCircuit
-  if (toUC > 0.02 && toUC < 0.12) add(1, 'Near UC (2-12%)')
-  if (h[0] && h[0].percentChange > 6) add(1, 'Early strength')
-  if (n >= 4) {
-    const w = h.slice(-4).map((x) => x.percentChange)
-    if (Math.max(...w) - Math.min(...w) < 0.5 && pc < 17) add(-2, 'Stalled')
+
+  // VWAP consistency (last 5 snapshots)
+  const w5 = h.slice(-5)
+  const above = w5.filter((x) => x.vwap && x.ltp > x.vwap).length
+  if (w5.length === 5 && above === 5) add(12, 'Above VWAP 5/5')
+  else if (w5.length >= 5 && above === 4) add(9, 'Above VWAP 4/5')
+  else if (w5.length >= 3 && above === 3) add(6, 'Above VWAP 3/5')
+
+  // 30-min change and acceleration
+  const ref30 = atOrBefore(30)
+  const chg30 = ref30 ? pc - ref30.percentChange : null
+  if (chg30 !== null) {
+    if (chg30 >= 3) add(14, '30m accel 3pp+')
+    else if (chg30 >= 1.5) add(10, '30m accel 1.5pp+')
+    else if (chg30 >= 0.5) add(5, '30m accel 0.5pp+')
   }
-  if (last.vwap && last.ltp < last.vwap) add(-3, 'LTP < VWAP')
-  const peak = Math.max(...h.map((x) => x.percentChange))
-  if (peak - pc >= 1) add(-2, 'Dropped from peak')
-  if (last.turnover * unit < 100 * 1e7 && s.marketCap < 2e9) add(-1, 'Thin liquidity')
+
+  // Turnover-rate acceleration: turnover added in last 30m vs the 30m before it
+  if (ref30) {
+    const ref60 = atOrBefore(60) || h[0]
+    const span = new Date(ref30.time).getTime() - new Date(ref60.time).getTime()
+    const recent = (last.turnover - ref30.turnover) / (lastT - new Date(ref30.time).getTime())
+    const prior = span > 0 ? (ref30.turnover - ref60.turnover) / span : 0
+    if (prior > 0) {
+      const acc = (recent / prior - 1) * 100
+      if (acc >= 50) add(12, 'Turnover rate +50%')
+      else if (acc >= 20) add(8, 'Turnover rate +20%')
+      else if (acc >= 0) add(4, 'Turnover rate up')
+    }
+  }
+
+  // Liquidity / churn (needs >= 1 Cr turnover)
+  if (s.marketCap && turnRs >= CRORE) {
+    const churn = (turnRs / s.marketCap) * 100
+    if (churn >= 3) add(12, 'Turnover/MCap 3%+')
+    else if (churn >= 1) add(8, 'Turnover/MCap 1%+')
+    else if (churn >= 0.3) add(4, 'Turnover/MCap 0.3%+')
+  }
+
+  // Room to upper circuit
+  if (toUC !== null && !atUC) {
+    if (toUC >= 14) add(5, 'UC room 14%+')
+    else if (toUC >= 6) add(12, 'UC room 6-14%')
+    else if (toUC >= 3) add(7, 'UC room 3-6%')
+    else if (toUC >= 1) add(2, 'UC room 1-3%')
+  }
+
+  // Market-cap preference
+  const capCr = (s.marketCap || 0) / CRORE
+  if (capCr >= 100 && capCr < 1000) add(8, 'Cap 100-1000 Cr')
+  else if (capCr >= 1000 && capCr < 5000) add(5, 'Cap 1k-5k Cr')
+  else if (capCr >= 5000 && capCr < 10000) add(3, 'Cap 5k-10k Cr')
+  else if (capCr >= 10000) add(1, 'Cap >10k Cr')
+
+  // Data readiness
+  if (n >= 5) add(6, '5+ snapshots')
+  else if (n >= 3) add(4, '3+ snapshots')
+  else if (n >= 2) add(2, '2+ snapshots')
+
+  // Penalties
+  if (atUC) add(-25, 'At upper circuit')
+  if (last.vwap && last.ltp < last.vwap) add(-8, 'Below VWAP')
+  if (chg30 !== null && chg30 <= -2) add(-8, '30m change <= -2pp')
+  if (turnRs < CRORE) add(-10, 'Turnover < 1 Cr')
+  if (toUC !== null && !atUC && toUC < 1) add(-8, 'UC room < 1%')
   return { p, tags }
 }
 
